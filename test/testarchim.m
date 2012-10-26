@@ -9,7 +9,7 @@ function testarchimndiff
 % normal diff
     X = [0.1 0.2; 0.2 0.8; 1.0 0.4; 0.5 0.0];
     assertElementsAlmostEqual(archimndiff('clayton', 1, X, 1.2), archimdiff('clayton', X, 1.2))
-    assertVectorsAlmostEqual(archimndiff('frank', 1, X, 1.2), archimdiff('frank', X, 1.2))
+    assertElementsAlmostEqual(archimndiff('frank', 1, X, 1.2), archimdiff('frank', X, 1.2))
     assertElementsAlmostEqual(archimndiff('gumbel', 1, X, 1.2), archimdiff('gumbel', X, 1.2))
 
 function testarchimcdf
