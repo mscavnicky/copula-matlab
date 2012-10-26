@@ -1,4 +1,4 @@
-function [ Y ] = archimndiff( family, n, X, p )
+function [ Y ] = archimndiff( family, n, X, alpha )
 %ARCHIMNDIFF Computes n-th derivate of Archimedean generator and evaluates.
 % Derivation is computed analytically. Supports Frank, Gumbel and Clayton 
 % copulas.
@@ -18,9 +18,9 @@ end
 % Analytically compute n-th derivation
 fn = diff(f, n);
 % Convert derivation to Matlab function
-ndiff = matlabFunction(fn);
+ndiff = matlabFunction(fn, 'vars', [x p]);
 % Compute function values
-Y = ndiff(X, p);
+Y = ndiff(X, alpha);
         
 end
 
