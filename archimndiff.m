@@ -16,7 +16,7 @@ switch family
 end
 
 % Analytically compute n-th derivation
-fn = diff(f, n);
+fn = diff(f, n, x);
 % Convert derivation to Matlab function
 ndiff = matlabFunction(fn, 'vars', [x p]);
 % Compute function values
