@@ -1,8 +1,8 @@
 function [ U ] = uniform( X, dim )
 %UNIFORM Converts matrix to uniform variates in specified dimension.
 %   Based on empirical CDF function described in Berg, Bakken (2006).
-%   Function ISMEMBC2 is uncomented an returns last position of element
-%   array.
+%   Function ISMEMBC2 is uncomented an returns last position of element in
+%   a sorted array.
 
 if nargin < 2
     dim = 1;

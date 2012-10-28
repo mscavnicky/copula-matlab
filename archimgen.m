@@ -1,6 +1,6 @@
 function [ Y ] = archimgen( family, X, p )
 %ARCHIMGEN Archimedean copula function generator.
-% Supports Frank, Gumbel and Clayton copulas.
+%   Supports Frank, Gumbel and Clayton copulas.
 
 switch family
     case 'frank'

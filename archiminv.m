@@ -1,6 +1,6 @@
 function [ Y ] = archiminv( family, X, p )
 %ARCHIMINV Inverse of archimedean copula generator.
-% Supports Frank, Gumbel and Clayton copulas.
+%   Supports Frank, Gumbel and Clayton copulas.
 
 switch family
     case 'frank'

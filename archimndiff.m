@@ -1,7 +1,8 @@
 function [ Y ] = archimndiff( family, n, X, alpha )
 %ARCHIMNDIFF Computes n-th derivate of Archimedean generator and evaluates.
-% Derivation is computed analytically. Supports Frank, Gumbel and Clayton 
-% copulas.
+%   Derivation is computed analytically. Supports Frank, Gumbel and Clayton 
+%   copulas. To improve performance derivatives are cached in persistent
+%   map.
 
 % Initialized cache for derivatives
 persistent derivatives;

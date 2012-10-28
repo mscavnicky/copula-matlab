@@ -1,5 +1,7 @@
 function [ alphahat, ll ] = archimfit( family, U )
-%ARCHIMFIT Fit multivariate archimedean copula to data
+%ARCHIMFIT Fit multivariate archimedean copula to data.
+%   Data must be within interval [0, 1]. Returns value  of fitted parameters 
+%   and likelihood of fit to data.
 
 fun = @(alpha) loglike(archimpdf( family, U, alpha ));
 

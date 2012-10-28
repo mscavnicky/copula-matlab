@@ -1,5 +1,6 @@
 function [ C ] = ecopula( U )
-%ECOPULA Empirical copula for n-dimensional data. Works with uniform values
+%ECOPULA Empirical copula for n-dimensional data. Works with uniform
+%variates.
 
 [m n] = size(U);
 

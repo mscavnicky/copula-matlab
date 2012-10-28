@@ -1,5 +1,5 @@
 function [ l, u ] = archimbounds( family )
-%ARCHIMBOUNDS Bounds of parameter of Archimedean copula.
+%ARCHIMBOUNDS Bounds of parameters of Archimedean copula.
 %   http://support.sas.com/documentation/cdl/en/etsug/63939/HTML/default/viewer.htm#etsug_copula_sect017.htm
 
 switch family
