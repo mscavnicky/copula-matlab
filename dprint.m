@@ -4,8 +4,7 @@ function [ str ] = dprint( obj )
 %   http://www.mathworks.com/help/matlab/data-type-identification.html
 str = dprint2(obj, 0);
 
-function [ str ] = dprint2( obj, depth )
-   
+function [ str ] = dprint2( obj, depth )   
     if ischar(obj)
         str = obj; 
     elseif iscell(obj)
@@ -20,7 +19,7 @@ function [ str ] = dprint2( obj, depth )
         for i=1:length(keys)
             key = keys(i);
             value = obj.values(key);
-            ss{end+1} = sprintf('%s: %s', key{1}, dprint2(value{1}, depth+1));            
+            ss{end+1} = sprintf('%s: %s', dprint2(key{1}, depth+1), dprint2(value{1}, depth+1));            
         end
         str = join(ss, ', ', '#{ ', ' #}')
     elseif ismatrix(obj)    
