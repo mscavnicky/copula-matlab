@@ -1,11 +1,11 @@
-function [ fits ] = hacfit( family, U )
+function [ hac ] = hacfit( family, U )
 %HACFIT Fits sample to Hierachical Archimedean Copula. Return tree.
 %   Uses method by Okhrin to select HAC structure. Tree structure and alpha
 %   are all encoded in tree structure that is using cell arrays.
 
 [~, d] = size(U);
 vars = 1:d;
-fits = containers.Map;
+hac = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
 iteration = 0;
 
 while length(vars) > 1
@@ -16,7 +16,7 @@ while length(vars) > 1
    % Find the best fit available for current vars 
    [ bestComb, bestAlpha ] = findBestFit( family, U, vars );   
    % Insert it into cache
-   fits(int2str(fitNumber)) = { bestAlpha, bestComb };
+   hac(fitNumber) = { bestAlpha, bestComb };
    % Add new column based on variables in best fit our data sample   
    U = [U archimcdf( family, U(:, bestComb), bestAlpha )];
    % Update vars
