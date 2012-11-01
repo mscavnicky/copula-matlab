@@ -1,7 +1,7 @@
 function [ hac ] = hacfit( family, U )
 %HACFIT Fits sample to Hierachical Archimedean Copula. Return tree.
-%   Uses method by Okhrin to select HAC structure. Tree structure and alpha
-%   are all encoded in tree structure that is using cell arrays.
+%   Uses method by Okhrin to select HAC structure. HAC structure and alphas
+%   are all encoded in resulting parameters.
 
 [~, d] = size(U);
 vars = 1:d;
@@ -24,24 +24,25 @@ while length(vars) > 1
 end
 
 
-function [ minComb, minAlpha ] = findBestFit( family, U, vars )
-minComb = [];
-minAlpha = 0;
-minLogLike = 1e12;
+function [ maxComb, maxAlpha ] = findBestFit( family, U, vars )
+%FINDBESTFIT Tries to find the combination of variables that gives the
+%highest alpha possible.
+    
+maxComb = [];
+maxAlpha = 0;
 
 % Generate combinations of variables of length 2 and more
 for k = 2:length(vars)
     combinations = combnk(vars, k);
-    % Go over each combination and compute its likelihood
+    % Go over each combination and compute its fit
     for j = 1:size(combinations, 1)
-        comb = combinations(j,:);        
+        comb = combinations(j,:);
         fprintf('* Evaluating combination %s ... ', mat2str(comb));
-        [ alpha, ll ] = archimfit( family, U(:, comb) );
-        fprintf('%f\n', ll);
-        if ll < minLogLike
-           minComb = comb;
-           minAlpha = alpha;
-           minLogLike = ll;
+        alpha = archimfit( family, U(:, comb) );
+        fprintf('%f\n', alpha);
+        if alpha > maxAlpha
+           maxComb = comb;
+           maxAlpha = alpha;
         end
     end    
 end
