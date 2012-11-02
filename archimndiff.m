@@ -4,7 +4,7 @@ function [ Y ] = archimndiff( family, n, X, alpha )
 %   copulas. To improve performance derivatives are cached in persistent
 %   map.
 
-% Initialized cache for derivatives
+% Initialized cache for functions repsenting generator derivatives
 persistent derivatives;
 if isempty(derivatives)
     derivatives = containers.Map;
@@ -18,16 +18,8 @@ if isKey(derivatives, key)
 else
     % Declare symbols
     syms x p
-    % Define symbolic version of generator
-    switch family
-        case 'frank'
-            f = (-1/p) * log( 1 - ( 1 - exp(-p) ) * exp(-x) );        
-        case 'clayton'
-            f = (1 + p*x) ^ (-1/p);
-        case 'gumbel'
-            f = exp(-x ^ (1/p));
-    end
-
+    % Acquire symbolic version of generator
+    f = archimgensym(family, x, p);
     % Analytically compute n-th derivation
     fn = diff(f, n, x);
     % Convert derivation to Matlab function
