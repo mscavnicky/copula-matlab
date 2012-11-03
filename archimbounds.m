@@ -18,7 +18,8 @@ switch family
         if d > 2           
             l = 0;
         else
-            l = -1;
+            % Nelsen suggests -1 as the lower bound, but MATLAB uses 0
+            l = 0;
         end
         u = Inf;
     case 'gumbel'
@@ -26,9 +27,9 @@ switch family
         u = Inf;
     case 'frank'
         if d > 2
-            l = -Inf;
-        else
             l = 0;
+        else
+            l = -Inf;
         end
         u = Inf;
     otherwise
