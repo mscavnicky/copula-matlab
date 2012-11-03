@@ -1,7 +1,7 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
-function test_suite = testarchim 
+function test_suite = test_archim 
 initTestSuite;
 
 function testArchimndiff

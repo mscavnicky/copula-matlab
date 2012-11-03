@@ -1,7 +1,7 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
-function test_suite = testuniform
+function test_suite = test_uniform
 initTestSuite;
 
 function testUniformRowVector

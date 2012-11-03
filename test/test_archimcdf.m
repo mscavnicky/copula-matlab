@@ -1,7 +1,7 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
-function test_suite = testarchimcdf
+function test_suite = test_archimcdf
 initTestSuite;
 
 function testArchimcdf
