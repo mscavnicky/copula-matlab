@@ -5,7 +5,7 @@ function [ alphahat, ll ] = archimfit( family, U )
 
 fun = @(alpha) loglike(archimpdf( family, U, alpha ));
 
-[ lowerBound, ~ ] = archimbounds( family );
+[ lowerBound, ~ ] = archimbounds( family, size(U, 2) );
 
 if strcmp(family, 'frank')
     [~, lowerBound] = bracket1D(fun, 5, -5); % 'lower', search descending from -5
