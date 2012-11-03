@@ -11,13 +11,6 @@ function testArchimndiff
     assertElementsAlmostEqual(archimndiff('clayton', 1, X, 1.2), archimdiff('clayton', X, 1.2))
     assertElementsAlmostEqual(archimndiff('frank', 1, X, 1.2), archimdiff('frank', X, 1.2))
     assertElementsAlmostEqual(archimndiff('gumbel', 1, X, 1.2), archimdiff('gumbel', X, 1.2))
-
-function testArchimcdf
-% Tests 2 dimensional case of archimcdf with copulacdf
-    X = [0.1 0.2; 0.3 0.8; 1.0 0.4; 0.5 0.5];
-    assertVectorsAlmostEqual(archimcdf('clayton', X, 1.5), copulacdf('clayton', X, 1.5));
-    assertVectorsAlmostEqual(archimcdf('frank', X, 1.5), copulacdf('frank', X, 1.5));
-    assertVectorsAlmostEqual(archimcdf('gumbel', X, 1.5), copulacdf('gumbel', X, 1.5));
     
 function testArchimpdf
 % Tests 2 dimensional case of archimpdf with copulapdf
