@@ -1,20 +1,38 @@
-function [ l, u ] = archimbounds( family )
+function [ l, u ] = archimbounds( family, d )
 %ARCHIMBOUNDS Bounds of parameters of Archimedean copula.
-%   http://support.sas.com/documentation/cdl/en/etsug/63939/HTML/default/viewer.htm#etsug_copula_sect017.htm
+%   Returns maximum and lower bound of the interval for parameter for given
+%   Archimedean copula family in given dimenstion. Please note that function 
+%   only returns bounds.
+%
+%   Bounds for 2 dimensional case can be found in [1].
+%   Lower estimate of bounds can be found in [2]. Unfortunately they are
+%   defined for n-dimensional case. To make bounds more correct analytical
+%   bound for d-dimensional case should be found.
+%
+%   Reference:
+%       [1] Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 117
+%       [2] Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 152
 
 switch family
     case 'clayton'
-        l = 0;
+        if d > 2           
+            l = 0;
+        else
+            l = -1;
+        end
         u = Inf;
     case 'gumbel'
         l = 1;
         u = Inf;
     case 'frank'
-        % Note that bounds for Frank copula exclude zero
-        l = -Inf;
+        if d > 2
+            l = -Inf;
+        else
+            l = 0;
+        end
         u = Inf;
     otherwise
-        error 'Copula family not recognized'
+        error 'Copula family not recognized.'
 end
         
 end
