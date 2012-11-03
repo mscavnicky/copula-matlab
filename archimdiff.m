@@ -13,6 +13,8 @@ switch family
         Y = -(p * X + 1) .^ (-1 - 1/p);
     case 'gumbel'
         Y = -(1 / p) * exp( -X .^ (1/p) ) .* (X .^ (1 / p - 1));
+    otherwise
+        error 'Copula family not recognized.'
 end
 
 end

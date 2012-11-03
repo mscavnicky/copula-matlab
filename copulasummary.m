@@ -41,7 +41,7 @@ switch family
         [h, p] = kstest2(empiricalCopula, hypothesisCopula);
    
     otherwise
-        error 'Unknown copula family.'
+        error 'Copula family not recognized.'
 end
 
 summary.logLikelihhod = ll;

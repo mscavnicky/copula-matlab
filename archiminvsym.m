@@ -9,6 +9,8 @@ switch family
         f = ( 1 / p ) * ( x .^ -p - 1 );
     case 'gumbel'
         f = ( -log(x) ) .^ p;
+    otherwise
+        error 'Copula family not recognized.'
 end
 
 end

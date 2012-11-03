@@ -14,7 +14,7 @@ switch family
         l = -Inf;
         u = Inf;
     otherwise
-        error 'Unknown copula family'
+        error 'Copula family not recognized'
 end
         
 end
