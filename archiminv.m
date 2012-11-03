@@ -4,7 +4,7 @@ function [ Y ] = archiminv( family, X, p )
 %   Please note that no parameter checking is done on this level.
 %
 %   Reference:
-%       Nelsen. R, (2006) Introduction to Copulas, Second Edition
+%       Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 116
 
 switch family
     case 'frank'

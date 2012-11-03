@@ -4,7 +4,7 @@ function [ Y ] = archimgen( family, X, p )
 %   Please not that no parameter checking is done in this function.
 %
 %   Reference:
-%       Nelsen. R, (2006) Introduction to Copulas, Second Edition
+%       Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 116
 
 switch family
     case 'frank'
