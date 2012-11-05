@@ -3,7 +3,7 @@ function [ hac ] = hacfit( family, U )
 %   Uses method by Okhrin to select HAC structure. HAC structure and alphas
 %   are all encoded in resulting parameters.
 
-[~, d] = size(U);
+d = size(U, 2);
 vars = 1:d;
 hac = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
 iteration = 0;
