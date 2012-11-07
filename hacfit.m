@@ -3,6 +3,12 @@ function [ hac ] = hacfit( family, U )
 %   Uses method by Okhrin to select HAC structure. HAC structure and alphas
 %   are all encoded in resulting parameters.
 
+% Expose subfunctions for unit-testing
+if nargin == 0
+   hac = {@findBestFit, @generateBinaryTrees}; 
+   return;
+end
+
 d = size(U, 2);
 vars = 1:d;
 hac = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
@@ -21,6 +27,32 @@ while length(vars) > 1
    U = [U archimcdf( family, U(:, bestComb), bestAlpha )];
    % Update vars
    vars = [setdiff(vars, bestComb), fitNumber];    
+end
+
+
+end
+
+
+function [ trees ] = generateBinaryTrees( d )
+%GENERATETREES Generate all possible binary trees of d-dimensional copulas
+
+% Return tree node when dimension is 1
+if d == 1
+    trees = {'x'};
+    return;
+end
+
+trees = {};
+for i=1:(d-1)      
+    lefts = generateBinaryTrees(i);
+    rights = generateBinaryTrees(d-i);
+    for l=1:length(lefts)
+        for r=1:length(rights)
+            trees{end+1} = { lefts{l}, rights{r} }; %#ok<AGROW>
+        end
+    end
+end
+
 end
 
 
@@ -45,8 +77,6 @@ for k = 2:length(vars)
            maxAlpha = alpha;
         end
     end    
-end
-
 end
 
 end
