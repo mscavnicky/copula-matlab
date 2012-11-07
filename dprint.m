@@ -12,16 +12,16 @@ function [ str ] = dprint2( obj, depth )
         for i=1:length(obj)
             ss{end+1} = dprint2(obj{i}, depth+1);
         end
-        str = join(ss, ', ', '{ ', ' }');  
+        str = join(ss, ', ', '{', '}');  
     elseif isa(obj, 'containers.Map')
         keys = obj.keys;        
         ss = {};
         for i=1:length(keys)
             key = keys(i);
             value = obj.values(key);
-            ss{end+1} = sprintf('%s: %s', dprint2(key{1}, depth+1), dprint2(value{1}, depth+1));            
+            ss{end+1} = sprintf('%s:%s', dprint2(key{1}, depth+1), dprint2(value{1}, depth+1));            
         end
-        str = join(ss, ', ', '#{ ', ' #}')
+        str = join(ss, ', ', '#{', '}');
     elseif ismatrix(obj)    
         str = mat2str(obj);
     else
