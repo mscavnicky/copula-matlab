@@ -6,7 +6,7 @@ function f = archimsym( family, symbols, alpha )
 % Sum together all inverse generators
 f = sym(0);
 for i=1:length(symbols)
-    s = symbols(i);
+    s = symbols{i};
     f = f + archiminvsym(family, s, alpha);
 end
 

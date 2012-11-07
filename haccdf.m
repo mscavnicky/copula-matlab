@@ -1,25 +1,27 @@
 function [ Y ] = haccdf( family, U, hac )
 %HACCDF Cumulative distribution function of hierarchical Archimedean copula.
-%   Given structure of HAC produced by hacfit, computes CDF in given
-%   points. 
+%   Given structure of HAC computes CDF in given points. 
 %
-%   HAC structure is a map containing key-value pairs where:
-%       * key is identifier of the a copula
-%       * value is a 2-element cell array consisting of copula parameter
-%       and references to other variables of copulas used       
+%   { 1, 2, { 3, 4, [5.2] } [1.2] }
 
-keys = hac.keys;
-for i=1:hac.Count
-    key = keys(i);
-    value = hac.values(key);
-    
-    alpha = value{1}{1};
-    vars = value{1}{2};
-    
-    U = [U archimcdf(family, U(:, vars), alpha)];    
+% Dimensions of top-level copula in hac structure
+d = length(hac) - 1;
+% Size of the dataset for preallocation purposes
+n = size(U, 1);
+% Preallocate matrix for inputs of this copula
+V = zeros(n, d);
+for i=1:d
+    % Perform recursion if element of structure is another copula
+    if iscell(hac{i})
+        V(:, i) = haccdf(family, U, hac{i});        
+    else
+        V(:, i) = U(:, hac{i});
+    end    
 end
-
-Y = U(:, end);
+% Retrieve alpha from the hac structure
+alpha = hac{end};
+% Compute copula function given data and alpha
+Y = archimcdf(family, V, alpha(1));
 
 end
 
