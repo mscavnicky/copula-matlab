@@ -21,7 +21,7 @@ end
 % Retrieve alpha from the hac structure
 alpha = hac{end};
 % Compute copula function given data and alpha
-Y = archimcdf(family, V, alpha(1));
+Y = archimcdf(family, V, alpha);
 
 end
 
