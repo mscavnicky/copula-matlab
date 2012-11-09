@@ -48,7 +48,6 @@ minHac = {};
 
 d = size(U, 2);
 trees = generateBinaryTrees(1:d);
-dprint(trees);
 for i=1:length(trees)
     hac = evaluateTree(family, U, trees{i});
     ll = loglike(hacpdf(family, U, hac));    
@@ -136,16 +135,16 @@ partitions = {};
 % For each size of the group collect combinations of the size
 d = length(vars);
 for i=1:d-1
-    combinations = combnk(vars, i);    
+    combinations = flipud(combnk(vars, i));    
     for j=1:length(combinations)
         c = combinations(j,:);
-        partitions{end+1} = { c, setxor(vars, c) }; %#ok<AGROW>
+        partitions{end+1} = { setxor(vars, c), c }; %#ok<AGROW>
     end
 end
 
 % Take only the second half of partitions to eliminate isomorphic trees
 l = length(partitions) / 2;
-partitions = partitions(l+1:l*2);
+partitions = partitions(1:l);
 
 end
 
