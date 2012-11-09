@@ -1,4 +1,4 @@
-function [ hac ] = hacfit( family, U )
+function [ hac ] = hacfit( family, U, method )
 %HACFIT Fits sample to Hierachical Archimedean Copula. Return tree.
 %   Uses method by Okhrin to select HAC structure. HAC structure and alphas
 %   are all encoded in resulting parameters.
@@ -9,26 +9,58 @@ if nargin == 0
    return;
 end
 
-d = size(U, 2);
-vars = 1:d;
-hac = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
-iteration = 0;
+% Assert dataset dimensions
+assert(size(U, 2) > 1, 'Number of dimensions must be at least two for HAC.');
 
-while length(vars) > 1
-    % Number of this fit
-   iteration = iteration + 1;
-   fitNumber = d + iteration;
-   fprintf('Iteration %d - %s.\n', iteration, mat2str(vars));
-   % Find the best fit available for current vars 
-   [ bestComb, bestAlpha ] = findBestFit( family, U, vars );   
-   % Insert it into cache
-   hac(fitNumber) = { bestAlpha, bestComb };
-   % Add new column based on variables in best fit our data sample   
-   U = [U archimcdf( family, U(:, bestComb), bestAlpha )];
-   % Update vars
-   vars = [setdiff(vars, bestComb), fitNumber];    
+switch method
+case 'full'
+    hac = hacfitFull( family, U );    
+case 'okhrin'
+    d = size(U, 2);
+    vars = 1:d;
+    hac = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
+    iteration = 0;
+
+    while length(vars) > 1
+        % Number of this fit
+       iteration = iteration + 1;
+       fitNumber = d + iteration;
+       fprintf('Iteration %d - %s.\n', iteration, mat2str(vars));
+       % Find the best fit available for current vars 
+       [ bestComb, bestAlpha ] = findBestFit( family, U, vars );   
+       % Insert it into cache
+       hac(fitNumber) = { bestAlpha, bestComb };
+       % Add new column based on variables in best fit our data sample   
+       U = [U archimcdf( family, U(:, bestComb), bestAlpha )];
+       % Update vars
+       vars = [setdiff(vars, bestComb), fitNumber];    
+    end
 end
 
+end
+
+function [ hac ] = hacfitFull( family, U )
+%HACFITFULL Finds the best hierarchical archimedean copula that fits U.
+%   Function is almost unusable for dimensions larger than 5.
+
+minLogLike = Inf;
+minHac = {};
+
+d = size(U, 2);
+trees = generateBinaryTrees(1:d);
+dprint(trees);
+for i=1:length(trees)
+    hac = evaluateTree(family, U, trees{i});
+    ll = loglike(hacpdf(family, U, hac));    
+    fprintf('Evaluated %s: %f\n', dprint(hac), ll);
+    
+    if ll < minLogLike
+       minLogLike = ll;
+       minHac = hac;
+    end
+end
+
+hac = minHac;
 
 end
 
@@ -46,9 +78,11 @@ for i=1:d
     node = tree{i};
     if iscell(node)
         % Node is another tree, which we need to evaluate to HAC
-        nestedHac = evaluteTree( family, U, node );
+        nestedHac = evaluateTree( family, U, node );
         % Compute column vector of output of this HAC
-        V(:,i) = haccdf( familu, U, nestedHac );
+        V(:,i) = haccdf( family, U, nestedHac );
+        % Insert hac back into tree structure
+        tree{i} = nestedHac;
     else
         % Node is number so only column from input dataset
         V(:,i) = U(:,node);
@@ -88,7 +122,6 @@ for j=1:length(partitions)
         end
     end        
 end
-
 
 end
 
