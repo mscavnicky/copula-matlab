@@ -35,9 +35,9 @@ for i=1:d
         arguments{i} = sym(sprintf('u%d', hac{i}));
     end    
 end
-% Retrieve alpha from hac structure
-alpha = hac{end};
+% Retrieve alpha from hac structure and convert it to decimal symbol
+alpha = sym(hac{end}, 'd');
 % Compose copula function from arguments and numerical alpha
-f = archimsym(family, arguments, alpha(1));
+f = archimsym(family, arguments, alpha);
 
 end
