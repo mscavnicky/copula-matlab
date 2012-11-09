@@ -10,6 +10,9 @@ function testPrintInt
 function testPrintFloat
     assertEqual('2.123', dprint(2.123));
     
+function testPrintLongPrecisionFloat
+    assertEqual('2.1235', dprint(2.123456789));
+    
 function testPrintRowVector
     assertEqual('[1 2 3]', dprint([1 2 3]));
     

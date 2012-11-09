@@ -23,7 +23,7 @@ function [ str ] = dprint2( obj, depth )
         end
         str = join(ss, ', ', '#{', '}');
     elseif ismatrix(obj)    
-        str = mat2str(obj);
+        str = mat2str(obj, 5);
     else
         error 'Type not supported.'
     end
