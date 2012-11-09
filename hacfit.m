@@ -5,7 +5,7 @@ function [ hac ] = hacfit( family, U )
 
 % Expose subfunctions for unit-testing
 if nargin == 0
-   hac = {@findBestFit, @generateBinaryTrees, @splitVars}; 
+   hac = {@findBestFit, @generateBinaryTrees, @splitVars, @evaluateTree}; 
    return;
 end
 
@@ -32,35 +32,42 @@ end
 
 end
 
-function [ partitions ] = splitVars( vars )
-%DIVIDEVARS Divides variables into 2 groups. Where first group is larger or
-%equal in size to second group.
-%   Parameter vars is a vector
+function [ hac ] = evaluateTree( family, U, tree )
+%EVALUATETREE Given proposed tree structure. Return HAC structure or empty
+%cell array if HAC cannot be built using specified tree.
 
-partitions = {};
+% Preallocate accumulator of vectors for this level
+n = size(U, 1);
+d = length(tree);
+V = zeros(n, d);
 
-% For each size of the group collect combinations of the size
-d = length(vars);
-for i=1:d-1
-    combinations = combnk(vars, i);    
-    for j=1:length(combinations)
-        c = combinations(j,:);
-        partitions{end+1} = { c, setxor(vars, c) }; %#ok<AGROW>
-    end
+% Evalate each node and store it in an accumulator
+for i=1:d
+    node = tree{i};
+    if iscell(node)
+        % Node is another tree, which we need to evaluate to HAC
+        nestedHac = evaluteTree( family, U, node );
+        % Compute column vector of output of this HAC
+        V(:,i) = haccdf( familu, U, nestedHac );
+    else
+        % Node is number so only column from input dataset
+        V(:,i) = U(:,node);
+    end    
 end
 
-% Take only the second half of partitions to eliminate isomorphic trees
-l = length(partitions) / 2;
-partitions = partitions(l+1:l*2);
+% Fit tree to data and insert alpha into the structure
+alpha = archimfit( family, V );
+tree{end+1} = [alpha];
+hac = tree;
 
 end
+
 
 function [ trees ] = generateBinaryTrees( vars )
 %GENERATETREES Generate all possible binary trees of d-dimensional copulas
 
-d = length(vars);
-
 % Return tree node when dimension is 1
+d = length(vars);
 if d == 1
     trees = {vars(1)};
     return;
@@ -82,6 +89,30 @@ for j=1:length(partitions)
     end        
 end
 
+
+end
+
+
+function [ partitions ] = splitVars( vars )
+%SPLITVARS Divides variables into 2 groups. Where first group is larger or
+%equal in size to second group.
+%   Parameter vars is a vector
+
+partitions = {};
+
+% For each size of the group collect combinations of the size
+d = length(vars);
+for i=1:d-1
+    combinations = combnk(vars, i);    
+    for j=1:length(combinations)
+        c = combinations(j,:);
+        partitions{end+1} = { c, setxor(vars, c) }; %#ok<AGROW>
+    end
+end
+
+% Take only the second half of partitions to eliminate isomorphic trees
+l = length(partitions) / 2;
+partitions = partitions(l+1:l*2);
 
 end
 
