@@ -16,25 +16,7 @@ switch method
 case 'full'
     hac = hacfitFull( family, U );    
 case 'okhrin'
-    d = size(U, 2);
-    vars = 1:d;
-    hac = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
-    iteration = 0;
-
-    while length(vars) > 1
-        % Number of this fit
-       iteration = iteration + 1;
-       fitNumber = d + iteration;
-       fprintf('Iteration %d - %s.\n', iteration, mat2str(vars));
-       % Find the best fit available for current vars 
-       [ bestComb, bestAlpha ] = findBestFit( family, U, vars );   
-       % Insert it into cache
-       hac(fitNumber) = { bestAlpha, bestComb };
-       % Add new column based on variables in best fit our data sample   
-       U = [U archimcdf( family, U(:, bestComb), bestAlpha )];
-       % Update vars
-       vars = [setdiff(vars, bestComb), fitNumber];    
-    end
+    hac = hacfitOkhrin( family, U );
 end
 
 end
@@ -149,27 +131,76 @@ partitions = partitions(1:l);
 end
 
 
-function [ maxComb, maxAlpha ] = findBestFit( family, U, vars )
+function [ hac ] = hacfitOkhrin( family, U )
+%HACFITOKHRIN Find HAC copula using Okhrin's greedy method.
+%   Uses only bivariate copula and does not perform joins as Okhrin
+%   suggests.
+
+% Map for storing nested copulas
+nestedCopulas = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
+
+d = size(U, 2);
+vars = 1:d;
+
+iteration = 0;
+while length(vars) > 1
+    iteration = iteration + 1;    
+    % Number of this fit   
+    copulaNumber = d + iteration;
+    fprintf('Iteration %d - %s.\n', iteration, mat2str(vars));
+    % Find the best fit available for current vars 
+    [ nestedVars, nestedAlpha ] = findBestNestedCopula( family, U, vars );
+    % Compute output of chocsen nested copula and append it to the data sample
+    U = [U archimcdf( family, U(:, nestedVars), nestedAlpha )];
+    % Insert it into cache using HAC format
+    nestedCopulas(copulaNumber) = num2cell([nestedVars, nestedAlpha]);    
+    % Remove variables used in nested copula and introduce new for the copula
+    vars = [setdiff(vars, nestedVars), copulaNumber];
+end
+
+% Recursively build the HAC structure using partial copulas
+% Keep vars as a queue of variables to process
+% The single remaining var has an index to copula
+hac = buildHacStructure( nestedCopulas(vars(1)), nestedCopulas );
+
+end
+
+
+function [ hac ] = buildHacStructure( rootCopula, nestedCopulas )
+    hac = {};
+    % Iterate over all variables in the rootCopula and expand them
+    for i=1:length(rootCopula)-1
+       var = rootCopula{i};
+       if nestedCopulas.isKey(var)
+           hac{end+1} = buildHacStructure( nestedCopulas(var), nestedCopulas );
+       else
+           hac{end+1} = var;
+       end
+    end
+    % Copy alpha into built HAC structure
+    hac{end+1} = rootCopula{end};
+end
+
+
+function [ maxVars, maxAlpha ] = findBestNestedCopula( family, U, vars )
 %FINDBESTFIT Tries to find the combination of variables that gives the
 %highest alpha possible.
     
-maxComb = [];
+maxVars = [];
 maxAlpha = 0;
 
-% Generate combinations of variables of length 2 and more
-for k = 2:length(vars)
-    combinations = combnk(vars, k);
-    % Go over each combination and compute its fit
-    for j = 1:size(combinations, 1)
-        comb = combinations(j,:);
-        fprintf('* Evaluating combination %s ... ', mat2str(comb));
-        alpha = archimfit( family, U(:, comb) );
-        fprintf('%f\n', alpha);
-        if alpha > maxAlpha
-           maxComb = comb;
-           maxAlpha = alpha;
-        end
-    end    
+% Generate combinations of variables of length 2
+combinations = combnk(vars, 2);
+% Go over each combination and compute its fit
+for j = 1:size(combinations, 1)
+    comb = combinations(j,:);
+    fprintf('* Evaluating combination %s ... ', mat2str(comb));
+    alpha = archimfit( family, U(:, comb) );
+    fprintf('%f\n', alpha);
+    if alpha > maxAlpha
+       maxVars = comb;
+       maxAlpha = alpha;
+    end
 end
 
 end
