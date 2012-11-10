@@ -3,4 +3,4 @@ fxReturns = price2ret(fxPrices);
 
 uniformFxReturns = uniform(fxReturns);
 
-[ fits ] = hacfit( 'clayton', uniformFxReturns );
+[ fits ] = hacfit( 'clayton', uniformFxReturns, 'full' );

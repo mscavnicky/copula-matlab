@@ -28,7 +28,10 @@ end
 fprintf('Bound for this minimization: [%f, %f]\n', lowerBound, upperBound);
 
 % Perform the actual minimization
-[alphahat, ll] = fminbnd(fun, lowerBound, upperBound);
+[alphahat, ll, exitflag] = fminbnd(fun, lowerBound, upperBound);
+if exitflag ~= 1
+    erorr('Minimazation did not converge properly.')
+end    
 
 end
 
