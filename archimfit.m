@@ -3,25 +3,36 @@ function [ alphahat, ll ] = archimfit( family, U )
 %   Data must be within interval [0, 1]. Returns value  of fitted parameters 
 %   and likelihood of fit to data.
 
+% Function giving likelihood of the sample for given alpha
 fun = @(alpha) loglike(archimpdf( family, U, alpha ));
 
-[ lowerBound, ~ ] = archimbounds( family, size(U, 2) );
+% Get bound for Archimedean copula family in this dimension
+[ lowerBound, upperBound ] = archimbounds( family, size(U, 2) );
 
-if strcmp(family, 'frank')
-    [~, lowerBound] = bracket1D(fun, 5, -5); % 'lower', search descending from -5
+% If the lower bound is infinite, approximate some closer parameter
+if lowerBound == -Inf
+    [~, lowerBound] = estimateBounds(fun, 5, -5); % 'lower', search descending from -5
     if ~isfinite(lowerBound)
         error('Unable to find a lower bound for the estimate of the copula parameter.');
     end
 end
 
-[lowerBound, upperBound] = bracket1D(fun, lowerBound, 5); % 'upper', search ascending from 5
-if ~isfinite(upperBound)
-    error('Unable to find an upper bound for the estimate of the copula parameter.');
+% If the upper bound is infinite, again approximate closer parameter
+if upperBound == Inf
+    [lowerBound, upperBound] = estimateBounds(fun, lowerBound, 5); % 'upper', search ascending from 5
+    if ~isfinite(upperBound)
+        error('Unable to find an upper bound for the estimate of the copula parameter.');
+    end
 end
 
+fprintf('Bound for this minimization: [%f, %f]\n', lowerBound, upperBound);
+
+% Perform the actual minimization
 [alphahat, ll] = fminbnd(fun, lowerBound, upperBound);
 
-function [nearBnd,farBnd] = bracket1D(nllFun,nearBnd,farStart)
+end
+
+function [ nearBnd, farBnd ] = estimateBounds(nllFun, nearBnd, farStart)
 % Bracket the minimizer of a (one-param) negative log-likelihood function.
 % nearBnd is a point known to be a lower/upper bound for the minimizer,
 % this will be updated to tighten the bound if possible.  farStart is the
@@ -31,6 +42,7 @@ bound = farStart;
 upperLim = 1e12; % arbitrary finite limit for search
 oldnll = nllFun(bound);
 oldbound = bound;
+
 while abs(bound) <= upperLim
     bound = 2*bound; % assumes lower start is < 0, upper is > 0
     nll = nllFun(bound);
@@ -47,10 +59,11 @@ while abs(bound) <= upperLim
     oldnll = nll;
     oldbound = bound;
 end
+
 if abs(bound) > upperLim
     farBnd = NaN;
 end
+
 end
-        
-end
+      
 
