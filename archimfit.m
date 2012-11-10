@@ -1,7 +1,9 @@
 function [ alphahat, ll ] = archimfit( family, U )
 %ARCHIMFIT Fit multivariate archimedean copula to data.
-%   Data must be within interval [0, 1]. Returns value  of fitted parameters 
-%   and likelihood of fit to data.
+%   Data must be within interval [0, 1]. Returns value of fitted parameters
+%   and likelihood of fit to data. Minimization is performed using fminbnd
+%   method which requires methods to be continuouos. This assumption should
+%   be checked in Nelsen.
 
 % Function giving likelihood of the sample for given alpha
 fun = @(alpha) loglike(archimpdf( family, U, alpha ));
@@ -27,6 +29,10 @@ end
 
 fprintf('Bound for this minimization: [%f, %f]\n', lowerBound, upperBound);
 
+%DEBUG PLOT
+%a = linspace(lowerBound, upperBound, 100);
+%plot(a, arrayfun( @(alpha)(loglike(archimpdf( family, U, alpha ))), a));
+
 % Perform the actual minimization
 [alphahat, ll, exitflag] = fminbnd(fun, lowerBound, upperBound);
 if exitflag ~= 1
@@ -36,11 +42,11 @@ end
 end
 
 function [ nearBnd, farBnd ] = estimateBounds(nllFun, nearBnd, farStart)
-% Bracket the minimizer of a (one-param) negative log-likelihood function.
-% nearBnd is a point known to be a lower/upper bound for the minimizer,
-% this will be updated to tighten the bound if possible.  farStart is the
-% first trial point to test to see if it's an upper/lower bound for the
-% minimizer.  farBnd will be the desired upper/lower bound.
+% ESTIMATEBOUNDS the minimizer of a (one-param) negative log-likelihood
+% function. nearBnd is a point known to be a lower/upper bound for the
+% minimizer, this will be updated to tighten the bound if possible.
+% farStart is the first trial point to test to see if it's an upper/lower
+% bound for the minimizer. farBnd will be the desired upper/lower bound.
 bound = farStart;
 upperLim = 1e12; % arbitrary finite limit for search
 oldnll = nllFun(bound);
