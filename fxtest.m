@@ -1,13 +1,26 @@
 %% FX Rates 
 % Dataset consists of 4 columns: CAD, EUR, GBP, JPY
 
-d = 4;
 names = {'CAD', 'EUR', 'GBP', 'JPY'};
 
 %% Read prices data and create returns
 
 fxPrices = csvread('../Data/fxdata-final.txt');
 fxReturns = price2ret(fxPrices);
+
+[n, d] = size(fxReturns);
+
+cad = fxReturns(:,1);
+eur = fxReturns(:,2);
+gbp = fxReturns(:,3);
+jpy = fxReturns(:,4);
+
+%% Basic statistics
+
+mean(fxReturns);
+std(fxReturns);
+kurtosis(fxReturns);
+skewness(fxReturns);
 
 %% Plot prices
 
@@ -28,19 +41,55 @@ for i=1:d
     title(names{i});
 end
 
+%% Fit ARMA/GARCH model CAD
 
-%% Other stuff
+[h, p, stat, critical] = lbqtest(cad-mean(cad), [10 15 20]')
+[ coeff, errors, LLF, innovations, sigmas, summary ] = armagarchfit(cad, 0, 0, 1, 1);
+garchdisp(coeff, errors);
+garchplot(innovations, sigmas, cad);
+plot(innovations./sigmas);
+stdInnovations = (innovations./sigmas);
+autocorr(stdInnovations.^2);
+[h, p, stat, critical] = lbqtest(stdInnovations.^2, [10 15 20]')
 
-mean(fxReturns)
-std(fxReturns)
-kurtosis(fxReturns)
-skewness(fxReturns)
+%% Fit ARMA/GARCH model EUR
 
-[h1, p1] = jbtest(fxReturns(:,1))
-[h2, p2] = jbtest(fxReturns(:,2))
-[h3, p3] = jbtest(fxReturns(:,3))
-[h4, p4] = jbtest(fxReturns(:,4))
+[h, p, stat, critical] = lbqtest(eur-mean(eur), [10 15 20]')
 
-uniformFxReturns = uniform(fxReturns);
 
-[ fits ] = hacfit( 'clayton', uniformFxReturns, 'full' );
+%% Fit ARMA/GARCH model GBP
+
+[h, p, stat, critical] = lbqtest(gbp-mean(gbp), [10 15 20]')
+[ coeff, errors, LLF, innovations, sigmas, summary ] = armagarchfit(gbp, 0, 0, 1, 1);
+garchdisp(coeff, errors);
+garchplot(innovations, sigmas, gbp);
+plot(innovations./sigmas);
+stdInnovations = (innovations./sigmas);
+autocorr(stdInnovations.^2);
+[h, p, stat, critical] = lbqtest(stdInnovations.^2, [10 15 20]')
+
+
+%% Fit ARMA/GARCH model JPY
+
+[h, p, stat, critical] = lbqtest(jpy-mean(jpy), [10 15 20]')
+[ coeff, errors, LLF, innovations, sigmas, summary ] = armagarchfit(jpy, 0, 0, 1, 1);
+garchdisp(coeff, errors);
+garchplot(innovations, sigmas, jpy);
+plot(innovations./sigmas);
+stdInnovations = (innovations./sigmas);
+autocorr(stdInnovations.^2);
+[h, p, stat, critical] = lbqtest(stdInnovations.^2, [10 15 20]')
+
+%% Convert each series to standardized residuals later in fitting
+
+fxInnovations = zeros(n, d);
+for i=1:d
+    [~, ~, ~, innovations, sigmas] = armagarchfit(fxReturns(:,i), 0, 0, 1, 1);
+    fxInnovations(:,i) = innovations ./ sigmas;
+end
+
+%% Perform fit using CML
+
+uniformFxInnovations = uniform(fxInnovations);
+
+[ fits ] = hacfit( 'clayton', uniformFxInnovations, 'full' );
