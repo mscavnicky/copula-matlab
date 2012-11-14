@@ -91,5 +91,6 @@ end
 %% Perform fit using CML
 
 uniformFxInnovations = uniform(fxInnovations);
+copulacmp(uniformFxInnovations);
 
 [ fits ] = hacfit( 'clayton', uniformFxInnovations, 'full' );
