@@ -33,7 +33,7 @@ trees = generateBinaryTrees(1:d);
 for i=1:length(trees)
     hac = evaluateTree(family, U, trees{i});
     ll = loglike(hacpdf(family, U, hac));    
-    fprintf('Evaluated %s: %f\n', dprint(hac), ll);
+    dbg('Evaluated %s: %f\n', dprint(hac), ll);
     
     if ll < minLogLike
        minLogLike = ll;
@@ -147,7 +147,7 @@ while length(vars) > 1
     iteration = iteration + 1;    
     % Number of this fit   
     copulaNumber = d + iteration;
-    fprintf('Iteration %d - %s.\n', iteration, mat2str(vars));
+    dbg('Iteration %d - %s.\n', iteration, mat2str(vars));
     % Find the best fit available for current vars 
     [ nestedVars, nestedAlpha ] = findBestNestedCopula( family, U, vars );
     % Compute output of chocsen nested copula and append it to the data sample
@@ -194,7 +194,7 @@ combinations = combnk(vars, 2);
 % Go over each combination and compute its fit
 for j = 1:size(combinations, 1)
     comb = combinations(j,:);
-    fprintf('* Evaluating combination %s ... ', mat2str(comb));
+    dbg('* Evaluating combination %s ... ', mat2str(comb));
     alpha = archimfit( family, U(:, comb) );
     fprintf('%f\n', alpha);
     if alpha > maxAlpha
