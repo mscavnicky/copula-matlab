@@ -196,7 +196,7 @@ for j = 1:size(combinations, 1)
     comb = combinations(j,:);
     dbg('* Evaluating combination %s ... ', mat2str(comb));
     alpha = archimfit( family, U(:, comb) );
-    fprintf('%f\n', alpha);
+    dbg('%f\n', alpha);
     if alpha > maxAlpha
        maxVars = comb;
        maxAlpha = alpha;
