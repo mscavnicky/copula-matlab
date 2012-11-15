@@ -22,7 +22,11 @@ function [ str ] = dprint2( obj, depth )
             ss{end+1} = sprintf('%s:%s', dprint2(key{1}, depth+1), dprint2(value{1}, depth+1));            
         end
         str = join(ss, ', ', '#{', '}');
-    elseif ismatrix(obj)    
+    elseif isstruct(obj)   
+        str = '[~structure]';
+    elseif isobject(obj)
+        str = '[~obj]';
+    elseif ismatrix(obj)
         str = mat2str(obj, 5);
     else
         error 'Type not supported.'
