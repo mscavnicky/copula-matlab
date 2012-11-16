@@ -93,4 +93,9 @@ end
 uniformFxInnovations = uniform(fxInnovations);
 copulacmp(uniformFxInnovations);
 
-[ fits ] = hacfit( 'clayton', uniformFxInnovations, 'full' );
+%% Perform fit using IFM
+
+dists = {'tlocationscale', 'tlocationscale', 'tlocationscale', 'tlocationscale'};
+pitFxInnovations = pit(fxInnovations, dists);
+copulacmp(pitFxInnovations);
+

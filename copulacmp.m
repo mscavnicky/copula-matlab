@@ -2,15 +2,15 @@ function copulacmp( U )
 %COPULACMP Performs fit on different copula families and gives you
 %comparison
 [ll, aic, bic] = gaussianfit(U);
-fprintf('LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
+fprintf('Gaussian    LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 [ll, aic, bic] = tfit(U);
-fprintf('LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
+fprintf('Student-t   LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 [ll, aic, bic] = claytonfit(U);
-fprintf('LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
+fprintf('Clayton     LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 [ll, aic, bic] = gumbelfit(U);
-fprintf('LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
+fprintf('Gumbel      LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 [ll, aic, bic] = frankfit(U);
-fprintf('LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
+fprintf('Frank       LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 
 end
 
