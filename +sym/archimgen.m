@@ -1,4 +1,4 @@
-function [ f ] = archimgensym( family, x, p )
+function [ f ] = archimgen( family, x, p )
 %ARCHIMGENSYM Symbolic expression of Archimedean copula generator.
 %   Provides symbolic expression of Archimdean copula generator using
 %   symbols x and p.

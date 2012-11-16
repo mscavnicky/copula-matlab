@@ -1,5 +1,5 @@
 function f = archimsym( family, symbols, alpha )
-%ARCHIMSYM Produces symbolic expression of given Archimedean copula.
+%ARCHIMSYM Produces symbolic expression of given Archimedean copula CDF.
 %   Given dimension produces symbolic expression n-dimensional Archimedean
 %   copula using provided symbols for variables and alpha for parameter symbol.
 
@@ -7,11 +7,11 @@ function f = archimsym( family, symbols, alpha )
 f = sym(0);
 for i=1:length(symbols)
     s = symbols{i};
-    f = f + archiminvsym(family, s, alpha);
+    f = f + sym.archiminv(family, s, alpha);
 end
 
 % Appply generator over the sum
-f = archimgensym(family, f, alpha);
+f = sym.archimgen(family, f, alpha);
 
 end
 

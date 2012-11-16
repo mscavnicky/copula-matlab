@@ -36,8 +36,10 @@ for i=1:d
     end    
 end
 % Retrieve alpha from hac structure and convert it to decimal symbol
+% Conversion to decimal symbol is necessary otherwise expression will end
+% up with humongous fractions.
 alpha = sym(hac{end}, 'd');
 % Compose copula function from arguments and numerical alpha
-f = archimsym(family, arguments, alpha);
+f = sym.archimcdf(family, arguments, alpha);
 
 end

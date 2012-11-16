@@ -19,7 +19,7 @@ else
     % Declare symbols
     syms x p
     % Acquire symbolic version of generator
-    f = archimgensym(family, x, p);
+    f = sym.archimgen(family, x, p);
     % Analytically compute n-th derivation
     fn = diff(f, n, x);
     % Convert derivation to Matlab function

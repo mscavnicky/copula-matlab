@@ -11,7 +11,6 @@ fprintf('Clayton     LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 fprintf('Gumbel      LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 [ll, aic, bic] = frankfit(U);
 fprintf('Frank       LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
-
 end
 
 function [ll, aic, bic] = gaussianfit(U)
