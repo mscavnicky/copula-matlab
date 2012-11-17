@@ -4,11 +4,11 @@ function [ Y ] = hacpdf( family, U, hac )
 %   HAC.
 
 % Express analytical version of hierarchical copula function
-f = sym.hacpdf(family, hac);
+f = sym.haccdf(family, hac);
 % Get all arguments that we will use to differentiate copula function
 % Even though not documented symvar sorts retrieved variables
 args = symvar(f);
-
+% Differentiate the CDF in all variables to acquire PDF
 for j=1:length(args)
     f = diff(f, args(j));
 end
