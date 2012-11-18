@@ -1,27 +1,46 @@
-function [ Y ] = copulacnd( family, U, varargin )
+function [ Y ] = copulacnd( family, U, m, varargin )
 % COPULACND Conditional cumulative distribution function for copulas.
 %   Computes conditional CDF of d-dimensional copula, where d-th element is
-%   the only unconditioned variable. Dimension of determined by input
-%   matrix.
+%   the only unconditioned variable.
 
-m = size(U, 2);
-V = U(:,1:m-1);
+dprint(varargin);
 
 switch family
 case 'gaussian'
-    N = copulacdf('gaussian', U, varargin(:));
-    D = prod(normpdf(norminv(V)), 2);
-    Y = N ./ D;   
+    %N = copulacdf('gaussian', U, varargin{1});
+    %D = prod(normpdf(norminv(V)), 2);
+    %Y = N ./ D;   
+    
+    %rho = varargin{1}
+    %rho11 = rho(1:m-1,1:m-1);
+    %rho12 = rho(1,2:m);
+    %rho21 = rho(2:m,1);
+    %rho22 = rho(m,m);
+    
+    %mu = rho21 * inv(rho11) * V
+    %sigma = rho22 - rho21 * inv(rho11) * rho12
+    %Y = mvncdf(norminv(U), mu, sigma)
+    
+    rho = varargin{1};
+    sigma = rho(1:m-1, 1:m-1);
+    c = rho(m, 1:m-1);
+    B = c * 1/sigma;
+    X = norminv(U(:,1:m-1));
+    y = norminv(U(:,m));
+    omega = 1 - B * sigma * B';
+    mu = X * B';
+    Y = normcdf((y-mu) / sqrt(omega));   
+    
 case 't'
-    N = copulacdf('t', U, varargin(:));
-    D = prod(tpdf(tinv(V)), 2);
+    N = copulacdf('t', U(:,1:m), varargin(:));
+    D = prod(tpdf(tinv(U(:,1:m-1))), 2);
     Y = N ./ D;    
 case {'frank', 'gumbel', 'clayton'}
     % Conditional copula for flat archimedean copulas as described in [1]
     if ~iscell(varargin{1})
         alpha = varargin{1};
-        N = archimndiff(family, sum(archiminv(family, U, alpha)), m-1);
-        D = archimpdf(family, V, varargin);
+        N = archimndiff(family, sum(archiminv(family, U(:,1:m), alpha)), m-1);
+        D = archimpdf(family, U(:,1:m-1), varargin);
         Y = N ./ D;
     else
         hac = varargin{1};
@@ -40,7 +59,7 @@ case {'frank', 'gumbel', 'clayton'}
         % Create a matlab function to evaluate
         fn = matlabFunction(f, 'vars', {args(1:m)});    
         % Get the result in nominator
-        N = fn(U);
+        N = fn(U(:,1:m));
         
         
         g = sym.haccdf(family, hac);
@@ -51,8 +70,8 @@ case {'frank', 'gumbel', 'clayton'}
         for i=1:m-1
            g = diff(g, vars(i)); 
         end
-        gn = matlabFunction(g, 'vars', {args(1:m-1)})
-        D = gn(V);
+        gn = matlabFunction(g, 'vars', {args(1:m-1)});
+        D = gn(U(:,1:m-1));
         
         Y = N ./ D;       
     end
