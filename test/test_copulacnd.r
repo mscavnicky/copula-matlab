@@ -14,9 +14,18 @@ testStudentCond <- function(dim) {
   return (y)
 }
 
+testArchimCond <- function(family, alpha, dim) {
+  data <- as.matrix(read.csv("data/data3d.csv", header=FALSE, sep=","))  
+  cop <- archmCopula(family, alpha, dim = 3)  
+  y = cCopula(data[,1:dim], cop)
+  return (y)
+}
+
 write.table(testGaussianCond(2), "data/test_copulacnd_gaussian2d.csv", sep=',', row.names=FALSE, col.names=FALSE);
 write.table(testGaussianCond(3), "data/test_copulacnd_gaussian3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
 write.table(testStudentCond(2), "data/test_copulacnd_t2d.csv", sep=',', row.names=FALSE, col.names=FALSE);
 write.table(testStudentCond(3), "data/test_copulacnd_t3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
+write.table(testArchimCond("clayton", 0.9912, 3), "data/test_copulacnd_clayton3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
+write.table(testArchimCond("gumbel", 1.4529, 3), "data/test_copulacnd_gumbel3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
 
 

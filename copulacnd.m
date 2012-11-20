@@ -35,8 +35,9 @@ case {'frank', 'gumbel', 'clayton'}
     % Conditional copula for flat archimedean copulas as described in [1]
     if ~iscell(varargin{1})
         alpha = varargin{1};
-        N = archimndiff(family, sum(archiminv(family, U(:,1:m), alpha)), m-1);
-        D = archimpdf(family, U(:,1:m-1), varargin);
+        X = sum(archiminv(family, U(:,1:m), alpha), 2);
+        N = archimndiff(family, m-1, X, alpha);
+        D = archimpdf(family, U(:,1:m-1), alpha);
         Y = N ./ D;
     else
         hac = varargin{1};
