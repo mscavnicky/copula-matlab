@@ -18,3 +18,10 @@ function testArchimpdf
     assertVectorsAlmostEqual(archimpdf('clayton', X, 1.0), copulapdf('clayton', X, 1.0));
     assertVectorsAlmostEqual(archimpdf('frank', X, 1.5), copulapdf('frank', X, 1.5));
     assertVectorsAlmostEqual(archimpdf('gumbel', X, 1.5), copulapdf('gumbel', X, 1.5));
+    
+function testArchimPdfClaytonAgainstRImplementation
+% Test 3-dimensional Clayton density against values produced by R
+    U = csvread('data/data3d.csv');
+    X = archimpdf('clayton', U, 0.9912);
+    Y = csvread('data/test_archimpdf_clayton3d.csv');
+    assertVectorsAlmostEqual(X, Y);
