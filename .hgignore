@@ -1,2 +1,5 @@
 syntax: glob
 *.asv
+.Rhistory
+.Rdata
+*~

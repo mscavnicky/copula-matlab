@@ -5,19 +5,35 @@ function test_suite = test_copulacnd
 initTestSuite;
 
 function testGaussianIn2D
-% Tests 2 dimensional conditional distribution against true implementation
-    U = [0.1 0.2 0.4; 0.3 0.8 0.1; 0.9 0.4 0.5; 0.5 0.5 0.2];
-    rho = copulafit('gaussian', U);
+% Tests 2 dimensional conditional distirbution function        
+    U = csvread('data/data3d.csv');
+    rho = [1, 0.18, 0.23; 0.18, 1, 0.74; 0.23 0.74, 1];
     X = copulacnd('gaussian', U, 2, rho);
-    r = rho(1,2);
-    Y = normcdf( (norminv(U(:,2)) - r * norminv(U(:,1))) / sqrt(1-r*r) );
+    Y = csvread('data/test_copulacnd_gaussian2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testGaussianIn3D
-% Tests 3D conditional distribution and verifies it produces valid values
-    U = [0.1 0.2 0.4; 0.3 0.8 0.1; 0.9 0.4 0.5; 0.5 0.5 0.2];
-    rho = copulafit('gaussian', U);
+% Tests 3D conditional distribution against values produces by R function
+    U = csvread('data/data3d.csv');
+    rho = [1, 0.18, 0.23; 0.18, 1, 0.74; 0.23 0.74, 1];
     X = copulacnd('gaussian', U, 3, rho);
-    assertEqual(sum(X<0), 0);
-    assertEqual(sum(X>1), 0);
+    Y = csvread('data/test_copulacnd_gaussian3d.csv');
+    assertVectorsAlmostEqual(X, Y);
     
+function testStudentIn2D
+% Tests 2 dimensional conditional distribution against R implementation
+    U = csvread('data/data3d.csv');
+    rho = [1, 0.37, 0.52; 0.37, 1, 0.77; 0.52, 0.77 1];
+    df = 5;
+    X = copulacnd('t', U, 2, rho, df);
+    Y = csvread('data/test_copulacnd_t2d.csv');
+    assertVectorsAlmostEqual(X, Y, 'absolute', 0.05);
+    
+function testStudentIn3D
+% Tests 3-dimensional conditional distribution against R implementation
+    U = csvread('data/data3d.csv');
+    rho = [1, 0.37, 0.52; 0.37, 1, 0.77; 0.52, 0.77 1];
+    df = 5;
+    X = copulacnd('t', U, 3, rho, df);
+    Y = csvread('data/test_copulacnd_t3d.csv');
+    assertVectorsAlmostEqual(X, Y, 'absolute', 0.07);

@@ -7,20 +7,6 @@ dprint(varargin);
 
 switch family
 case 'gaussian'
-    %N = copulacdf('gaussian', U, varargin{1});
-    %D = prod(normpdf(norminv(V)), 2);
-    %Y = N ./ D;   
-    
-    %rho = varargin{1}
-    %rho11 = rho(1:m-1,1:m-1);
-    %rho12 = rho(1,2:m);
-    %rho21 = rho(2:m,1);
-    %rho22 = rho(m,m);
-    
-    %mu = rho21 * inv(rho11) * V
-    %sigma = rho22 - rho21 * inv(rho11) * rho12
-    %Y = mvncdf(norminv(U), mu, sigma)
-    
     rho = varargin{1};
     sigma = rho(1:m-1, 1:m-1);
     c = rho(m, 1:m-1);
@@ -32,9 +18,19 @@ case 'gaussian'
     Y = normcdf((y-mu) / sqrt(omega));   
     
 case 't'
-    N = copulacdf('t', U(:,1:m), varargin(:));
-    D = prod(tpdf(tinv(U(:,1:m-1))), 2);
-    Y = N ./ D;    
+    rho = varargin{1};
+    df = varargin{2};
+    sigma = rho(1:m-1, 1:m-1);
+    c = rho(m, 1:m-1);
+    B = c * 1/sigma;
+    X = tinv(U(:,1:m-1), df);
+    y = tinv(U(:,m), df);
+    omega = 1 - B * sigma * B';
+    mu = X * B';
+    SQ = X * (c' * c) * X';
+    Z = diag(df + SQ) / (df + m-1);
+    Y = tcdf((y-mu) ./ sqrt(omega * Z), df);    
+    
 case {'frank', 'gumbel', 'clayton'}
     % Conditional copula for flat archimedean copulas as described in [1]
     if ~iscell(varargin{1})
