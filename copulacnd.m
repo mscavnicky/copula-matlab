@@ -40,6 +40,7 @@ case {'frank', 'gumbel', 'clayton'}
         Y = N ./ D;
     else
         hac = varargin{1};
+        n = size(U, 2);
         % Get the CDF expression
         f = sym.haccdf(family, hac);
         % Get all the symbols used
@@ -53,10 +54,9 @@ case {'frank', 'gumbel', 'clayton'}
            f = diff(f, vars(i)); 
         end
         % Create a matlab function to evaluate
-        fn = matlabFunction(f, 'vars', {args(1:m)});    
+        fn = matlabFunction(f, 'vars', {vars(1:m)});    
         % Get the result in nominator
-        N = fn(U(:,1:m));
-        
+        N = fn(U(:,1:m));        
         
         g = sym.haccdf(family, hac);
         vars = symvar(g);
@@ -66,7 +66,7 @@ case {'frank', 'gumbel', 'clayton'}
         for i=1:m-1
            g = diff(g, vars(i)); 
         end
-        gn = matlabFunction(g, 'vars', {args(1:m-1)});
+        gn = matlabFunction(g, 'vars', {vars(1:m-1)});
         D = gn(U(:,1:m-1));
         
         Y = N ./ D;       
