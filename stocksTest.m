@@ -1,6 +1,6 @@
 % Load Google and Intel Stock Prices
-goog = csvread('Data/goog-20070101-20120101');
-intc = csvread('Data/intc-20070101-20120101');
+goog = csvread('../Data/goog-20070101-20120101');
+intc = csvread('../Data/intc-20070101-20120101');
 
 % Convert prices to log returns
 googReturns = price2ret(goog);

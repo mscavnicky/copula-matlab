@@ -34,6 +34,12 @@ function testStudentIn3D
     Y = csvread('data/test_copulacnd_t3d.csv');
     assertVectorsAlmostEqual(X, Y, 'absolute', 0.07);
     
+function testClaytonIn2D
+    U = csvread('data/data2d.csv');
+    X = copulacnd('clayton', U, 2, 1.4557);
+    Y = csvread('data/test_copulacnd_clayton2d.csv');
+    assertVectorsAlmostEqual(X, Y);
+    
 function testClaytonIn3D
     U = csvread('data/data3d.csv');
     X = copulacnd('clayton', U, 3, 0.9912);
@@ -44,6 +50,5 @@ function testGumbelIn3D
     U = csvread('data/data3d.csv');
     X = copulacnd('gumbel', U, 3, 1.4529);
     Y = csvread('data/test_copulacnd_gumbel3d.csv');
-    assertVectorsAlmostEqual(X, Y);
-       
+    assertVectorsAlmostEqual(X, Y);     
     

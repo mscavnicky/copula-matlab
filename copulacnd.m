@@ -3,8 +3,6 @@ function [ Y ] = copulacnd( family, U, m, varargin )
 %   Computes conditional CDF of d-dimensional copula, where d-th element is
 %   the only unconditioned variable.
 
-dprint(varargin);
-
 switch family
 case 'gaussian'
     rho = varargin{1};
@@ -35,9 +33,10 @@ case {'frank', 'gumbel', 'clayton'}
     % Conditional copula for flat archimedean copulas as described in [1]
     if ~iscell(varargin{1})
         alpha = varargin{1};
-        X = sum(archiminv(family, U(:,1:m), alpha), 2);
-        N = archimndiff(family, m-1, X, alpha);
-        D = archimpdf(family, U(:,1:m-1), alpha);
+        X1 = sum(archiminv(family, U(:,1:m), alpha), 2);
+        N = archimndiff(family, m-1, X1, alpha);
+        X2 = sum(archiminv(family, U(:,1:m-1), alpha), 2);
+        D = archimndiff(family, m-1, X2, alpha);
         Y = N ./ D;
     else
         hac = varargin{1};

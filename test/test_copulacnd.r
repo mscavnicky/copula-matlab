@@ -1,5 +1,9 @@
 library(copula)
 
+to.csv <- function(data, filename) {
+  write.table(data, filename, sep=',', row.names=FALSE, col.names=FALSE);
+}
+
 testGaussianCond <- function(dim) {
   data <- as.matrix(read.csv("data/data3d.csv", header=FALSE, sep=","))  
   cop <- normalCopula(c(0.18, 0.23, 0.74), dim = 3, dispstr="un")  
@@ -14,18 +18,34 @@ testStudentCond <- function(dim) {
   return (y)
 }
 
-testArchimCond <- function(family, alpha, dim) {
+testArchimCond3D <- function(family, alpha, dim) {
   data <- as.matrix(read.csv("data/data3d.csv", header=FALSE, sep=","))  
   cop <- archmCopula(family, alpha, dim = 3)  
-  y = cCopula(data[,1:dim], cop)
+  y = cCopula(data, cop)
   return (y)
 }
 
-write.table(testGaussianCond(2), "data/test_copulacnd_gaussian2d.csv", sep=',', row.names=FALSE, col.names=FALSE);
-write.table(testGaussianCond(3), "data/test_copulacnd_gaussian3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
-write.table(testStudentCond(2), "data/test_copulacnd_t2d.csv", sep=',', row.names=FALSE, col.names=FALSE);
-write.table(testStudentCond(3), "data/test_copulacnd_t3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
-write.table(testArchimCond("clayton", 0.9912, 3), "data/test_copulacnd_clayton3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
-write.table(testArchimCond("gumbel", 1.4529, 3), "data/test_copulacnd_gumbel3d.csv", sep=',', row.names=FALSE, col.names=FALSE);
+testArchimCond2D <- function(family, alpha, dim) {
+  data <- as.matrix(read.csv("data/data2d.csv", header=FALSE, sep=","))  
+  cop <- archmCopula(family, alpha, dim = 2)  
+  y = cCopula(data, cop)
+  return (y)
+}
 
+to.csv(testGaussianCond(2), "data/test_copulacnd_gaussian2d.csv")
+to.csv(testGaussianCond(3), "data/test_copulacnd_gaussian3d.csv")
+to.csv(testStudentCond(2), "data/test_copulacnd_t2d.csv")
+to.csv(testStudentCond(3), "data/test_copulacnd_t3d.csv")
+to.csv(testArchimCond3D("clayton", 0.9912, 3), "data/test_copulacnd_clayton3d.csv")
+to.csv(testArchimCond3D("gumbel", 1.4529, 3), "data/test_copulacnd_gumbel3d.csv")
+to.csv(testArchimCond2D("clayton", 1.4557, 3), "data/test_copulacnd_clayton2d.csv")
+
+testArchimPdf <- function(family, alpha, dim) {
+  data <- as.matrix(read.csv("data/data3d.csv", header=FALSE, sep=","))  
+  cop <- archmCopula(family, alpha, dim = 3)  
+  y = dCopula(data, cop)
+  return (y)
+}
+
+to.csv(testArchimPdf('clayton', 0.9912, 3), "data/test_archimpdf_clayton3d.csv")
 
