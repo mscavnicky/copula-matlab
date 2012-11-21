@@ -1,5 +1,6 @@
 function [ f ] = haccdf( family, hac )
-%HACSYM Symbolic representation of HAC of given family and structure.
+%HACCDF Symbolic representation of HAC of given family and structure.
+%   Note that alphas are already part of an expression.
 
 % Dimensions of top-level copula in hac structure
 d = length(hac) - 1;

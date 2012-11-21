@@ -2,6 +2,10 @@ function [ Y ] = copulacnd( family, U, m, varargin )
 % COPULACND Conditional cumulative distribution function for copulas.
 %   Computes conditional CDF of d-dimensional copula, where d-th element is
 %   the only unconditioned variable.
+%
+%   References:
+%       [1] Savu, Trede, GOF tests for parametric families of Archimedean
+%       copulas, 2004
 
 switch family
 case 'gaussian'
