@@ -10,7 +10,7 @@ arguments = {};
 for i=1:d
     % Perform recursion if element of structure is another copula
     if iscell(hac{i})
-        arguments{i} = hacsym(family, hac{i});
+        arguments{i} = sym.haccdf(family, hac{i});
     else
         % Introdcue new symbol
         arguments{i} = sym(sprintf('u%d', hac{i}));
