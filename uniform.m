@@ -1,11 +1,13 @@
 function [ U ] = uniform( X, dim )
 %UNIFORM Converts matrix to uniform variates in a specified dimension.
-%   Based on empirical CDF function described in [1].
-%   We use n+1 for division to keep empirical CDF lower than 1.
-%   Function ISMEMBC2 returns last position of element in a sorted array.
-%   In our case it also gives us number of elements less and equal to input.
+%   Based on empirical CDF function described in [1]. We use n+1 for
+%   division to keep empirical CDF lower than 1. 
 %
-%   Reference:
+%   Function ISMEMBC2 returns last position of element in a sorted array.
+%   In our case it also gives us number of elements less and equal to
+%   input.
+%
+%   References:
 %       [1] Berg, D. Bakken, H. (2006) Copula Goodness-of-fit Tests: A
 %       Comparative Study
 
