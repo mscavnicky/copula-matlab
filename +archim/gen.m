@@ -1,4 +1,4 @@
-function [ Y ] = archimgen( family, X, p )
+function [ Y ] = gen( family, X, p )
 %ARCHIMGEN Archimedean copula function generator.
 %   Supports Frank, Gumbel and Clayton copulas.
 %   Please not that no parameter checking is done in this function.

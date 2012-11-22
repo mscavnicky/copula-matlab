@@ -1,26 +1,26 @@
-function [ f ] = haccdf( family, hac )
+function [ f ] = cdf( family, tree )
 %HACCDF Symbolic representation of HAC of given family and structure.
 %   Note that alphas are already part of an expression.
 
 % Dimensions of top-level copula in hac structure
-d = length(hac) - 1;
+d = length(tree) - 1;
 % Cell array where arguments for this level copula are collected
 arguments = {};
 
 for i=1:d
     % Perform recursion if element of structure is another copula
-    if iscell(hac{i})
-        arguments{i} = sym.haccdf(family, hac{i});
+    if iscell(tree{i})
+        arguments{i} = hac.sym.cdf(family, tree{i});
     else
         % Introdcue new symbol
-        arguments{i} = sym(sprintf('u%d', hac{i}));
+        arguments{i} = sym(sprintf('u%d', tree{i}));
     end    
 end
 % Retrieve alpha from hac structure and convert it to decimal symbol
 % Conversion to decimal symbol is necessary otherwise expression will end
 % up with humongous fractions.
-alpha = sym(hac{end}, 'd');
+alpha = sym(tree{end}, 'd');
 % Compose copula function from arguments and numerical alpha
-f = sym.archimcdf(family, arguments, alpha);
+f = archim.sym.cdf(family, arguments, alpha);
 
 end

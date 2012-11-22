@@ -1,10 +1,10 @@
-function [ Y ] = hacpdf( family, U, hac )
+function [ Y ] = pdf( family, U, tree )
 %HACPDF Probability distribution function of family of HAC.
 %   Derives and evalutes symbolic expression of density function for given
 %   HAC.
 
 % Express analytical version of hierarchical copula function
-f = sym.haccdf(family, hac);
+f = hac.sym.cdf(family, tree);
 % Get all arguments that we will use to differentiate copula function
 % Even though not documented symvar sorts retrieved variables
 args = symvar(f);

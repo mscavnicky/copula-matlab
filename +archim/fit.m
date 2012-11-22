@@ -1,4 +1,4 @@
-function [ alphahat, ll ] = archimfit( family, U )
+function [ alphahat, ll ] = fit( family, U )
 %ARCHIMFIT Fit multivariate archimedean copula to data.
 %   Data must be within interval [0, 1]. Returns value of fitted parameters
 %   and likelihood of fit to data. Minimization is performed using fminbnd
@@ -6,10 +6,10 @@ function [ alphahat, ll ] = archimfit( family, U )
 %   be checked in Nelsen.
 
 % Function giving likelihood of the sample for given alpha
-fun = @(alpha) loglike(archimpdf( family, U, alpha ));
+fun = @(alpha) loglike(archim.pdf( family, U, alpha ));
 
 % Get bound for Archimedean copula family in this dimension
-[ lowerBound, upperBound ] = archimbounds( family, size(U, 2) );
+[ lowerBound, upperBound ] = archim.bounds( family, size(U, 2) );
 
 % If the lower bound is infinite, approximate some closer parameter
 if lowerBound == -Inf

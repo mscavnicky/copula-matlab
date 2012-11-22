@@ -1,4 +1,4 @@
-function copulacmp( U )
+function cmp( U )
 %COPULACMP Performs fit on different copula families and gives you
 %comparison
 [ll, aic, bic] = gaussianfit(U);
@@ -31,23 +31,21 @@ end
 
 function [ll, aic, bic] = claytonfit(U)
 [n, d] = size(U);
-hac = hacfit('clayton', U, 'okhrin');
-ll = loglike(hacpdf('clayton', U, hac));
+tree = hac.fit('clayton', U, 'okhrin');
+ll = loglike(hac.pdf('clayton', U, tree));
 [aic, bic] = aicbic(ll, d-1, n);
 end
 
 function [ll, aic, bic] = gumbelfit(U)
 [n, d] = size(U);
-hac = hacfit('gumbel', U, 'okhrin');
-ll = loglike(hacpdf('gumbel', U, hac));
+tree = hac.fit('gumbel', U, 'okhrin');
+ll = loglike(hac.pdf('gumbel', U, tree));
 [aic, bic] = aicbic(ll, d-1, n);
 end
-
 
 function [ll, aic, bic] = frankfit(U)
 [n, d] = size(U);
-hac = hacfit('frank', U, 'okhrin');
-ll = loglike(hacpdf('frank', U, hac));
+tree = hac.fit('frank', U, 'okhrin');
+ll = loglike(hac.pdf('frank', U, tree));
 [aic, bic] = aicbic(ll, d-1, n);
 end
-

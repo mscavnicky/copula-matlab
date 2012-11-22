@@ -1,4 +1,4 @@
-function [ Y ] = archiminv( family, X, p )
+function [ Y ] = inv( family, X, p )
 %ARCHIMINV Inverse of archimedean copula generator.
 %   Supports Frank, Gumbel and Clayton copulas.
 %   Please note that no parameter checking is done on this level.

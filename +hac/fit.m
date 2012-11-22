@@ -1,4 +1,4 @@
-function [ hac ] = hacfit( family, U, method )
+function [ tree ] = fit( family, U, method )
 %HACFIT Fits sample to Hierachical Archimedean Copula. Return tree.
 %   Uses method by Okhrin to select HAC structure. HAC structure and alphas
 %   are all encoded in resulting parameters.
@@ -14,38 +14,38 @@ assert(size(U, 2) > 1, 'Number of dimensions must be at least two for HAC.');
 
 switch method
 case 'full'
-    hac = hacfitFull( family, U );    
+    tree = hacfitFull( family, U );    
 case 'okhrin'
-    hac = hacfitOkhrin( family, U );
+    tree = hacfitOkhrin( family, U );
 end
 
 end
 
-function [ hac ] = hacfitFull( family, U )
+function [ tree ] = hacfitFull( family, U )
 %HACFITFULL Finds the best hierarchical archimedean copula that fits U.
 %   Function is almost unusable for dimensions larger than 5.
 
 minLogLike = Inf;
-minHac = {};
+minTree = {};
 
 d = size(U, 2);
 trees = generateBinaryTrees(1:d);
 for i=1:length(trees)
-    hac = evaluateTree(family, U, trees{i});
-    ll = loglike(hacpdf(family, U, hac));    
-    dbg('Evaluated %s: %f\n', dprint(hac), ll);
+    tree = evaluateTree(family, U, trees{i});
+    ll = loglike(hacpdf(family, U, tree));    
+    dbg('Evaluated %s: %f\n', dprint(tree), ll);
     
     if ll < minLogLike
        minLogLike = ll;
-       minHac = hac;
+       minTree = tree;
     end
 end
 
-hac = minHac;
+tree = minTree;
 
 end
 
-function [ hac ] = evaluateTree( family, U, tree )
+function [ tree ] = evaluateTree( family, U, tree )
 %EVALUATETREE Given proposed tree structure. Return HAC structure or empty
 %cell array if HAC cannot be built using specified tree.
 
@@ -61,7 +61,7 @@ for i=1:d
         % Node is another tree, which we need to evaluate to HAC
         nestedHac = evaluateTree( family, U, node );
         % Compute column vector of output of this HAC
-        V(:,i) = haccdf( family, U, nestedHac );
+        V(:,i) = hac.cdf( family, U, nestedHac );
         % Insert hac back into tree structure
         tree{i} = nestedHac;
     else
@@ -73,7 +73,7 @@ end
 % Fit tree to data and insert alpha into the structure
 alpha = archimfit( family, V );
 tree{end+1} = [alpha];
-hac = tree;
+%hac = tree;
 
 end
 
@@ -131,7 +131,7 @@ partitions = partitions(1:l);
 end
 
 
-function [ hac ] = hacfitOkhrin( family, U )
+function [ tree ] = hacfitOkhrin( family, U )
 %HACFITOKHRIN Find HAC copula using Okhrin's greedy method.
 %   Uses only bivariate copula and does not perform joins as Okhrin
 %   suggests.
@@ -151,7 +151,7 @@ while length(vars) > 1
     % Find the best fit available for current vars 
     [ nestedVars, nestedAlpha ] = findBestNestedCopula( family, U, vars );
     % Compute output of chocsen nested copula and append it to the data sample
-    U = [U archimcdf( family, U(:, nestedVars), nestedAlpha )];
+    U = [U archim.cdf( family, U(:, nestedVars), nestedAlpha )];
     % Insert it into cache using HAC format
     nestedCopulas(copulaNumber) = num2cell([nestedVars, nestedAlpha]);    
     % Remove variables used in nested copula and introduce new for the copula
@@ -161,24 +161,24 @@ end
 % Recursively build the HAC structure using partial copulas
 % Keep vars as a queue of variables to process
 % The single remaining var has an index to copula
-hac = buildHacStructure( nestedCopulas(vars(1)), nestedCopulas );
+tree = buildHacStructure( nestedCopulas(vars(1)), nestedCopulas );
 
 end
 
 
-function [ hac ] = buildHacStructure( rootCopula, nestedCopulas )
-    hac = {};
+function [ tree ] = buildHacStructure( rootCopula, nestedCopulas )
+    tree = {};
     % Iterate over all variables in the rootCopula and expand them
     for i=1:length(rootCopula)-1
        var = rootCopula{i};
        if nestedCopulas.isKey(var)
-           hac{end+1} = buildHacStructure( nestedCopulas(var), nestedCopulas );
+           tree{end+1} = buildHacStructure( nestedCopulas(var), nestedCopulas );
        else
-           hac{end+1} = var;
+           tree{end+1} = var;
        end
     end
     % Copy alpha into built HAC structure
-    hac{end+1} = rootCopula{end};
+    tree{end+1} = rootCopula{end};
 end
 
 
@@ -195,7 +195,7 @@ combinations = combnk(vars, 2);
 for j = 1:size(combinations, 1)
     comb = combinations(j,:);
     dbg('* Evaluating combination %s ... ', mat2str(comb));
-    alpha = archimfit( family, U(:, comb) );
+    alpha = archim.fit( family, U(:, comb) );
     dbg('%f\n', alpha);
     if alpha > maxAlpha
        maxVars = comb;

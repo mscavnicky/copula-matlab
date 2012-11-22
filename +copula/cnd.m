@@ -1,4 +1,4 @@
-function [ Y ] = copulacnd( family, U, m, varargin )
+function [ Y ] = cnd( family, U, m, varargin )
 % COPULACND Conditional cumulative distribution function for copulas.
 %   Computes conditional CDF of d-dimensional copula, where d-th element is
 %   the only unconditioned variable.
@@ -37,16 +37,16 @@ case {'frank', 'gumbel', 'clayton'}
     % Conditional copula for flat archimedean copulas as described in [1]
     if ~iscell(varargin{1})
         alpha = varargin{1};
-        X1 = sum(archiminv(family, U(:,1:m), alpha), 2);
-        N = archimndiff(family, m-1, X1, alpha);
-        X2 = sum(archiminv(family, U(:,1:m-1), alpha), 2);
-        D = archimndiff(family, m-1, X2, alpha);
+        X1 = sum(archim.inv(family, U(:,1:m), alpha), 2);
+        N = archim.ndiff(family, m-1, X1, alpha);
+        X2 = sum(archim.inv(family, U(:,1:m-1), alpha), 2);
+        D = archim.ndiff(family, m-1, X2, alpha);
         Y = N ./ D;
     else
-        hac = varargin{1};
+        tree = varargin{1};
         n = size(U, 2);
         % Get the CDF expression
-        f = sym.haccdf(family, hac);
+        f = hac.sym.cdf(family, tree);
         % Get all the symbols used
         vars = symvar(f);
         % Replace symbols m+1:n with 1
@@ -62,7 +62,7 @@ case {'frank', 'gumbel', 'clayton'}
         % Get the result in nominator
         N = fn(U(:,1:m));        
         
-        g = sym.haccdf(family, hac);
+        g = hac.sym.cdf(family, tree);
         vars = symvar(g);
         for i=m:n
             g = subs(g, vars(i), 1);

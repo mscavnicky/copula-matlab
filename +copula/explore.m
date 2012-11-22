@@ -1,4 +1,4 @@
-function copulaexplore
+function explore
 
 [U1, U2, C] = sampleCopula('Gaussian', 0.0);
 

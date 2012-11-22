@@ -1,4 +1,4 @@
-function [ l, u ] = archimbounds( family, d )
+function [ l, u ] = bounds( family, d )
 %ARCHIMBOUNDS Bounds of parameters of Archimedean copula.
 %   Returns maximum and lower bound of the interval for parameter for given
 %   Archimedean copula family in given dimenstion. Please note that function 

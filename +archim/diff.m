@@ -1,4 +1,4 @@
-function [ Y ] = archimdiff( family, X, p )
+function [ Y ] = diff( family, X, p )
 %ARCHIMDIFF Derivative of archimedean copula generator.
 %   Supports Frank, Gumbel and Clayton copulas.
 %   For analytical derivation see:

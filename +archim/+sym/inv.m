@@ -1,4 +1,4 @@
-function [ f ] = archiminv( family, x, p )
+function [ f ] = inv( family, x, p )
 %ARCHIMINVSYM Symbolic represenatation of inverse of archimedean copula 
 %generator.
 
