@@ -1,8 +1,6 @@
 function [ copulaparams ] = fit( family, U )
 %COPULA.FIT Fit data to copula.
 
-copulaparam = struct();
-
 switch family
     case {'gaussian'}
         rho = copulafit(family, U);
@@ -12,7 +10,7 @@ switch family
         copulaparams.rho = rho;
         copulaparams.nu = nu;
     case {'clayton', 'gumbel', 'frank'}
-        alpha = archimfit(family, U);
+        alpha = archim.fit(family, U);
         copulaparams.alpha = alpha;
     case {'claytonhac', 'gumbelhac', 'frankhac'}
         tree = hacfit(family(1:end-3), U);
