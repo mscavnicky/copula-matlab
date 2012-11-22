@@ -1,10 +1,10 @@
 function cmp( U )
 %COPULACMP Performs fit on different copula families and gives you
 %comparison
-[ll, aic, bic] = gaussianfit(U);
-fprintf('Gaussian    LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
-[ll, aic, bic] = tfit(U);
-fprintf('Student-t   LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
+[ll, aic, bic, p] = gaussianfit(U);
+fprintf('Gaussian    LL: %f AIC: %f BIC: %f p:%f\n', ll, aic, bic, p);
+[ll, aic, bic, p] = tfit(U);
+fprintf('Student-t   LL: %f AIC: %f BIC: %f\n', ll, aic, bic, p);
 [ll, aic, bic] = claytonfit(U);
 fprintf('Clayton     LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 [ll, aic, bic] = gumbelfit(U);
@@ -13,20 +13,22 @@ fprintf('Gumbel      LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 fprintf('Frank       LL: %f AIC: %f BIC: %f\n', ll, aic, bic);
 end
 
-function [ll, aic, bic] = gaussianfit(U)
+function [ll, aic, bic, p] = gaussianfit(U)
 %GAUSSIANFIT Fit data to gaussian copula and return statistics
 [n, d] = size(U);
-rhohat = copulafit('gaussian', U);
-ll = loglike(copulapdf('gaussian', U, rhohat));
+copulaparams = copula.fit('gaussian', U);
+ll = loglike(copulapdf('gaussian', U, copulaparams.rho));
 [aic, bic] = aicbic(ll, d*(d-1)/2, n);
-end
+[h, p] = copula.gof('gaussian', U, 'snc', copulaparams);
+end 
 
-function [ll, aic, bic] = tfit(U)
+function [ll, aic, bic, p] = tfit(U)
 %TFIT Fit data to t copula and return statistics
 [n, d] = size(U);
-[rhohat, nuhat] = copulafit('t', U);
-ll = loglike(copulapdf('t', U, rhohat, nuhat));
+copulaparams = copula.fit('t', U);
+ll = loglike(copulapdf('t', U, copulaparams.rho, copulaparams.nu));
 [aic, bic] = aicbic(ll, 1 + d*(d-1)/2, n);
+[h, p] = copula.gof('t', U, 'snc', copulaparams);
 end
 
 function [ll, aic, bic] = claytonfit(U)
