@@ -1,6 +1,9 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
+% Test was also compared with R implementation. R implementation uses
+% different treating of ties.
+
 function test_suite = test_uniform
 initTestSuite;
 
