@@ -2,7 +2,7 @@ function [ h, p ] =  gof( family, U, method, copulaparams )
 %COPULAGOF Performs goodness-of-fit test given a fitted copula and data.
 %
 
-N = 10;
+N = 30;
 [n, d] = size(U);
 
 switch method
@@ -16,7 +16,7 @@ case 'snc'
        % Simulate fitted copula
        V = uniform(copula.rnd(family, n, d, copulaparams));
        % Fit simulated data
-       copulaparams = copula.fit(family, U);
+       copulaparams = copula.fit(family, V);
        % Get another bootstrapped statistics
        T(i) = snc( family, V, copulaparams ); 
     end
@@ -33,7 +33,7 @@ case 'snb'
        % Simulate fitted copula
        V = uniform(copula.rnd(family, n, d, copulaparams));
        % Fit simulated data
-       copulaparams = copula.fit(family, U);
+       copulaparams = copula.fit(family, V);
        % Get another bootstrapped statistics
        T(i) = snb( family, V, copulaparams ); 
     end
