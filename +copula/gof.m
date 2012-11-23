@@ -1,8 +1,7 @@
-function [ h, p ] =  gof( family, U, method, copulaparams )
+function [ h, p ] =  gof( family, U, N, method, copulaparams )
 %COPULAGOF Performs goodness-of-fit test given a fitted copula and data.
 %
 
-N = 30;
 [n, d] = size(U);
 
 switch method
