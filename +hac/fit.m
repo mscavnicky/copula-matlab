@@ -5,7 +5,7 @@ function [ tree ] = fit( family, U, method )
 
 % Expose subfunctions for unit-testing
 if nargin == 0
-   hac = {@findBestFit, @generateBinaryTrees, @splitVars, @evaluateTree}; 
+   tree = {@findBestFit, @generateBinaryTrees, @splitVars, @evaluateTree}; 
    return;
 end
 

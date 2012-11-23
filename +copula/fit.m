@@ -1,4 +1,4 @@
-function [ copulaparams ] = fit( family, U )
+function [ copulaparams ] = fit( family, U, varargin )
 %COPULA.FIT Fit data to copula.
 
 d = size(U, 2);
@@ -24,7 +24,8 @@ switch family
         
         copulaparams.numParams = 1;
     case {'claytonhac', 'gumbelhac', 'frankhac'}
-        tree = hacfit(family(1:end-3), U);
+        method = varargin{1};
+        tree = hac.fit(family(1:end-3), U, method{1});
         copulaparams.tree = tree;
         
         copulaparams.numParams = d - 1;

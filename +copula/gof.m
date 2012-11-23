@@ -11,7 +11,7 @@ case 'snc'
     % Boostraped statistics
     T = zeros(N, 1);
     for i=1:N
-       fprintf('GOF Boostrap %d...\n', i);
+       %fprintf('GOF Boostrap %d...\n', i);
        % Simulate fitted copula
        V = uniform(copula.rnd(family, n, d, copulaparams));
        % Fit simulated data
