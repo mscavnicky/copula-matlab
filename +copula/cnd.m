@@ -42,6 +42,7 @@ case {'frank', 'gumbel', 'clayton'}
     Y = N ./ D;
     
 case {'claytonhac', 'gumbelhac', 'frankhac'}
+    family = family(1:end-3);
     tree = copulaparams.tree;
     n = size(U, 2);
     % Get the CDF expression
