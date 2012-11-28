@@ -6,7 +6,7 @@ function dbg( varargin )
 global showDebug;
 
 if showDebug
-   fprintf(varargin(:));
+   fprintf(varargin{:});
 end
 
 end
