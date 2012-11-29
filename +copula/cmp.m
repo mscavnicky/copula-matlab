@@ -2,11 +2,11 @@ function cmp( U )
 %COPULACMP Performs fit on different copula families and gives you
 %comparison
 
-fit('gaussian', U, 50);
-%fit('t', U, 50);
-%fit('clayton', U, 50);
+fit('gaussian', U, 1000);
+%fit('t', U, 10);
+%fit('clayton', U, 500);
 %fit('gumbel', U, 50);
-%fit('frank', U, 50);
+%fit('frank', U, 100);
 %fit('claytonhac', U, 0, 'okhrin');
 %fit('gumbelhac', U, 0, 'okhrin');
 %fit('frankhac', U, 0, 'okhrin');

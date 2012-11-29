@@ -35,3 +35,4 @@ to.csv(dCopula(data3, clayton.cop.3), "data/test_archimpdf_clayton3d.csv")
 # Rosenblatt's transform
 to.csv(rtrafo(data2, normal.cop.2), "data/test_copula_pit_gaussian2d.csv")
 to.csv(rtrafo(data3, normal.cop.3), "data/test_copula_pit_gaussian3d.csv")
+
