@@ -36,3 +36,16 @@ to.csv(dCopula(data3, clayton.cop.3), "data/test_archimpdf_clayton3d.csv")
 to.csv(rtrafo(data2, normal.cop.2), "data/test_copula_pit_gaussian2d.csv")
 to.csv(rtrafo(data3, normal.cop.3), "data/test_copula_pit_gaussian3d.csv")
 
+# Archimedean Copula's sampling
+to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=2)), "data/test_copula_rnd_clayton2d.csv");
+
+to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=5)), "data/test_copula_rnd_clayton.csv");
+to.csv(rCopula(1000, archmCopula("gumbel", 1.5, dim=5)), "data/test_copula_rnd_gumbel.csv");
+to.csv(rCopula(1000, archmCopula("frank", 1.5, dim=5)), "data/test_copula_rnd_frank.csv");
+to.csv(rCopula(1000, normal.cop.3), "data/test_copula_rnd_gaussian.csv");
+
+x = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
+y = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
+
+ks.test(x[,1], y[,1])
+          
