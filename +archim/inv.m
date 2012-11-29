@@ -10,7 +10,7 @@ switch family
     case 'frank'
         Y = -log( ( exp(-p * X) - 1 ) / ( exp(-p) - 1 ) );
     case 'clayton'
-        Y = ( 1 / p ) * ( X .^ -p - 1 );
+        Y = ( X .^ -p ) - 1;
     case 'gumbel'
         Y = ( -log(X) ) .^ p;
     otherwise

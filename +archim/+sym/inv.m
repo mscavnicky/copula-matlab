@@ -6,7 +6,7 @@ switch family
     case 'frank'
         f = -log( ( exp(-p * x) - 1 ) / ( exp(-p) - 1 ) );
     case 'clayton'
-        f = ( 1 / p ) * ( x .^ -p - 1 );
+        f = ( x .^ -p - 1 );
     case 'gumbel'
         f = ( -log(x) ) .^ p;
     otherwise
