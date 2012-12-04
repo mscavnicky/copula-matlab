@@ -15,10 +15,11 @@ r = n;
 prev = S(n);
 
 for i=n:-1:1
-    if S(i) == prev
+    x = S(i);
+    if x == prev
         R(I(i)) = r;
     else
-        prev = S(i);
+        prev = x;
         r = i;
         R(I(i)) = r;
     end    
