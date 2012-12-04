@@ -35,6 +35,8 @@ to.csv(dCopula(data3, clayton.cop.3), "data/test_archimpdf_clayton3d.csv")
 # Rosenblatt's transform
 to.csv(rtrafo(data2, normal.cop.2), "data/test_copula_pit_gaussian2d.csv")
 to.csv(rtrafo(data3, normal.cop.3), "data/test_copula_pit_gaussian3d.csv")
+to.csv(rtrafo(data3, clayton.cop.3), "data/test_copula_pit_clayton3d.csv")
+to.csv(rtrafo(data3, gumbel.cop.3), "data/test_copula_pit_gumbel3d.csv")
 
 # Archimedean Copula's sampling
 to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=2)), "data/test_copula_rnd_clayton2d.csv");
