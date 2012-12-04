@@ -7,13 +7,22 @@
 function test_suite = test_uniform
 initTestSuite;
 
-function testUniformColumnVector
-    x = [1; 2; 3; 3; 4; 5; 5];
-    expected = [0.125; 0.25; 0.5; 0.5; 0.625; 0.875; 0.875];
-    assertVectorsAlmostEqual(expected, uniform(x));
+function testUniform1
+    x = [1 2 3 3 4 5 5];
+    expected = [0.125 0.25 0.5 0.5 0.625 0.875 0.875];
+    assertVectorsAlmostEqual(expected', uniform(x'));
+    
+function testUniform2
+    x = [1 1 1];
+    expected = [0.75 0.75 0.75];
+    assertVectorsAlmostEqual(expected', uniform(x'));
+
+function testUniform3
+    x = [1 2 3 3 4 5 1];
+    expected = [0.25 0.375 0.625 0.625 0.75 0.875 0.25];
+    assertVectorsAlmostEqual(expected', uniform(x'));
     
 function testUniformMatrix
     X = [1 2 3; 4 5 6];
     expected = [0.3333 0.3333 0.3333; 0.6666 0.6666 0.6666];
     assertVectorsAlmostEqual(expected, uniform(X), 'absolute', 0.001);
-
