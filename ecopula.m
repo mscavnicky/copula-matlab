@@ -11,14 +11,6 @@ function [ C ] = ecopula( U )
 
 [n d] = size(U);
 
-
-% C = zeros(n, 1);
-% S = sortrows(U)
-% for i=1:n
-%     [~, loc] = ismember(U(i,:), S, 'rows');
-%     C(i) = loc / (n + 1);
-% end
-
 C = zeros(n, 1);
 for i=1:n
    S = ones(n, 1);
@@ -27,10 +19,6 @@ for i=1:n
       S = S .* (U(:, j) <= U(i, j));
    end
    C(i) = sum(S) / n;
-   
-%    S = all((U <= repmat(U(i, :), n, 1)), 2);
-%    C(i) = sum(S) / (n + 1);
-   
 end
 
 end
