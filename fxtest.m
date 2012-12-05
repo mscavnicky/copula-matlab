@@ -5,8 +5,9 @@ names = {'CAD', 'EUR', 'GBP', 'JPY'};
 
 %% Read prices data and create returns
 
-fxPrices = csvread('../Data/fxdata-final.txt');
+fxPrices = csvread('../Data/fxdata-small.txt');
 fxReturns = price2ret(fxPrices);
+uniformFxReturns = uniform(fxReturns);
 
 [n, d] = size(fxReturns);
 

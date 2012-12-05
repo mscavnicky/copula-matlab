@@ -2,6 +2,10 @@ function [ T ] = pit( family, U, copulaparams )
 %COPULAPIT Performs probability integral transformation under the null
 %hypothesis that the data are generated using given copula.
 %
+%   Computation of conditional probability is currently performing
+%   duplicate work for each dimension. This is a minor performance
+%   bottleneck that can be fixed in the future.
+%
 %   References:
 %       [1] Breymann, Dependence Structures for Multivariate High-Frequency
 %       Data in Finance, 2003
