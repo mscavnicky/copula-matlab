@@ -40,23 +40,23 @@ function [ T ] = snc( family, U, copulaparams )
 end
 
 function [ T ] = snb( family, U, copulaparams )
-    % Size is needed for test statistics computation
-    [n, d] = size(U);
     % Perform Rosenblatt's transformation
     E = copula.pit(family, U, copulaparams);
     % Compute test statistics
-    t1 = n / 3^d;
-    t2 = sum(prod(1 - E.^2, 2), 1) / 2^(d-1);
+    T = copula.snbstat( E );
+    
+    %t1 = n / 3^d;
+    %t2 = sum(prod(1 - E.^2, 2), 1) / 2^(d-1);
 
-    t3 = 0;
-    for i=1:n
-       for j=1:n
-          t3 = t3 + prod(1 - max(E(i,:), E(j,:)), 2);
-       end
-    end
-    t3 = t3 / n;
+    %t3 = 0;
+    %for i=1:n
+    %   for j=1:n
+    %      t3 = t3 + prod(1 - max(E(i,:), E(j,:)), 2);
+    %   end
+    %end
+    %t3 = t3 / n;
 
-    T = t1 - t2 + t3;
+    %T = t1 - t2 + t3;
 
 end
 
