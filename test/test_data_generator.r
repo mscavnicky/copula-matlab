@@ -46,8 +46,28 @@ to.csv(rCopula(1000, archmCopula("gumbel", 1.5, dim=5)), "data/test_copula_rnd_g
 to.csv(rCopula(1000, archmCopula("frank", 1.5, dim=5)), "data/test_copula_rnd_frank.csv");
 to.csv(rCopula(1000, normal.cop.3), "data/test_copula_rnd_gaussian.csv");
 
+# Kolomogorov-Smirnov experiment
 x = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
 y = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
 
 ks.test(x[,1], y[,1])
+            
+# FX Test comparation
+            
+price2ret <- function(prices) {
+  returns = log(1 + diff(prices) / head(prices, -1))
+  return (returns)
+}
+
+fx.prices <- as.matrix(read.csv("../../Data/fxdata-small.txt", header=FALSE, sep=","))
+fx.returns <- price2ret(fx.prices)
+uniform.fx.returns <- pobs(fx.returns, ties.method="max")
+
+normal.cop.fx = normalCopula(c(0.12422, 0.03048, 0.060702, 0.60127, 0.094, 0.09007), dim=4, dispstr="un")
+t.cop.fx = tCopula(c(0.11887, 0.024424, 0.048434, 0.61431, 0.093133, 0.093032), df=16.107, dim=4, dispstr="un")
+clayton.cop.fx = archmCopula("clayton", param=0.20706, dim=4)  
+gumbel.cop.fx = archmCopula("gumbel", param=1.11, dim=4)  
+frank.cop.fx = archmCopula("frank", param=0.92933, dim=4)  
+            
+gofCopula(clayton.cop.fx, uniform.fx.returns, method="SnC", estim.method="ml", N=10)
           
