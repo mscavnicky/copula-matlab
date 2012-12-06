@@ -23,7 +23,14 @@ function [ str ] = dprint2( obj, depth )
         end
         str = join(ss, ', ', '#{', '}');
     elseif isstruct(obj)   
-        str = '[~structure]';
+        ss = {};
+        names = fieldnames(obj);
+        for i=1:length(names)
+           key = names{i};
+           value = getfield(obj, names{i});
+           ss{end+1} = sprintf('%s:%s', dprint2(key, depth+1), dprint2(value, depth+1));           
+        end
+        str = join(ss, ', ', 'S{', '}');
     elseif isobject(obj)
         str = '[~obj]';
     elseif ismatrix(obj)
