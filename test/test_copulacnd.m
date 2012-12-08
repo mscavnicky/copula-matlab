@@ -24,7 +24,7 @@ function testStudentIn2D
     copulaparams.nu = 5;    
     X = copula.cnd('t', U, 2, copulaparams);
     Y = csvread('data/test_copulacnd_t2d.csv');
-    assertVectorsAlmostEqual(X, Y, 'absolute', 0.05);
+    assertVectorsAlmostEqual(X, Y);
     
 function testStudentIn3D
     U = csvread('data/data3d.csv');
@@ -32,7 +32,7 @@ function testStudentIn3D
     copulaparams.nu = 5; 
     X = copula.cnd('t', U, 3, copulaparams);
     Y = csvread('data/test_copulacnd_t3d.csv');
-    assertVectorsAlmostEqual(X, Y, 'absolute', 0.07);
+    assertVectorsAlmostEqual(X, Y);
     
 function testClaytonIn2D
     U = csvread('data/data2d.csv');
