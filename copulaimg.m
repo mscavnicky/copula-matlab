@@ -11,8 +11,8 @@ sub2 = subplot(1,2,2);
 [U1, U2, Y] = ugrid(fun, 100);
 contour(U1, U2, Y);
 
-set(sub1,'Units','normalized', 'position', [0.05 0.05 0.4 0.8]);
-set(sub2,'Units','normalized', 'position', [0.58 0.12 0.35 0.7]);
+set(sub1,'Units','normalized', 'position', [0.05 0.12 0.4 0.8]);
+set(sub2,'Units','normalized', 'position', [0.58 0.17 0.35 0.7]);
 
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperSize', [13 6.5]);
