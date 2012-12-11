@@ -6,7 +6,7 @@ names = {'CAD', 'EUR', 'GBP', 'JPY'};
 %% Read prices data and create returns
 
 fxPrices = csvread('../Data/fxdata-small.txt');
-fxReturns = logreturns(fxPrices);
+fxReturns = price2ret(fxPrices);
 uniformFxReturns = uniform(fxReturns);
 
 [n, d] = size(fxReturns);
@@ -98,5 +98,14 @@ copulacmp(uniformFxInnovations);
 
 dists = {'tlocationscale', 'tlocationscale', 'tlocationscale', 'tlocationscale'};
 pitFxInnovations = pit(fxInnovations, dists);
-copulacmp(pitFxInnovations);
+copula.eval('gaussian', pitFxInnovations, 1000);
+copula.eval('t', pitFxInnovations, 10);
+copula.eval('clayton', pitFxInnovations, 1000);
+copula.eval('gumbel', pitFxInnovations, 1000);
+copula.eval('frank', pitFxInnovations, 1000);
+copula.eval('claytonhac', pitFxInnovations, 0, 'okhrin');
+copula.eval('gumbelhac', pitFxInnovations, 0, 'okhrin');
+copula.eval('frankhac', pitFxInnovations, 0, 'okhrin');
+
+
 
