@@ -7,12 +7,12 @@ function [ Y ] = inv( family, X, p )
 %       Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 116
 
 switch family
-    case 'frank'
-        Y = -log( ( exp(-p * X) - 1 ) / ( exp(-p) - 1 ) );
     case 'clayton'
         Y = ( X .^ -p ) - 1;
     case 'gumbel'
         Y = ( -log(X) ) .^ p;
+    case 'frank'
+        Y = -log( ( exp(-p * X) - 1 ) / ( exp(-p) - 1 ) );
     otherwise
         error 'Copula family not recognized.'
 end
