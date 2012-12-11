@@ -2,9 +2,11 @@ function [ U ] = rnd( family, alpha, n, d )
 %RND Random vectors from a copula.
 %   
 %   References:
-%       McNeil
+%       Hofert - (2011) Nested Archimedean Copulas meet R
+%       Kemp - (1981) Efficient generation of logarithimic pseudo-random
+%       variables
 
-% Special method
+% General method
 %X = unifrnd(0, 1, n, d);
 %copulaparams.alpha = alpha;
 %U = copula.pit( family, X, copulaparams );
@@ -23,9 +25,8 @@ case 'gumbel'
     X = unifrnd(0, 1, n, d);
     U = archim.gen(family, -log(X) ./ repmat(V, 1, d), alpha);
 case 'frank'
-    % Log-series sampling taken from polish guys thesis
-    V = floor(1+log(rand(n,1)) ./ log(1-exp(-alpha*rand(n,1))));
-    X = unifrnd(0, 1, n,d);   
+    V = logrnd(1 - exp(-alpha), n);
+    X = unifrnd(0, 1, n, d);   
     U = archim.gen(family, -log(X) ./ repmat(V, 1, d), alpha);
 otherwise
     error('Copula family %s not recognized.', family);    
