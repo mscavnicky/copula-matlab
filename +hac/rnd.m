@@ -1,8 +1,23 @@
 function [ U ] = rnd( family, tree, n )
 %RND Sample hierarchical archimedean copula
+
+% Dimensions of top-level copula in hac structure
+d = length(tree) - 1;
+% Find alpha on this level
 alpha = tree{end};
+% Compute laplace transformation
 V0 = archim.lsinvrnd(family, alpha, n);
-U = rndinner(family, tree, alpha, V0, n);
+% Matrix for the random variates on this level
+U = [];
+for i=1:d
+    if iscell(tree{i})
+        U = [U, rndinner(family, tree{i}, alpha, V0, n)];
+    else
+        X = rand(n, 1);
+        U = [U, archim.gen(family, -log(X) ./ V0, alpha)]; 
+    end
+end
+
 end
 
 function [ U ] = rndinner( family, tree, alpha0, V0, n )
@@ -18,7 +33,8 @@ for i=1:d
     if iscell(tree{i})
         U = [U, rndinner(family, tree{i}, alpha1, V01, n)];
     else
-        U = [U, archim.gen(family, -log(X) ./ repmat(V01, 1, d), alpha1)]; 
+        X = rand(n, 1);
+        U = [U, archim.gen(family, -log(X) ./ V01, alpha1)]; 
     end
 end
 
@@ -46,9 +62,9 @@ case 'clayton'
     end
     
 case 'gumbel'
-    gamma = (cos(alpha * pi / 2) .* V0)^(1/alpha);
+    gamma = (cos(alpha * pi / 2) .* V0).^(1/alpha);
     delta = V0 .* (alpha == 1);
-    V01 = arrayfun(@(i) stablernd(alpha, 1, gamma(i), delta(i)), 1:n);
+    V01 = arrayfun(@(i) stblrnd(alpha, 1, gamma(i), delta(i)), (1:n)');
 case 'frank'
     % Log-Series distribution parameter
     c1 = 1 - exp(-theta1);
@@ -84,8 +100,8 @@ function [ M ] = findOptimumM( V0 )
 
 floorV = floor(V0);
 ceilV = ceil(V0);
-v1 = floorV * exp(V0 / floorV);
-v2 = ceilV * exp(V0 / ceilV);
+v1 = floorV .* exp(V0 ./ floorV);
+v2 = ceilV .* exp(V0 ./ ceilV);
 
 M = zeros(length(V0));
 M(V0 <= 1) = 1;
