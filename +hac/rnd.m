@@ -52,12 +52,16 @@ case 'clayton'
     
     V01 = zeros(n, 1);    
     for i=1:n
-       while true
-          v = stblrnd(alpha, 1, gamma(i), 0);
-          if (rand() <= exp(-v))
-              V01(i) = v;
-              break;
-          end
+       for j=1:M(i)
+           v = 0;
+           while true
+              x = stblrnd(alpha, 1, gamma(i), 0);
+              if (rand() <= exp(-x))
+                  v = v + x;
+                  break;
+              end
+           end
+           V01(i) = v;
        end
     end
     
@@ -72,16 +76,20 @@ case 'frank'
     V01 = zeros(n, 1);
     
     for i=1:n    
-        if abs(theta0) < 1
-            while true
-                u = rand();
-                x = logrnd(c1);
-                if u <= 1/((x-alpha)*beta(x, 1-alpha))
-                    V01(i) = x;
-                    break;
-                end
-            end
-        else
+%         if abs(theta0) < 1
+%             for j=1:V0(i)
+%                 v = 0;
+%                 while true
+%                     u = rand();
+%                     x = logrnd(c1, 1);
+%                     if u <= 1/((x-alpha)*beta(x, 1-alpha))
+%                         v = v + x;
+%                         break;
+%                     end
+%                 end
+%                 V01(i) = v;
+%             end
+%         else
             while true
                 u = rand();
                 % FIXME if V0 is too large we can apply approximation via
@@ -92,7 +100,7 @@ case 'frank'
                    break;
                 end                
             end
-        end
+        %end
     end
 end
 

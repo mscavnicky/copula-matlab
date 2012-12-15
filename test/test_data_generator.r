@@ -76,9 +76,23 @@ gofCopula(clayton.cop.fx, uniform.fx.returns, method="SnC", estim.method="ml", N
             
 hac.gumbel <- onacopula("Gumbel", C(1.25, 1, C(2, c(2,3))))
 to.csv(rnacopula(1000, hac.gumbel), "data/test_hac_rnd_gumbel3d.csv")
-hac.frank <- onacopula("Frank", C(1.25, 1, C(2, c(2,3))))
-to.csv(rnacopula(1000, hac.frank), "data/test_hac_rnd_frank3d.csv")
+            
+hac.frank1 <- onacopula("Frank", C(1.25, 1, C(2, c(2,3))))
+to.csv(rnacopula(1000, hac.frank1), "data/test_hac_rnd_frank3d_1.csv")
+            
+hac.frank2 <- onacopula("Frank", C(0.5, 1, C(0.75, c(2,3))))
+to.csv(rnacopula(1000, hac.frank2), "data/test_hac_rnd_frank3d_2.csv")
+            
 hac.clayton <- onacopula("Clayton", C(1.25, 1, C(2, c(2,3))))
-to.csv(rnacopula(1000, hac.clayton), "data/test_hac_rnd_frank3d.csv")            
+to.csv(rnacopula(1000, hac.clayton), "data/test_hac_rnd_clayton3d.csv")    
+            
+hac.gumbel7 <- onacopula("Gumbel", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
+to.csv(rnacopula(1000, hac.gumbel7), "data/test_hac_rnd_gumbel7d.csv")
+
+hac.frank7 <- onacopula("Frank", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
+to.csv(rnacopula(1000, hac.frank7), "data/test_hac_rnd_frank7d.csv")
+
+hac.clayton7 <- onacopula("Clayton", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
+to.csv(rnacopula(1000, hac.clayton7), "data/test_hac_rnd_clayton7d.csv")   
             
           
