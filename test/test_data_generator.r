@@ -59,6 +59,7 @@ price2ret <- function(prices) {
   return (returns)
 }
 
+# GOF tests
 fx.prices <- as.matrix(read.csv("../../Data/fxdata-small.txt", header=FALSE, sep=","))
 fx.returns <- price2ret(fx.prices)
 uniform.fx.returns <- pobs(fx.returns, ties.method="max")
@@ -70,4 +71,14 @@ gumbel.cop.fx = archmCopula("gumbel", param=1.11, dim=4)
 frank.cop.fx = archmCopula("frank", param=0.92933, dim=4)  
             
 gofCopula(clayton.cop.fx, uniform.fx.returns, method="SnC", estim.method="ml", N=10)
+            
+# HAC Test
+            
+hac.gumbel <- onacopula("Gumbel", C(1.25, 1, C(2, c(2,3))))
+to.csv(rnacopula(1000, hac.gumbel), "data/test_hac_rnd_gumbel3d.csv")
+hac.frank <- onacopula("Frank", C(1.25, 1, C(2, c(2,3))))
+to.csv(rnacopula(1000, hac.frank), "data/test_hac_rnd_frank3d.csv")
+hac.clayton <- onacopula("Clayton", C(1.25, 1, C(2, c(2,3))))
+to.csv(rnacopula(1000, hac.clayton), "data/test_hac_rnd_frank3d.csv")            
+            
           

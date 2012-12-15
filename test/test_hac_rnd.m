@@ -25,6 +25,27 @@ function testFlatHacFrankRnd
     H = mvkstest2(U, X);
     assertEqual(sum(H(:,1)), 0); 
     
+function testHacGumbelRnd
+    U = hac.rnd('gumbel', {1, {2, 3, 2.0}  1.25}, 1000);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_hac_rnd_gumbel3d.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H(:,1)), 0);
+    
+function testHacFrankRnd
+    U = hac.rnd('frank', {1, {2, 3, 2.0}  1.25}, 1000);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_hac_rnd_frank3d.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H(:,1)), 0);
+  
+function testHacClaytonRnd
+    U = hac.rnd('clayton', {1, {2, 3, 2.0}  1.25}, 1000);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_hac_rnd_clayton3d.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H(:,1)), 0);
+    
 function assertInRange( X, x1, x2 )
     assertEqual(sum(sum(X < x1)), 0);
     assertEqual(sum(sum(X > x2)), 0);
