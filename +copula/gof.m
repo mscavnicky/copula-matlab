@@ -1,18 +1,18 @@
-function [ h, p ] =  gof( family, U, N, method, copulaparams )
+function [ h, p ] =  gof( family, U, N, method, copulaparams, varargin )
 %COPULAGOF Performs goodness-of-fit test given a fitted copula and data.
 
 switch method
 case 'snc'
-    [h, p] = bootstrap(@snc, N, family, U, copulaparams);
+    [h, p] = bootstrap(@snc, N, family, U, copulaparams, varargin{:});
 case 'snb'
-    [h, p] = bootstrap(@snb, N, family, U, copulaparams);
+    [h, p] = bootstrap(@snb, N, family, U, copulaparams, varargin{:});
 otherwise
     error('Method %s not recognized', method);
 end
 
 end
 
-function [h, p] = bootstrap( gof, N, family, U, copulaparams )
+function [h, p] = bootstrap( gof, N, family, U, copulaparams, varargin )
     [n, d] = size(U);
     % Compute statistics value for original dataset
     t = gof( family, U, copulaparams );
@@ -22,7 +22,7 @@ function [h, p] = bootstrap( gof, N, family, U, copulaparams )
        % Simulate fitted copula
        V = uniform(copula.rnd(family, n, d, copulaparams));
        % Fit simulated data
-       copulaparams = copula.fit(family, V);
+       copulaparams = copula.fit(family, V, varargin{:});
        % Get another bootstrapped statistics
        T(i) = gof( family, V, copulaparams ); 
        dbg('%d: %f\n', i, T(i, 1));

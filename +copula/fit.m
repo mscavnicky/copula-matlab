@@ -25,7 +25,7 @@ switch family
         copulaparams.numParams = 1;
     case {'claytonhac', 'gumbelhac', 'frankhac'}
         method = varargin{1};
-        tree = hac.fit(family(1:end-3), U, method{1});
+        tree = hac.fit(family(1:end-3), U, method);
         copulaparams.tree = tree;
         
         copulaparams.numParams = d - 1;

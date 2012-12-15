@@ -91,8 +91,14 @@ end
 
 %% Perform fit using CML
 
-uniformFxInnovations = uniform(fxInnovations);
-copulacmp(uniformFxInnovations);
+copula.eval('gaussian', uniformFxReturns, 1000);
+copula.eval('t', uniformFxReturns, 10);
+copula.eval('clayton', uniformFxReturns, 1000);
+copula.eval('gumbel', uniformFxReturns, 1000);
+copula.eval('frank', uniformFxReturns, 1000);
+copula.eval('claytonhac', uniformFxReturns, 10, 'okhrin');
+copula.eval('gumbelhac', uniformFxReturns, 10, 'okhrin');
+copula.eval('frankhac', uniformFxReturns, 10, 'okhrin');
 
 %% Perform fit using IFM
 
