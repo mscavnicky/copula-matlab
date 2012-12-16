@@ -27,7 +27,7 @@ if upperBound == Inf
     end
 end
 
-dbg('Bounds for this minimization: [%f, %f]\n', lowerBound, upperBound);
+dbg('Bounds: [%f, %f] ', lowerBound, upperBound);
 
 %DEBUG PLOT
 %a = linspace(lowerBound, upperBound, 100);

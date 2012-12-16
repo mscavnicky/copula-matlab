@@ -197,7 +197,7 @@ for j = 1:size(combinations, 1)
     dbg('* Evaluating combination %s ... ', mat2str(comb));
     alpha = archim.fit( family, U(:, comb) );
     dbg('%f\n', alpha);
-    if alpha > maxAlpha
+    if abs(alpha) > abs(maxAlpha)
        maxVars = comb;
        maxAlpha = alpha;
     end
