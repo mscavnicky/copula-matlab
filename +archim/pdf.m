@@ -14,6 +14,7 @@ d = size(U, 2);
 [ lowerBound, upperBound ] = archim.bounds(family, d);
 % Verify parameter against bounds
 assert(alpha > lowerBound && alpha < upperBound, 'Copula parameter out of range.');
+assert(alpha ~= 0, 'Copula parameter cannot be zero.');
 
 % Evaluate PDF
 N = archim.ndiff( family, d, sum(archim.inv( family, U, alpha ), 2), alpha );
