@@ -3,4 +3,5 @@ syntax: glob
 .Rhistory
 .Rdata
 .RData
+.RDataTmp
 *~
