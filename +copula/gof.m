@@ -20,19 +20,31 @@ function [h, p] = bootstrap( gof, N, family, U, copulaparams, varargin )
     T = zeros(N, 1);
     
     times = zeros(N, 1);
-    fprintf('                ');
-    for i=1:N
-       timeLeft = mean(times(max(1, i-21):i)) * (N+1-i);
-       fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b%4d/%4d (%5.1f)', i, N, timeLeft);
-       tic();
-       % Simulate fitted copula
-       V = uniform(copula.rnd(family, n, d, copulaparams));
-       % Fit simulated data       
-       copulaparams = copula.fit(family, V, varargin{:});       
-       % Get another bootstrapped statistics
-       T(i) = gof( family, V, copulaparams );
-       % Keep duration of this iteratioin
-       times(i) = toc();
+    fprintf('   0/%4d ( Inf)', N);
+    
+    i = 1;
+    while i <= N
+        try            
+            tic();
+            % Simulate fitted copula
+            V = uniform(copula.rnd(family, n, d, copulaparams));
+            % Fit simulated data       
+            copulaparams = copula.fit(family, V, varargin{:});       
+            % Get another bootstrapped statistics
+            T(i) = gof( family, V, copulaparams );
+            % Keep duration of this iteratioin
+            times(i) = toc();
+            % Print estimated time
+            timeLeft = mean(times(max(1, i-21):i)) * (N-i);
+            fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
+            fprintf(1, '%4d/%4d (%5.1f)', i, N, timeLeft);
+            % Increment iterator
+            i = i + 1;            
+        catch err
+            if ~strcmp(err.identifier, 'hac:fit:invalid')                
+                rethrow(err);            
+            end
+        end
     end
     
     p = mean(T > t);
