@@ -18,14 +18,21 @@ function [h, p] = bootstrap( gof, N, family, U, copulaparams, varargin )
     t = gof( family, U, copulaparams );
     % Boostraped statistics
     T = zeros(N, 1);
-    for i=1:N       
+    
+    times = zeros(N, 1);
+    fprintf('                ');
+    for i=1:N
+       timeLeft = mean(times(max(1, i-21):i)) * (N+1-i);
+       fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b%4d/%4d (%5.1f)', i, N, timeLeft);
+       tic();
        % Simulate fitted copula
        V = uniform(copula.rnd(family, n, d, copulaparams));
-       % Fit simulated data
-       copulaparams = copula.fit(family, V, varargin{:});
+       % Fit simulated data       
+       copulaparams = copula.fit(family, V, varargin{:});       
        % Get another bootstrapped statistics
-       T(i) = gof( family, V, copulaparams ); 
-       dbg('%d: %f\n', i, T(i, 1));
+       T(i) = gof( family, V, copulaparams );
+       % Keep duration of this iteratioin
+       times(i) = toc();
     end
     
     p = mean(T > t);
