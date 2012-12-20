@@ -1,14 +1,45 @@
-function eval(family, U, gofBootstraps, varargin)
+function eval(family, U, bootstraps, varargin)
 
-fprintf('------ Evaluating %s fit ------\n', family);
-n = size(U, 1);
+% Print size of the data set
+[n, d] = size(U);
+fprintf('Evalutating %s copula on [%d x %d]\n', family, n, d);
+
+fprintf('\nFit:\n');
+% Perform fit of the data to the function
+tic();
 copulaparams = copula.fit(family, U, varargin{:});
-fprintf('%s\n', dprint(copulaparams));
+fprintf('  Duration: %f s\n', toc());
+
+% Print fit result
+switch family
+case 'gaussian'
+    fprintf('  rho: %s\n', dprint(copulaparams.rho));
+case 't'
+    fprintf('  rho: %s\n', dprint(copulaparams.rho));
+    fprintf('  nu:  %s\n', dprint(copulaparams.nu));
+case {'clayton', 'gumbel', 'frank'}
+    fprintf('  alpha: %s\n', dprint(copulaparams.alpha));
+case {'claytonhac', 'gumbelhac', 'frankhac'}
+    fprintf('  tree: %s\n', dprint(copulaparams.tree));
+end
+
+% Compute log likelihood, AIC and BIC
 ll = loglike(copula.pdf(family, U, copulaparams));
-fprintf('* LL: %f ', ll);
 [aic, bic] = aicbic(ll, copulaparams.numParams, n);
-fprintf('AIC: %f BIC: %f\n', aic, bic);
-if (gofBootstraps > 0)
-    [~, p] = copula.gof(family, U, gofBootstraps, 'snb', copulaparams, varargin{:});
-    fprintf('* SnB p-value: %f\n', p);        
+fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, aic, bic);
+
+% Perform SnC GOF test
+if (bootstraps > 0)
+    fprintf('\nSnC GOF Test:\n  ');
+    [~, p] = copula.gof(family, U, bootstraps, 'snc', copulaparams, varargin{:});
+    fprintf('  p-value: %f\n', p);
+end
+
+% Perform SnB GOF test
+if (bootstraps > 0)
+    fprintf('\nSnB GOF Test:\n  ');
+    [~, p] = copula.gof(family, U, bootstraps, 'snb', copulaparams, varargin{:});
+    fprintf('  p-value: %f\n', p);
+end
+
 end
