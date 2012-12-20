@@ -11,6 +11,8 @@ uniformFxReturns = uniform(fxReturns);
 
 [n, d] = size(fxReturns);
 
+%% Names columns
+
 cad = fxReturns(:,1);
 eur = fxReturns(:,2);
 gbp = fxReturns(:,3);
