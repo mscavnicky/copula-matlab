@@ -25,8 +25,8 @@ function [ U ] = rndinner( family, tree, alpha0, V0, n )
 d = length(tree) - 1;
 % Find alpha on this level
 alpha1 = tree{end};
-% Compute laplace transformation
-V01 = laplace1(family, V0, alpha0, alpha1);
+% Sample laplace transformation
+V01 = sampleLaplace(family, V0, alpha0, alpha1);
 % Matrix for the random variates on this level
 U = [];
 for i=1:d
@@ -40,7 +40,10 @@ end
 
 end
 
-function [ V01 ] = laplace1( family, V0, theta0, theta1 )
+function [ V01 ] = sampleLaplace( family, V0, theta0, theta1 )
+%SAMPLELAPLACE Sample laplace transform for given copula family.
+
+%fprintf('%f, %f\n', theta0, theta1);
 
 n = length(V0);
 alpha = theta0 / theta1;
@@ -66,7 +69,7 @@ case 'clayton'
     end
     
 case 'gumbel'
-    gamma = (cos(alpha * pi / 2) .* V0).^(1/alpha);
+    gamma = (cos(alpha * pi / 2) .* V0) .^ (1/alpha);
     delta = V0 .* (alpha == 1);
     V01 = arrayfun(@(i) stblrnd(alpha, 1, gamma(i), delta(i)), (1:n)');
 case 'frank'
@@ -76,31 +79,35 @@ case 'frank'
     V01 = zeros(n, 1);
     
     for i=1:n    
-%         if abs(theta0) < 1
-%             for j=1:V0(i)
-%                 v = 0;
-%                 while true
-%                     u = rand();
-%                     x = logrnd(c1, 1);
-%                     if u <= 1/((x-alpha)*beta(x, 1-alpha))
-%                         v = v + x;
-%                         break;
-%                     end
-%                 end
-%                 V01(i) = v;
-%             end
-%         else
+         if abs(theta0) < 1
+             for j=1:V0(i)
+                 v = 0;
+                 while true
+                     u = rand();
+                     x = logrnd(c1, 1);
+                     if u <= 1/((x-alpha)*beta(x, 1-alpha))
+                         v = v + x;
+                         break;
+                     end
+                 end
+             end
+             V01(i) = v;
+         else
             while true
-                u = rand();
-                % FIXME if V0 is too large we can apply approximation via
-                % Stable Distribution
-                x = sum(sibuyarnd(alpha, V0(i)));
-                if u <= c1^(x-1)
-                   V01(i) = x;
+                % Perform approximation if V0 too large
+                if V0(i) > 10000
+                   V01(i) = V0(i)^(1/alpha) * stblrnd(alpha, 1, cos(alpha*pi/2)^(1/alpha), 1*(alpha==1));
                    break;
-                end                
+                else                
+                    u = rand();
+                    x = sum(sibuyarnd(alpha, V0(i)));
+                    if u <= c1^(x-1)
+                       V01(i) = x;
+                       break;
+                    end 
+                end
             end
-        %end
+        end
     end
 end
 
