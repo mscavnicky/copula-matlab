@@ -16,7 +16,7 @@ fun = @(alpha) loglike(archim.pdf( family, U, alpha ));
 [ lowerBound, upperBound ] = archim.bounds( family, size(U, 2) );
 
 % Debugging function plot
-if False
+if 0
     L = linspace(max(lowerBound, -10), min(upperBound, 10), 100);
     fig = figure;
     plot(L, arrayfun( @(alpha)(loglike(archim.pdf( family, U, alpha ))), L));
@@ -27,7 +27,7 @@ end
 % Perform the actual minimization
 alphahat = estimateAlpha(fun, max(lowerBound, -10), min(upperBound, 10));
 if abs(alphahat) > 9.9
-    warning('Alpha limit too small %f.', alphahat);
+    %warning('Alpha limit too small %f.', alphahat);
     alphahat = estimateAlpha(fun, max(lowerBound, -10), min(upperBound, 10));
     if abs(alphahat) > 99.9
         warning('Alpha not estimated correctly %f.', alphahat);
