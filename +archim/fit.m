@@ -1,9 +1,13 @@
-function [ alphahat, ll ] = fit( family, U )
+function [ alphahat ] = fit( family, U )
 %ARCHIMFIT Fit multivariate archimedean copula to data.
 %   Data must be within interval [0, 1]. Returns value of fitted parameters
 %   and likelihood of fit to data. Minimization is performed using fminbnd
 %   method which requires methods to be continuouos. This assumption should
 %   be checked in Nelsen.
+
+%alphahat = copulafit( family, U );
+%ll = 0;
+%return;
 
 % Function giving likelihood of the sample for given alpha
 fun = @(alpha) loglike(archim.pdf( family, U, alpha ));
@@ -11,68 +15,30 @@ fun = @(alpha) loglike(archim.pdf( family, U, alpha ));
 % Get bound for Archimedean copula family in this dimension
 [ lowerBound, upperBound ] = archim.bounds( family, size(U, 2) );
 
-% If the lower bound is infinite, approximate some closer parameter
-if lowerBound == -Inf
-    [~, lowerBound] = estimateBounds(fun, 5, -5); % 'lower', search descending from -5
-    if ~isfinite(lowerBound)
-        error('Unable to find a lower bound for the estimate of the copula parameter.');
-    end
+% Debugging function plot
+if False
+    L = linspace(max(lowerBound, -10), min(upperBound, 10), 100);
+    fig = figure;
+    plot(L, arrayfun( @(alpha)(loglike(archim.pdf( family, U, alpha ))), L));
+    pause(10);
+    close(fig);
 end
-
-% If the upper bound is infinite, again approximate closer parameter
-if upperBound == Inf
-    [lowerBound, upperBound] = estimateBounds(fun, lowerBound, 5); % 'upper', search ascending from 5
-    if ~isfinite(upperBound)
-        error('Unable to find an upper bound for the estimate of the copula parameter.');
-    end
-end
-
-dbg('Bounds: [%f, %f] ', lowerBound, upperBound);
-
-%DEBUG PLOT
-%a = linspace(lowerBound, upperBound, 100);
-%plot(a, arrayfun( @(alpha)(loglike(archimpdf( family, U, alpha ))), a));
 
 % Perform the actual minimization
-[alphahat, ll, exitflag] = fminbnd(fun, lowerBound, upperBound);
+alphahat = estimateAlpha(fun, max(lowerBound, -10), min(upperBound, 10));
+if abs(alphahat) > 9.9
+    warning('Alpha limit too small %f.', alphahat);
+    alphahat = estimateAlpha(fun, max(lowerBound, -10), min(upperBound, 10));
+    if abs(alphahat) > 99.9
+        warning('Alpha not estimated correctly %f.', alphahat);
+    end
+end
+
+end
+
+function [ alphahat ] = estimateAlpha(fun, lowerBound, upperBound)
+[ alphahat, ~, exitflag ] = fminbnd(fun, lowerBound, upperBound);
 if exitflag ~= 1
     erorr('Minimazation did not converge properly.')
-end    
-
 end
-
-function [ nearBnd, farBnd ] = estimateBounds(nllFun, nearBnd, farStart)
-% ESTIMATEBOUNDS the minimizer of a (one-param) negative log-likelihood
-% function. nearBnd is a point known to be a lower/upper bound for the
-% minimizer, this will be updated to tighten the bound if possible.
-% farStart is the first trial point to test to see if it's an upper/lower
-% bound for the minimizer. farBnd will be the desired upper/lower bound.
-bound = farStart;
-upperLim = 1e12; % arbitrary finite limit for search
-oldnll = nllFun(bound);
-oldbound = bound;
-
-while abs(bound) <= upperLim
-    bound = 2*bound; % assumes lower start is < 0, upper is > 0
-    nll = nllFun(bound);
-    if nll > oldnll
-        % The neg loglikelihood increased, we're on the far side of the
-        % minimum, so the current point is the desired far bound.
-        farBnd = bound;
-        break;
-    else
-        % The neg loglikelihood continued to decrease, so the previous point
-        % is on the near side of the minimum, update the near bound.
-        nearBnd = oldbound;
-    end
-    oldnll = nll;
-    oldbound = bound;
 end
-
-if abs(bound) > upperLim
-    farBnd = NaN;
-end
-
-end
-      
-
