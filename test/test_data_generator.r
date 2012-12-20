@@ -87,10 +87,12 @@ to.csv(rnacopula(1000, hac.clayton), "data/test_hac_rnd_clayton3d.csv")
 
 hac.clayton7 <- onacopula("Clayton", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
 hac.gumbel7 <- onacopula("Gumbel", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
-hac.frank7 <- onacopula("Frank", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
+hac.frank7.1 <- onacopula("Frank", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
+hac.frank7.2 <- onacopula("Frank", C(0.3, c(), list(  C(0.9, c(1,2)), C(0.5, c(3,4), C(0.7, c(5,6,7))) )))
 
 to.csv(rnacopula(1000, hac.gumbel7), "data/test_hac_rnd_gumbel7d.csv")
-to.csv(rnacopula(1000, hac.frank7), "data/test_hac_rnd_frank7d.csv")
+to.csv(rnacopula(1000, hac.frank7.1), "data/test_hac_rnd_frank7d_1.csv")
+to.csv(rnacopula(1000, hac.frank7.2), "data/test_hac_rnd_frank7d_2.csv")
 to.csv(rnacopula(1000, hac.clayton7), "data/test_hac_rnd_clayton7d.csv")
 
 to.csv(pnacopula(hac.clayton7, data7), "data/test_hac_cdf_clayton7d.csv")

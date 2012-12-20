@@ -63,7 +63,14 @@ function testHacGumbel7DRnd
 function testHacFrank7DRndWithAlphaMoreThan1
     U = hac.rnd('frank', {{1, 2, 1.3}, {3, 4, {5, 6, 7 2.2} 1.4}, 1.15}, 1000);
     assertInRange(U, 0, 1);
-    X = csvread('data/test_hac_rnd_frank7d.csv');    
+    X = csvread('data/test_hac_rnd_frank7d_1.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H(:,1)), 0);
+    
+ function testHacFrank7DRndWithAlphaLessThan1
+    U = hac.rnd('frank', {{1, 2, 0.9}, {3, 4, {5, 6, 7 0.7} 0.5}, 0.3}, 1000);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_hac_rnd_frank7d_2.csv');    
     H = mvkstest2(U, X);
     assertEqual(sum(H(:,1)), 0);
     
