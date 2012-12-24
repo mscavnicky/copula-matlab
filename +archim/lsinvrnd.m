@@ -9,7 +9,7 @@ case 'gumbel'
     % Testing of generating Gumbel copula number in R is done differently
     % then we are doing it. They use gamma=1. Our implementation was
     % succesfully tested against MATLAB implementation.
-    V = stblrnd(1/alpha, 1, cos(pi/(2*alpha))^alpha, 0, n, 1);
+    V = stblrnd(1/alpha, 1, cos(pi/(2*alpha))^alpha, 0, n);
 case 'frank'
     V = logrnd(1 - exp(-alpha), n);
 otherwise
