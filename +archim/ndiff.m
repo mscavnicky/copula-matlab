@@ -22,6 +22,8 @@ else
     f = archim.sym.gen(family, x, p);
     % Analytically compute n-th derivation
     fn = diff(f, n, x);
+    % Simplify equation for performance reasons
+    fn = simplify(fn);    
     % Convert derivation to Matlab function
     nthDerivative = matlabFunction(fn, 'vars', [x p]);
     % Store it in the cache
