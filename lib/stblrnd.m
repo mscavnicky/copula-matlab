@@ -1,4 +1,4 @@
-function r = stblrnd(alpha,beta,gamma,delta,varargin)
+function r = stblrnd(alpha,beta,gamma,delta,n)
 %STBLRND alpha-stable random number generator.
 % R = STBLRND(ALPHA,BETA,GAMMA,DELTA) draws a sample from the Levy 
 % alpha-stable distribution with characteristic exponent ALPHA, 
@@ -44,37 +44,29 @@ if ~isscalar(delta)
     error('stats:stblrnd:BadInputs',' "delta" must be a scalar');
 end
 
-
-% Get output size
-[err, sizeOut] = genOutsize(4,alpha,beta,gamma,delta,varargin{:});
-if err > 0
-    error('stats:stblrnd:InputSizeMismatch','Size information is inconsistent.');
-end
-
-
 %---Generate sample----
 
 % See if parameters reduce to a special case, if so be quick, if not 
 % perform general algorithm
 
 if alpha == 2                  % Gaussian distribution 
-    r = sqrt(2) * randn(sizeOut);
+    r = sqrt(2) * randn(n, 1);
 
 elseif alpha==1 && beta == 0   % Cauchy distribution
-    r = tan( pi/2 * (2*rand(sizeOut) - 1) ); 
+    r = tan( pi/2 * (2*rand(n, 1) - 1) ); 
 
 elseif alpha == .5 && abs(beta) == 1 % Levy distribution (a.k.a. Pearson V)
-    r = beta ./ randn(sizeOut).^2;
+    r = beta ./ randn(n, 1).^2;
 
 elseif beta == 0                % Symmetric alpha-stable
-    V = pi/2 * (2*rand(sizeOut) - 1); 
-    W = -log(rand(sizeOut));          
+    V = pi/2 * (2*rand(n, 1) - 1); 
+    W = -log(rand(n, 1));          
     r = sin(alpha * V) ./ ( cos(V).^(1/alpha) ) .* ...
         ( cos( V.*(1-alpha) ) ./ W ).^( (1-alpha)/alpha ); 
 
 elseif alpha ~= 1                % General case, alpha not 1
-    V = pi/2 * (2*rand(sizeOut) - 1); 
-    W = - log( rand(sizeOut) );       
+    V = pi/2 * (2*rand(n, 1) - 1); 
+    W = - log( rand(n, 1) );       
     const = beta * tan(pi*alpha/2);
     B = atan( const );
     S = (1 + const * const).^(1/(2*alpha));
@@ -82,8 +74,8 @@ elseif alpha ~= 1                % General case, alpha not 1
        ( cos( (1-alpha) * V - B ) ./ W ).^((1-alpha)/alpha);
 
 else                             % General case, alpha = 1
-    V = pi/2 * (2*rand(sizeOut) - 1); 
-    W = - log( rand(sizeOut) );          
+    V = pi/2 * (2*rand(n, 1) - 1); 
+    W = - log( rand(n, 1) );          
     piover2 = pi/2;
     sclshftV =  piover2 + beta * V ; 
     r = 1/piover2 * ( sclshftV .* tan(V) - ...
@@ -99,27 +91,3 @@ else
 end
 
 end
-
-
-%====  function to find output size ======%
-function [err, commonSize, numElements] = genOutsize(nparams,varargin)
-    try
-        tmp = 0;
-        for argnum = 1:nparams
-            tmp = tmp + varargin{argnum};
-        end
-        if nargin > nparams+1
-            tmp = tmp + zeros(varargin{nparams+1:end});
-        end
-        err = 0;
-        commonSize = size(tmp);
-        numElements = numel(tmp);
-
-    catch
-        err = 1;
-        commonSize = [];
-        numElements = 0;
-    end
-end
-
-

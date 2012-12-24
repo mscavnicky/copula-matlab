@@ -53,15 +53,20 @@ case 'clayton'
     M = findOptimumM(V0);
     gamma = (cos(alpha * pi / 2) .* V0 ./ M).^(1/alpha);
     
-    V01 = zeros(n, 1);    
+    V01 = zeros(n, 1); 
     for i=1:n
        for j=1:M(i)
            v = 0;
+           rep = 0;
            while true
-              x = stblrnd(alpha, 1, gamma(i), 0);
+              x = stblrnd(alpha, 1, gamma(i), 0, 1);
               if (rand() <= exp(-x))
                   v = v + x;
                   break;
+              end
+              rep = rep + 1;
+              if rep == 50
+                 rep = 50;
               end
            end
            V01(i) = v;
