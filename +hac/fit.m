@@ -2,6 +2,10 @@ function [ tree ] = fit( family, U, method )
 %HACFIT Fits sample to Hierachical Archimedean Copula. Return tree.
 %   Uses method by Okhrin to select HAC structure. HAC structure and alphas
 %   are all encoded in resulting parameters.
+%
+%   References:
+%       [1] Okhrin. O, Ristig. A, Hierarchical Archimedean Copulae: The HAC
+%       Package
 
 % Expose subfunctions for unit-testing
 if nargin == 0
@@ -9,9 +13,14 @@ if nargin == 0
    return;
 end
 
+if nargin < 3
+   method = 'okhrin';
+end
+
 % Assert dataset dimensions
 assert(size(U, 2) > 1, 'Number of dimensions must be at least two for HAC.');
 
+% Perform fit of HAC
 switch method
 case 'full'
     tree = hacfitFull( family, U );    
@@ -19,6 +28,7 @@ case 'okhrin'
     tree = hacfitOkhrin( family, U );
 end
 
+% Validate generated HAC
 valid = validateHac(tree);
 if ~valid
    error('hac:fit:invalid', 'HAC copula is not valid %s', dprint(tree));   
@@ -137,28 +147,28 @@ end
 
 
 function [ tree ] = hacfitOkhrin( family, U )
-%HACFITOKHRIN Find HAC copula using Okhrin's greedy method.
+%HACFITOKHRIN Find HAC copula using Okhrin's greedy method [1].
 %   Uses only bivariate copula and does not perform joins as Okhrin
-%   suggests.
+%   suggests. To obtain valid HAC parameter space is shortened for outer
+%   copulas.
 
 % Map for storing nested copulas
-nestedCopulas = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
-
+copulas = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
+% Dimensions of the copula
 d = size(U, 2);
+% Variables available for fit
 vars = 1:d;
 
-iteration = 0;
+copulaNumber = d;
 while length(vars) > 1
-    iteration = iteration + 1;    
-    % Number of this fit   
-    copulaNumber = d + iteration;
-    dbg('Iteration %d - %s.\n', iteration, mat2str(vars));
+    copulaNumber = copulaNumber + 1;
+    dbg('Iteration %d - %s.\n', copulaNumber - d, mat2str(vars));
     % Find the best fit available for current vars 
-    [ nestedVars, nestedAlpha ] = findBestNestedCopula( family, U, vars );
+    [ nestedVars, nestedAlpha ] = chooseCopula( family, U, vars, copulas );
     % Compute output of chocsen nested copula and append it to the data sample
     U = [U archim.cdf( family, U(:, nestedVars), nestedAlpha )];
     % Insert it into cache using HAC format
-    nestedCopulas(copulaNumber) = num2cell([nestedVars, nestedAlpha]);    
+    copulas(copulaNumber) = num2cell([nestedVars, nestedAlpha]);    
     % Remove variables used in nested copula and introduce new for the copula
     vars = [setdiff(vars, nestedVars), copulaNumber];
 end
@@ -166,8 +176,65 @@ end
 % Recursively build the HAC structure using partial copulas
 % Keep vars as a queue of variables to process
 % The single remaining var has an index to copula
-tree = buildHacStructure( nestedCopulas(vars(1)), nestedCopulas );
+tree = buildHacStructure( copulas(vars(1)), copulas );
 
+end
+
+function [ maxVars, maxAlpha ] = chooseCopula( family, U, vars, copulas )
+%CHOOSECOPULA Tries to find the combination of variables that gives the
+%highest alpha possible.
+    
+maxVars = [];
+maxAlpha = -1;
+
+% Generate combinations of variables of length 2
+combinations = combnk(vars, 2);
+% Go over each combination and compute its fit
+for j = 1:size(combinations, 1)
+    comb = combinations(j,:);
+    dbg('* Evaluating combination %s ... ', mat2str(comb));
+    [ lowerBound, upperBound ] = hac.bounds( family );
+    upperBound = min( upperBound, childAlpha( copulas, comb ) );    
+    alpha = archim.fit( family, U(:, comb), lowerBound, upperBound );
+    dbg('%f\n', alpha);
+    
+    if alpha > maxAlpha
+       maxVars = comb;
+       maxAlpha = alpha;
+    end
+end
+
+end
+
+function [ alpha ] = childAlpha( copulas, comb )
+%CHILDALPHA Given list of already generated copulas and a list of newly
+%proposed copulas returns minimum value of their alphas.
+alpha = Inf;
+for i=1:length(comb)
+   c = comb(i);
+   % Only variables that represent child copulas are interesting
+   if isKey( copulas, c )
+       childCopula = copulas(c);
+       childAlpha = childCopula{end};
+       alpha = min(alpha, childAlpha);
+   end
+end
+end
+
+
+function [ tree ] = buildHacStructure( rootCopula, nestedCopulas )
+    tree = {};
+    % Iterate over all variables in the rootCopula and expand them
+    for i=1:length(rootCopula)-1
+       var = rootCopula{i};
+       if nestedCopulas.isKey(var)
+           tree{end+1} = buildHacStructure( nestedCopulas(var), nestedCopulas );
+       else
+           tree{end+1} = var;
+       end
+    end
+    % Copy alpha into built HAC structure
+    tree{end+1} = rootCopula{end};
 end
 
 function [ valid ] = validateHac( tree )
@@ -197,44 +264,3 @@ for i=1:d
 end
 
 end
-
-
-function [ tree ] = buildHacStructure( rootCopula, nestedCopulas )
-    tree = {};
-    % Iterate over all variables in the rootCopula and expand them
-    for i=1:length(rootCopula)-1
-       var = rootCopula{i};
-       if nestedCopulas.isKey(var)
-           tree{end+1} = buildHacStructure( nestedCopulas(var), nestedCopulas );
-       else
-           tree{end+1} = var;
-       end
-    end
-    % Copy alpha into built HAC structure
-    tree{end+1} = rootCopula{end};
-end
-
-
-function [ maxVars, maxAlpha ] = findBestNestedCopula( family, U, vars )
-%FINDBESTFIT Tries to find the combination of variables that gives the
-%highest alpha possible.
-    
-maxVars = [];
-maxAlpha = 0;
-
-% Generate combinations of variables of length 2
-combinations = combnk(vars, 2);
-% Go over each combination and compute its fit
-for j = 1:size(combinations, 1)
-    comb = combinations(j,:);
-    dbg('* Evaluating combination %s ... ', mat2str(comb));
-    alpha = archim.fit( family, U(:, comb) );
-    dbg('%f\n', alpha);
-    if abs(alpha) > abs(maxAlpha)
-       maxVars = comb;
-       maxAlpha = alpha;
-    end
-end
-
-end
-
