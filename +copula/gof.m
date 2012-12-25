@@ -55,7 +55,7 @@ function [ T ] = snc( family, U, copulaparams )
     % Perform Rosenblatt's transformation
     E = copula.pit(family, U, copulaparams);
     % Compute test statistic
-    T = sum((ecopula(E) - prod(E, 2)) .^ 2);
+    T = sum((copula.emp(E) - prod(E, 2)) .^ 2);
 end
 
 function [ T ] = snb( family, U, copulaparams )

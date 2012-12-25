@@ -76,7 +76,7 @@ case 'clayton'
 case 'gumbel'
     gamma = (cos(alpha * pi / 2) .* V0) .^ (1/alpha);
     delta = V0 .* (alpha == 1);
-    V01 = arrayfun(@(i) stblrnd(alpha, 1, gamma(i), delta(i)), (1:n)');
+    V01 = arrayfun(@(i) stblrnd(alpha, 1, gamma(i), delta(i), 1), (1:n)');
 case 'frank'
     % Log-Series distribution parameter
     c1 = 1 - exp(-theta1);

@@ -11,7 +11,7 @@ end
 
 end
 
-% times = profilef(@()(ecopula(unifrnd(0, 1, 10000, 5))), 10);
+% times = profilef(@()(copula.emp(unifrnd(0, 1, 10000, 5))), 10);
 % times = profilef(@()(uniform(normrnd(0, 100, 30000, 5))), 20)
 
 

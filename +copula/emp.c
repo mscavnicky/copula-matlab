@@ -1,7 +1,7 @@
 #include "mex.h"
 #include "matrix.h"
 
-void ecopula(double* x, double* y, mwSize n, mwSize d)
+void emp(double* x, double* y, mwSize n, mwSize d)
 {
     int i, j, k;
     int count, res;    
@@ -36,5 +36,5 @@ void mexFunction( int nlhs, mxArray *plhs[], int rlhs, const mxArray *prhs[])
     plhs[0] = mxCreateDoubleMatrix(n, 1, mxREAL);
     y = mxGetPr(plhs[0]);
     
-    ecopula(x, y, n, d);
+    emp(x, y, n, d);
 }
