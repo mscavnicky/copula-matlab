@@ -18,7 +18,8 @@ for i=1:d
 end
 % Retrieve alpha from hac structure and convert it to decimal symbol
 % Conversion to decimal symbol is necessary otherwise expression will end
-% up with humongous fractions.
+% up with humongous fractions. Decimal representation also seems faster
+% than floating-point representation.
 alpha = sym(tree{end}, 'd');
 % Compose copula function from arguments and numerical alpha
 f = archim.sym.cdf(family, arguments, alpha);
