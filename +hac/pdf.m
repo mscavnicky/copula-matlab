@@ -10,11 +10,14 @@ f = hac.sym.cdf(family, tree);
 args = symvar(f);
 % Differentiate the CDF in all variables to acquire PDF
 for j=1:length(args)
+    dbg('+hac.pdf: Differentiating HAC by u%d.\n', j);
     f = diff(f, args(j));
 end
 
 % Convert to Matlab function and evaluate
+dbg('+hac.pdf: Generating Matlab function.\n', j);
 fn = matlabFunction(f, 'vars', {args});
+dbg('+hac.pdf: Computing PDF.\n', j);
 Y = fn(U);
 
 end

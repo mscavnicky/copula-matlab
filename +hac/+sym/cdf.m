@@ -5,14 +5,14 @@ function [ f ] = cdf( family, tree )
 % Dimensions of top-level copula in hac structure
 d = length(tree) - 1;
 % Cell array where arguments for this level copula are collected
-arguments = {};
+arguments = cell(d, 1);
 
 for i=1:d
     % Perform recursion if element of structure is another copula
     if iscell(tree{i})
         arguments{i} = hac.sym.cdf(family, tree{i});
     else
-        % Introdcue new symbol
+        % Introduce symbol representing u_n
         arguments{i} = sym(sprintf('u%d', tree{i}));
     end    
 end
