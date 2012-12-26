@@ -30,7 +30,14 @@ function testFrankRnd
     assertInRange(U, 0, 1);
     X = csvread('data/test_copula_rnd_frank.csv');    
     H = mvkstest2(U, X);
-    assertEqual(sum(H(:,1)), 0); 
+    assertEqual(sum(H(:,1)), 0);
+    
+function testJoeRnd
+    U = archim.rnd('joe', 1.5, 1000, 5);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_copula_rnd_joe.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H(:,1)), 0);
     
 function assertInRange( X, x1, x2 )
     assertEqual(sum(sum(X < x1)), 0);

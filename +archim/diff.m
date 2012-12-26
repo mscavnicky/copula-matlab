@@ -14,7 +14,7 @@ switch family
     case 'frank'        
         Y = (1 - exp(p)) ./ (p * exp(p + X) - exp(p) * p + p);
     case 'joe'
-        Y = ((1 - exp(-X)) .^ (1/p)) / (p - p * exp(X));
+        Y = ((1 - exp(-X)) .^ (1/p)) ./ (p - p * exp(X));
     otherwise
         error('Copula family %s not recognized.', family);
 end

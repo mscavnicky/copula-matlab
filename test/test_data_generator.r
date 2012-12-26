@@ -5,11 +5,13 @@ data3 <- as.matrix(read.csv("data/data3d.csv", header=FALSE, sep=","))
 data2 <- as.matrix(read.csv("data/data2d.csv", header=FALSE, sep=","))
 data7 <- as.matrix(read.csv("data/data7d.csv", header=FALSE, sep=","))
 
+
 normal.cop.2 = normalCopula(c(0.57), dim=2, dispstr="un")
 normal.cop.3 = normalCopula(c(0.18, 0.23, 0.74), dim=3, dispstr="un")
 t.cop.3 = tCopula(c(0.37, 0.52, 0.77), df=5, dim=3, dispstr="un")
 clayton.cop.3 = archmCopula("clayton", param=0.9912, dim=3)  
-gumbel.cop.3 = archmCopula("gumbel", param=1.4529, dim=3)  
+gumbel.cop.3 = archmCopula("gumbel", param=1.4529, dim=3)
+joe.cop.3 = archmCopula("joe", param=1.85, dim=3)
 clayton.cop.2 = archmCopula("clayton", param=1.4557, dim=2)
 
 to.csv <- function(data, filename) {
@@ -30,8 +32,12 @@ to.csv(testCond(data3, clayton.cop.3, 3), "data/test_copulacnd_clayton3d.csv")
 to.csv(testCond(data3, gumbel.cop.3, 3), "data/test_copulacnd_gumbel3d.csv")
 to.csv(testCond(data2, clayton.cop.2, 2), "data/test_copulacnd_clayton2d.csv")
 
+# Copula cdfs
+to.csv(pCopula(data3, joe.cop.3), "data/test_archim_cdf_joe3d.csv")
+
 # Copula densities
 to.csv(dCopula(data3, clayton.cop.3), "data/test_archimpdf_clayton3d.csv")
+to.csv(dCopula(data3, joe.cop.3), "data/test_archim_pdf_joe3d.csv")
 
 # Rosenblatt's transform
 to.csv(rtrafo(data2, normal.cop.2), "data/test_copula_pit_gaussian2d.csv")
@@ -45,16 +51,15 @@ to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=2)), "data/test_copula_rnd_
 to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=5)), "data/test_copula_rnd_clayton.csv");
 to.csv(rCopula(1000, archmCopula("gumbel", 1.5, dim=5)), "data/test_copula_rnd_gumbel.csv");
 to.csv(rCopula(1000, archmCopula("frank", 1.5, dim=5)), "data/test_copula_rnd_frank.csv");
+to.csv(rCopula(1000, archmCopula("joe", 1.5, dim=5)), "data/test_copula_rnd_joe.csv");
 to.csv(rCopula(1000, normal.cop.3), "data/test_copula_rnd_gaussian.csv");
 
 # Kolomogorov-Smirnov experiment
 x = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
 y = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
-
 ks.test(x[,1], y[,1])
             
 # FX Test comparation
-            
 price2ret <- function(prices) {
   returns = log(1 + diff(prices) / head(prices, -1))
   return (returns)
@@ -73,7 +78,7 @@ frank.cop.fx = archmCopula("frank", param=0.92933, dim=4)
             
 gofCopula(clayton.cop.fx, uniform.fx.returns, method="SnC", estim.method="ml", N=10)
             
-# HAC Test
+# HAC sampling Test
             
 hac.clayton <- onacopula("Clayton", C(1.25, 1, C(2, c(2,3))))
 hac.gumbel <- onacopula("Gumbel", C(1.25, 1, C(2, c(2,3))))
