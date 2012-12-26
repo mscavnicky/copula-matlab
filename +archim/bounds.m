@@ -14,6 +14,7 @@ function [ l, u ] = bounds( family, d )
 %       [2] Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 152
 %       [3] Okhrin. O, (2009) Properties of Hierarchical Archimedean
 %       Copulas, page 6
+%       [4] Hofert. M, (2011) Nested Archimedean Copulas Meet R, page 4
 
 switch family
     case 'clayton'
@@ -34,8 +35,12 @@ switch family
             l = -Inf;
         end
         u = Inf;
+    case 'joe'
+        % According to [4]
+        l = 1;
+        u = Inf;
     otherwise
-        error 'Copula family not recognized.'
+        error('Copula family %s not recognized.', family);
 end
         
 end

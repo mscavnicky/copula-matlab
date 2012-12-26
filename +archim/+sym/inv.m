@@ -3,12 +3,14 @@ function [ f ] = inv( family, x, p )
 %generator.
 
 switch family
-    case 'frank'
-        f = -log( ( exp(-p * x) - 1 ) / ( exp(-p) - 1 ) );
     case 'clayton'
         f = ( x .^ -p - 1 );
     case 'gumbel'
         f = ( -log(x) ) .^ p;
+    case 'frank'
+        f = -log( ( exp(-p * x) - 1 ) / ( exp(-p) - 1 ) );
+    case 'joe'
+        f = -log( 1 - (1 - x) .^ p );
     otherwise
         error 'Copula family not recognized.'
 end

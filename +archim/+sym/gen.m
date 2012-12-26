@@ -4,12 +4,14 @@ function [ f ] = gen( family, x, p )
 %   symbols x and p.
 
 switch family
-    case 'frank'
-        f = (-1/p) * log( 1 - ( 1 - exp(-p) ) * exp(-x) );        
     case 'clayton'
         f = (1 + x) ^ (-1/p);
     case 'gumbel'
         f = exp(-x ^ (1/p));
+    case 'frank'
+        f = (-1/p) * log( 1 - ( 1 - exp(-p) ) * exp(-x) );
+    case 'joe'
+        f = 1 - (1 - exp(-x)) ^ (1 / p);
     otherwise
         error 'Copula family not recognized.'
 end

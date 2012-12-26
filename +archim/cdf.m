@@ -3,7 +3,6 @@ function [ Y ] = cdf( family, U, alpha )
 %   Checks for parameter bounds using archimbounds function.
 %   In Nelsen Clayton copula is defined using max function. We assume it is
 %   needed only when negative alpha is allowed.
-%   Supports Clayton, Gumbel and Frank copulas.
 
 % Copula dimension is necessary for parameter validation
 d = size(U, 2);

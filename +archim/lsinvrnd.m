@@ -12,6 +12,8 @@ case 'gumbel'
     V = stblrnd(1/alpha, 1, cos(pi/(2*alpha))^alpha, 0, n);
 case 'frank'
     V = logrnd(1 - exp(-alpha), n);
+case 'joe'
+    V = sibuyarnd(1/alpha, n);
 otherwise
     error('Copula family %s not recognized.', family);    
 end
