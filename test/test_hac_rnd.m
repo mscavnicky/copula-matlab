@@ -60,6 +60,13 @@ function testHacClayton3DRnd
     H = mvkstest2(U, X);
     assertEqual(sum(H), 0);
     
+function testHacJoe3DRnd
+    U = hac.rnd('joe', {1, {2, 3, 2.0}  1.25}, 1000);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_hac_rnd_joe3d.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H), 0);
+    
 function testHacGumbel7DRnd
     U = hac.rnd('gumbel', {{1, 2, 1.3}, {3, 4, {5, 6, 7 2.2} 1.4}, 1.15}, 1000);
     assertInRange(U, 0, 1);
@@ -85,6 +92,13 @@ function testHacClayton7DRnd
     U = hac.rnd('clayton', {{1, 2, 1.3}, {3, 4, {5, 6, 7 2.2} 1.4}, 1.15}, 1000);
     assertInRange(U, 0, 1);
     X = csvread('data/test_hac_rnd_clayton7d.csv');    
+    H = mvkstest2(U, X);
+    assertEqual(sum(H), 0);
+    
+function testHacJoe7DRnd
+    U = hac.rnd('joe', {{1, 2, 1.3}, {3, 4, {5, 6, 7 2.2} 1.4}, 1.15}, 1000);
+    assertInRange(U, 0, 1);
+    X = csvread('data/test_hac_rnd_joe7d.csv');    
     H = mvkstest2(U, X);
     assertEqual(sum(H), 0);
     
