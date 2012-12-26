@@ -41,16 +41,4 @@ function testJoeRnd
     
 function assertInRange( X, x1, x2 )
     assertEqual(sum(sum(X < x1)), 0);
-    assertEqual(sum(sum(X > x2)), 0);
-
-function [ H ] = mvkstest2(X, Y)    
-    assert(size(X, 2) == size(Y, 2), 'Dimensions do not match.');
-    
-    d = size(X, 2);
-    H = zeros(d, 2);
-    for i=1:d
-        [h p] = kstest2(X(:,i), Y(:,i), 0.01);
-        H(i,:) = [h p];
-    end
-    
-    
+    assertEqual(sum(sum(X > x2)), 0);    

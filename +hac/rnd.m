@@ -114,6 +114,11 @@ case 'frank'
             end
         end
     end
+case 'joe'
+    V01 = zeros(n, 1);
+    for i=1:n
+       V01(i) = sum(sibuyarnd(alpha, V0(i)));
+    end
 end
 
 end
