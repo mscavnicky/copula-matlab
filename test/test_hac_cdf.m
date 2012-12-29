@@ -2,7 +2,7 @@
 %#ok<*STOUT>
 %#ok<*NBRAK>
 
-function test_suite = test_haccdf
+function test_suite = test_hac_cdf
 initTestSuite;
 
 function testHacCdf

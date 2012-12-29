@@ -1,7 +1,7 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
-function test_suite = test_archimfit 
+function test_suite = test_archim_fit 
 initTestSuite;
 
 function testArchimfitGumbel

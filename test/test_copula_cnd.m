@@ -1,7 +1,7 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
-function test_suite = test_copulacnd
+function test_suite = test_copula_cnd
 initTestSuite;
 
 function testGaussianIn2D

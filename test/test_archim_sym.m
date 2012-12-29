@@ -1,7 +1,7 @@
 %#ok<*DEFNU>
 %#ok<*STOUT>
 
-function test_suite = test_archimsym
+function test_suite = test_archim_sym
 initTestSuite;
 
 function test_sym_archimcdf_gumbel

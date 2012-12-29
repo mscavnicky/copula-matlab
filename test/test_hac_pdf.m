@@ -2,7 +2,7 @@
 %#ok<*STOUT>
 %#ok<*NBRAK>
 
-function test_suite = test_hacpdf
+function test_suite = test_hac_pdf
 initTestSuite;
 
 function testHacPdf
