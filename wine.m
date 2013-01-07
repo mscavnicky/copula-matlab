@@ -1,13 +1,24 @@
 %% Load red wine data
 
+names = {...
+    'fixed acidity',...
+    'volatile acidity',...
+    'citric acid',...
+    'residual sugar',...
+    'chlorides',...
+    'free SO2',...
+    'total SO2',...
+    'density',...
+    'pH',...
+    'sulphates',...
+    'alcohol'};
+
 data = csvread('../Data/winequality-red.csv');
+n = size(data, 1);
 
 X = data(:,1:11);
 Y = data(:,12);
-
 U = uniform(X);
-
-n = size(X, 1);
 
 %% Asses fit of the margins
 
@@ -74,7 +85,7 @@ hist(data(:,12), 20);
 %% Fit copulas using CFM in 11 dimensions
 
 f1 = copula.eval('gaussian', U, 100);
-%f2 = copula.eval('t', U, 10);
+%f2 = copula.eval('t', U, 10); % Computationally infeasible
 f3 = copula.eval('clayton', U, 100);
 f4 = copula.eval('gumbel', U, 10);
 f5 = copula.eval('frank', U, 100);
@@ -101,8 +112,14 @@ matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex
 'rowLabels', {'Gaussian', 't', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC'},...
 'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
 
+%% Hierarchy of dependency
 
+claytonTree = hac.fit('clayton', U);
+hac.plot(claytonTree, names);
 
+gumbelTree = hac.fit('gumbel', U);
+hac.plot(gumbelTree, names);
 
-copula.eval('claytonhac', U, 0, 'okhrin');
-copula.eval('gumbelhac', U, 10, 'okhrin');
+frankTree = hac.fit('frank', U);
+hac.plot(frankTree, names);
+
