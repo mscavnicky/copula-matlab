@@ -16,13 +16,12 @@ parent = count;
 fprintf('%s: %d\n', dprint(tree), count);
 
 for i=1:length(tree)-1
-    next = count+1;
-    nodes(next) = parent;
+    count = count+1;
+    nodes(count) = parent;
     if iscell(tree{i})     
-        [nodes, count] = hac2nodes(tree{i}, nodes, next);
+        [nodes, count] = hac2nodes(tree{i}, nodes, count);
     else
-        fprintf('%d: %d\n', tree{i}, next);
-        count = next;        
+        fprintf('%d: %d\n', tree{i}, count);
     end
 end
 
