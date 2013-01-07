@@ -4,25 +4,26 @@ function plot( tree )
 %   References:
 %       [1] http://stackoverflow.com/questions/5065051/add-node-numbers-get-node-locations-from-matlabs-treeplot
 
-[~, nodes ] = hac2nodes( tree, 1, [] );
+nodes = hac2nodes( tree, [], 1 );
 treeplot(nodes);
 [x, y] = treelayout(nodes)
 
 end
 
-function [ order, nodes ] = hac2nodes( tree, order, nodes )
+function [ nodes, count ] = hac2nodes( tree, nodes, count )
 
-parent = order;
-fprintf('%s: %d\n', dprint(tree), order);
+parent = count;
+fprintf('%s: %d\n', dprint(tree), count);
 
 for i=1:length(tree)-1
-    nodes(order+1) = parent;
-    if iscell(tree{i})        
-        [order, nodes] = hac2nodes(tree{i}, order + 1, nodes);
+    next = count+1;
+    nodes(next) = parent;
+    if iscell(tree{i})     
+        [nodes, count] = hac2nodes(tree{i}, nodes, next);
     else
-        fprintf('%d: %d\n', tree{i}, order + 1);
-        order = order + 1;        
-    end    
+        fprintf('%d: %d\n', tree{i}, next);
+        count = next;        
+    end
 end
 
 end
