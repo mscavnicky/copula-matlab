@@ -17,6 +17,9 @@ switch family
     case 'frank'
         l = 0;
         u = Inf;
+    case 'joe'
+        l = 1;
+        u = Inf;        
     otherwise
         error 'Copula family not recognized.'
 end
