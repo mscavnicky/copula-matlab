@@ -35,7 +35,7 @@ end
 end
 
 function [ alphahat ] = estimateAlpha(fun, lowerBound, upperBound)
-[ alphahat, ~, exitflag ] = fminbnd(fun, lowerBound, upperBound);
+[ alphahat, ~, exitflag ] = fminbnd(fun, lowerBound, upperBound, statset('copulafit'));
 if exitflag ~= 1
     erorr('Minimazation did not converge properly.')
 end
