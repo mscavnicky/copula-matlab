@@ -42,11 +42,11 @@ U = uniform(X);
 [D5, PD5] = allfitdist(X(:,5)); % t
 [h, p] = kstest2(X(:,5), PD5{1}.random(n, 1))
 
-% free sulfur dioxide
+% free SO2
 [D6, PD6] = allfitdist(X(:,6)); % NO (Gamma)
 [h, p] = kstest2(X(:,6), PD6{2}.random(n, 1))
 
-% total sulfur dioxide
+% total SO2
 [D7, PD7] = allfitdist(X(:,7)); % Lognormal
 [h, p] = kstest2(X(:,7), PD7{3}.random(n, 1))
 
@@ -96,7 +96,9 @@ matrix2latex([f1;f3;f4;f5], 'fit.tex',...
 'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
 
 %% Fit copulas using CFM in 4 dimensions
-S = U(Y==7, [8,9]);
+S = U(:, [2,5,7,8]);
+S = X(:, [2,5,7,8]);
+S = pit(S, {'gamma', 'tlocationscale', 'lognormal', 'tlocationscale'});
 
 f1 = copula.eval('gaussian', S, 200);
 f2 = copula.eval('t', S, 11);
@@ -114,6 +116,9 @@ matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex
 
 %% Hierarchy of dependency
 
+%U(:,9) = 1 - U(:,9);
+%U = 1 - U;
+
 claytonTree = hac.fit('clayton', U);
 hac.plot(claytonTree, names);
 
@@ -122,4 +127,19 @@ hac.plot(gumbelTree, names);
 
 frankTree = hac.fit('frank', U);
 hac.plot(frankTree, names);
+
+joeTree = hac.fit('joe', U);
+hac.plot(joeTree, names);
+
+%% Decision trees
+
+
+
+tree = classregtree(X, Y, 'method', 'classification', 'names', names, 'minleaf', 10);
+view(tree);
+
+%% Correlations
+matrix2latex(corr(U), '../Data/Wine/corr.tex', 'format', '%.3f', 'rowLabels', names, 'columnLabels', names);
+
+
 

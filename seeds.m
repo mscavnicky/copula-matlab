@@ -8,13 +8,13 @@ U = uniform(X);
 
 %% Histograms
 
-hist(X(:,1));
-hist(X(:,2));
-hist(X(:,3));
-hist(X(:,4));
-hist(X(:,5));
-hist(X(:,6));
-hist(X(:,7));
+hist(X(:,1),20);
+hist(X(:,2),20);
+hist(X(:,3),100);
+hist(X(:,4),20);
+hist(X(:,5),20);
+hist(X(:,6),20);
+hist(X(:,7),20);
 
 %% Histograms of uniformed data
 
@@ -28,11 +28,11 @@ hist(U(:,7));
 
 %% Perform Fit using CFM
 
-copula.eval('gaussian', U, 1000);
+copula.eval('gaussian', U, 100);
 copula.eval('t', U, 10);
-copula.eval('clayton', U, 500);
-copula.eval('gumbel', U, 500);
-copula.eval('frank', U, 500);
+copula.eval('clayton', U, 100);
+copula.eval('gumbel', U, 100);
+copula.eval('frank', U, 100);
 copula.eval('claytonhac', U, 0, 'okhrin');
 copula.eval('gumbelhac', U, 0, 'okhrin');
 copula.eval('frankhac', U, 0, 'okhrin');
