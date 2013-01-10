@@ -15,7 +15,7 @@ end
 function [h, p] = bootstrap( testfn, N, U, copulaparams, showProgress, varargin )
     family = copulaparams.family;
     [n, d] = size(U);
-    % Compute statistics value for original dataset
+    % Compute statistics value for the original dataset
     t = testfn( family, U, copulaparams );
     % Boostraped statistics
     T = zeros(N, 1);
@@ -33,9 +33,9 @@ function [h, p] = bootstrap( testfn, N, U, copulaparams, showProgress, varargin 
             % Simulate fitted copula
             V = uniform(copula.rnd(family, n, d, copulaparams));
             % Fit simulated data       
-            copulaparams = copula.fit(family, V, varargin{:});       
+            fitparams = copula.fit(family, V, varargin{:});
             % Get another bootstrapped statistics
-            T(i) = testfn( family, V, copulaparams );
+            T(i) = testfn( family, V, fitparams );
             % Keep duration of this iteratioin
             times(i) = toc();
             % Print estimated time
@@ -47,11 +47,12 @@ function [h, p] = bootstrap( testfn, N, U, copulaparams, showProgress, varargin 
             % Increment iterator
             i = i + 1;            
         catch err
+            warning('Error handled.', err);
             if ~strcmp(err.identifier, 'hac:fit:invalid')                
                 rethrow(err);            
             end
         end
-    end
+    end    
     
     p = mean(T > t);
     h = p > 0.05;
