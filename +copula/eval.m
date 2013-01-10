@@ -33,7 +33,7 @@ fit = [ll, aic, bic];
 % Perform SnC GOF test
 if (bootstraps > 0)
     fprintf('\nSnC GOF Test:\n  ');
-    [~, p] = copula.gof(family, U, bootstraps, 'snc', copulaparams, varargin{:});
+    [~, p] = copula.gof(copulaparams, U, bootstraps, 'snc', 1, varargin{:});
     fprintf('  p-value: %f\n', p);
     fit = [fit p];
 end
@@ -41,7 +41,7 @@ end
 % Perform SnB GOF test
 if (bootstraps > 0)
     fprintf('\nSnB GOF Test:\n  ');
-    [~, p] = copula.gof(family, U, bootstraps, 'snb', copulaparams, varargin{:});
+    [~, p] = copula.gof(copulaparams, U, bootstraps, 'snb', 1, varargin{:});
     fprintf('  p-value: %f\n', p);
     fit = [fit p];
 end

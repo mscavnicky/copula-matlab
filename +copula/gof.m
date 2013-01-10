@@ -1,26 +1,30 @@
-function [ h, p ] =  gof( family, U, N, method, copulaparams, varargin )
+function [ h, p ] = gof( copulaparams, U, bootstraps, method, showProgress, varargin )
 %COPULAGOF Performs goodness-of-fit test given a fitted copula and data.
 
 switch method
 case 'snc'
-    [h, p] = bootstrap(@snc, N, family, U, copulaparams, varargin{:});
+    [h, p] = bootstrap(@snc, bootstraps, U, copulaparams, varargin{:});
 case 'snb'
-    [h, p] = bootstrap(@snb, N, family, U, copulaparams, varargin{:});
+    [h, p] = bootstrap(@snb, bootstraps, U, copulaparams, varargin{:});
 otherwise
     error('Method %s not recognized', method);
 end
 
 end
 
-function [h, p] = bootstrap( gof, N, family, U, copulaparams, varargin )
+function [h, p] = bootstrap( testfn, N, U, copulaparams, varargin )
+    family = copulaparams.family;
     [n, d] = size(U);
     % Compute statistics value for original dataset
-    t = gof( family, U, copulaparams );
+    t = testfn( family, U, copulaparams );
     % Boostraped statistics
     T = zeros(N, 1);
     
     times = zeros(N, 1);
-    fprintf('   0/%4d ( Inf)', N);
+    
+    if showProgress
+        fprintf('   0/%4d ( Inf)', N);
+    end
     
     i = 1;
     while i <= N
@@ -31,13 +35,15 @@ function [h, p] = bootstrap( gof, N, family, U, copulaparams, varargin )
             % Fit simulated data       
             copulaparams = copula.fit(family, V, varargin{:});       
             % Get another bootstrapped statistics
-            T(i) = gof( family, V, copulaparams );
+            T(i) = testfn( family, V, copulaparams );
             % Keep duration of this iteratioin
             times(i) = toc();
             % Print estimated time
-            timeLeft = mean(times(max(1, i-21):i)) * (N-i);
-            fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
-            fprintf(1, '%4d/%4d (%5.1f)', i, N, timeLeft);
+            if showProgress
+                timeLeft = mean(times(max(1, i-21):i)) * (N-i);
+                fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
+                fprintf(1, '%4d/%4d (%5.1f)', i, N, timeLeft);
+            end
             % Increment iterator
             i = i + 1;            
         catch err
