@@ -111,7 +111,10 @@ to.csv(pnacopula(hac.frank7, data7), "data/test_hac_cdf_frank7d.csv")
 to.csv(dnacopula(hac.clayton7, data7), "data/test_hac_pdf_clayton7d.csv")
 to.csv(dnacopula(hac.gumbel7, data7), "data/test_hac_pdf_gumbel7d.csv")
 to.csv(dnacopula(hac.frank7, data7), "data/test_hac_pdf_frank7d.csv")
-
-
             
+# HAC Test
+
+
+
+h = hac.full(type=HAC_GUMBEL, c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8"), c(1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7))    
           
