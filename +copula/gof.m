@@ -3,16 +3,16 @@ function [ h, p ] = gof( copulaparams, U, bootstraps, method, showProgress, vara
 
 switch method
 case 'snc'
-    [h, p] = bootstrap(@snc, bootstraps, U, copulaparams, varargin{:});
+    [h, p] = bootstrap(@snc, bootstraps, U, copulaparams, showProgress, varargin{:});
 case 'snb'
-    [h, p] = bootstrap(@snb, bootstraps, U, copulaparams, varargin{:});
+    [h, p] = bootstrap(@snb, bootstraps, U, copulaparams, showProgress, varargin{:});
 otherwise
     error('Method %s not recognized', method);
 end
 
 end
 
-function [h, p] = bootstrap( testfn, N, U, copulaparams, varargin )
+function [h, p] = bootstrap( testfn, N, U, copulaparams, showProgress, varargin )
     family = copulaparams.family;
     [n, d] = size(U);
     % Compute statistics value for original dataset
