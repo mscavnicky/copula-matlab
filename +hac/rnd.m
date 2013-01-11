@@ -57,16 +57,11 @@ case 'clayton'
     for i=1:n
        for j=1:M(i)
            v = 0;
-           rep = 0;
            while true
               x = stblrnd(alpha, 1, gamma(i), 0, 1);
               if (rand() <= exp(-x))
                   v = v + x;
                   break;
-              end
-              rep = rep + 1;
-              if rep == 50
-                 rep = 50;
               end
            end
            V01(i) = v;
@@ -99,18 +94,12 @@ case 'frank'
              V01(i) = v;
          else
             while true
-                % Perform approximation if V0 too large
-                if V0(i) > 10000
-                   V01(i) = V0(i)^(1/alpha) * stblrnd(alpha, 1, cos(alpha*pi/2)^(1/alpha), 1*(alpha==1));
+                u = rand();
+                x = sum(sibuyarnd(alpha, V0(i)));
+                if u <= c1^(x-1)
+                   V01(i) = x;
                    break;
-                else                
-                    u = rand();
-                    x = sum(sibuyarnd(alpha, V0(i)));
-                    if u <= c1^(x-1)
-                       V01(i) = x;
-                       break;
-                    end 
-                end
+                end 
             end
         end
     end

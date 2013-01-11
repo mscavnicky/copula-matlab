@@ -113,8 +113,11 @@ to.csv(dnacopula(hac.gumbel7, data7), "data/test_hac_pdf_gumbel7d.csv")
 to.csv(dnacopula(hac.frank7, data7), "data/test_hac_pdf_frank7d.csv")
             
 # HAC Test
+h = hac.full(type=HAC_GUMBEL, c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8"), c(1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7)) 
+            
+            
+# GOF
+U = rCopula(1000, normal.cop.2)
+gofCopula(normal.cop.2, U, N=100, method="SnC", estim.method="ml")
 
-
-
-h = hac.full(type=HAC_GUMBEL, c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8"), c(1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7))    
           

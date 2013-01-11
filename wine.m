@@ -133,8 +133,6 @@ hac.plot(joeTree, names);
 
 %% Decision trees
 
-
-
 tree = classregtree(X, Y, 'method', 'classification', 'names', names, 'minleaf', 10);
 view(tree);
 
