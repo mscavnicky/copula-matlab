@@ -7,7 +7,7 @@ function plot( tree, names )
 % Parent of the root node is 0
 nodes(1) = 0;
 % Label of the root node is its alpha
-labels{1} = num2str(tree{end});
+labels{1} = strcat('\theta=', num2str(tree{end}));
 % Run DFS to obtain nodes and labels
 [nodes, labels, count] = hac2nodes( tree, nodes, labels, 1 );
 % Plot the tree using nodes
@@ -40,7 +40,7 @@ for i=1:length(tree)-1
     child = tree{i};
     if iscell(child)        
         % Use alpha as a label of this subtree
-        labels{count} = num2str(child{end});
+        labels{count} = strcat('\theta=', num2str(child{end}));
         [nodes, labels, count] = hac2nodes(child, nodes, labels, count);        
     else
         % Use variable number as a label of this subtree
