@@ -25,7 +25,9 @@ end
 
 % Compute log likelihood, AIC and BIC
 ll = -loglike(copula.pdf(family, U, copulaparams));
-[aic, bic] = aicbic(ll, copulaparams.numParams, n);
+k = copulaparams.numParams;
+aic = -2*ll + (2*n*(k+1))/(n-k-2);
+bic = -2*ll + k*log(n);
 fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, aic, bic);
 
 fit = [ll, aic, bic];
