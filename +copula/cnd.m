@@ -75,7 +75,7 @@ case 't'
     D = mvtpdf( X, rho(1:m-1,1:m-1), nu );  
     Y = N ./ D;    
     
-case {'frank', 'gumbel', 'clayton'}
+case {'frank', 'gumbel', 'clayton', 'joe'}
     alpha = copulaparams.alpha;
     X1 = sum(archim.inv(family, U(:,1:m), alpha), 2);
     N = archim.ndiff(family, m-1, X1, alpha);
@@ -83,7 +83,7 @@ case {'frank', 'gumbel', 'clayton'}
     D = archim.ndiff(family, m-1, X2, alpha);
     Y = N ./ D;
     
-case {'claytonhac', 'gumbelhac', 'frankhac'}
+case {'claytonhac', 'gumbelhac', 'frankhac', 'joehac'}
     family = family(1:end-3);
     tree = copulaparams.tree;
     n = size(U, 2);
