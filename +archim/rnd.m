@@ -6,7 +6,6 @@ function [ U ] = rnd( family, alpha, n, d )
 %       Kemp - (1981) Efficient generation of logarithimic pseudo-random
 %       variables
 
-% General method
 %X = unifrnd(0, 1, n, d);
 %copulaparams.alpha = alpha;
 %U = copula.pit( family, X, copulaparams );

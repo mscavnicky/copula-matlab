@@ -1,6 +1,11 @@
 function [ U ] = rnd( family, tree, n )
 %RND Sample hierarchical archimedean copula
 
+%X = unifrnd(0, 1, n, hac.dim(tree));
+%copulaparams.tree = tree;
+%U = copula.pit( strcat(family, 'hac'), X, copulaparams );
+%return;
+
 % Dimensions of top-level copula in hac structure
 d = length(tree) - 1;
 % Find alpha on this level
