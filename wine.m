@@ -14,7 +14,8 @@ names = {...
     'alcohol'};
 
 data = csvread('../Data/winequality-red.csv');
-n = size(data, 1);
+[n, d] = size(data);
+d = d - 1;
 
 X = data(:,1:11);
 Y = data(:,12);
@@ -95,16 +96,15 @@ matrix2latex([f1;f3;f4;f5], 'fit.tex',...
 'rowLabels', {'Gaussian', 'Clayton', 'Gumbel', 'Frank'},...
 'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
 
-%% Fit copulas using CFM in 4 dimensions
+%% Fit copulas using CFM and IFM in 4 dimensions
 S = U(:, [2,5,7,8]);
-S = X(:, [2,5,7,8]);
 S = pit(S, {'gamma', 'tlocationscale', 'lognormal', 'tlocationscale'});
 
-f1 = copula.eval('gaussian', S, 200);
+f1 = copula.eval('gaussian', S, 1000);
 f2 = copula.eval('t', S, 11);
-f3 = copula.eval('clayton', S, 200);
-f4 = copula.eval('gumbel', S, 200);
-f5 = copula.eval('frank', S, 200);
+f3 = copula.eval('clayton', S, 500);
+f4 = copula.eval('gumbel', S, 1000);
+f5 = copula.eval('frank', S, 1000);
 f6 = copula.eval('claytonhac', S, 0, 'okhrin');
 f7 = copula.eval('gumbelhac', S, 0, 'okhrin');
 f8 = copula.eval('frankhac', S, 0, 'okhrin');
@@ -113,6 +113,45 @@ matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex
 'alignment', 'r', 'format', '%.3f',...
 'rowLabels', {'Gaussian', 't', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC'},...
 'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
+
+%% Fit copulas using CFM and IFM using 6 dimensions
+
+S = U(:, [2,5,7,8,9,10]);
+S = pit(S, {'gamma', 'tlocationscale', 'lognormal', 'tlocationscale'});
+
+f1 = copula.eval('gaussian', S, 1000);
+f2 = copula.eval('t', S, 11);
+f3 = copula.eval('clayton', S, 1000);
+f4 = copula.eval('gumbel', S, 1000);
+f5 = copula.eval('frank', S, 1000);
+f6 = copula.eval('claytonhac', S, 0, 'okhrin');
+f7 = copula.eval('gumbelhac', S, 0, 'okhrin');
+f8 = copula.eval('frankhac', S, 0, 'okhrin');
+
+matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex',...
+'alignment', 'r', 'format', '%.3f',...
+'rowLabels', {'Gaussian', 't', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC'},...
+'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
+
+
+%% Fit copulas using CFM and IFM in 4 dimensions
+S = U(:, [2,5,7,8]);
+S = pit(S, {'gamma', 'tlocationscale', 'lognormal', 'tlocationscale'});
+
+f1 = copula.eval('gaussian', S, 1000);
+f2 = copula.eval('t', S, 11);
+f3 = copula.eval('clayton', S, 1000);
+f4 = copula.eval('gumbel', S, 1000);
+f5 = copula.eval('frank', S, 1000);
+f6 = copula.eval('claytonhac', S, 10, 'okhrin');
+f7 = copula.eval('gumbelhac', S, 10, 'okhrin');
+f8 = copula.eval('frankhac', S, 10, 'okhrin');
+
+matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex',...
+'alignment', 'r', 'format', '%.3f',...
+'rowLabels', {'Gaussian', 't', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC'},...
+'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
+
 
 %% Hierarchy of dependency
 
@@ -130,6 +169,45 @@ hac.plot(frankTree, names);
 
 joeTree = hac.fit('joe', U);
 hac.plot(joeTree, names);
+
+%% Modelling 2D dependence
+
+P = X + repmat(std(X), n, 1) .* normrnd(0, 0.01, n, d);
+P = uniform(P);
+
+% free SO2, fixed SO2
+P67 = P(:, [6,7]);
+scatter(P(:,6),P(:,7));
+
+hist(P(:,6));
+
+U67 = U(:, [6,7]);
+scatter(U(:,6),U(:,7));
+
+copula.eval('gaussian', P67, 100);
+copula.eval('t', P67, 10);
+copula.eval('clayton', P67, 100);
+copula.eval('gumbel', P67, 0);
+copula.eval('gumbel', U67, 0);
+copula.eval('frank', P67, 0);
+copula.eval('frank', U67, 0);
+
+% fixed acidity, citric acid
+U13 = U(:, [1,3]);
+scatter(U(:,1),U(:,3));
+P13 = P(:, [1,3]);
+scatter(P(:,1),P(:,3));
+
+f1 = copula.eval('gaussian', P13, 100);
+f2 = copula.eval('t', U13, 10);
+f3 = copula.eval('clayton', P13, 100);
+f4 = copula.eval('gumbel', P13, 100);
+f5 = copula.eval('frank', P13, 100);
+
+matrix2latex([f1;f2;f3;f4;f5], 'fit.tex',...
+'alignment', 'r', 'format', '%.2f',...
+'rowLabels', {'Gaussian', 't', 'Clayton', 'Gumbel', 'Frank'},...
+'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
 
 %% Decision trees
 

@@ -1,6 +1,6 @@
 %% Load the data
 
-data = importdata('../Data/scavnicky.mat');
+data = importdata('../Data/chemistry.mat');
 data = data(:, [1 2 6 7]);
 
 Y1 = data(:,1);
@@ -30,6 +30,8 @@ corrKendall = corr(data, 'type', 'kendall');
 U = uniform(data);
 UX = uniform(X);
 UY = uniform(Y);
+
+scatter(U(:,1),U(:,2));
 
 UY1 = UY(:, 1);
 UY2 = UY(:, 2);

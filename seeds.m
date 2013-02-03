@@ -8,13 +8,13 @@ U = uniform(X);
 
 %% Histograms
 
-hist(X(:,1),20);
-hist(X(:,2),20);
+hist(X(:,1),100);
+hist(X(:,2),100);
 hist(X(:,3),100);
-hist(X(:,4),20);
-hist(X(:,5),20);
-hist(X(:,6),20);
-hist(X(:,7),20);
+hist(X(:,4),100);
+hist(X(:,5),100);
+hist(X(:,6),100);
+hist(X(:,7),100);
 
 %% Histograms of uniformed data
 
