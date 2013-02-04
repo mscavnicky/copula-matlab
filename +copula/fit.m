@@ -13,7 +13,8 @@ switch family
         
         copulaparams.numParams = d*(d-1) / 2;
     case {'t'}
-        [rho, nu] = copulafit(family, U);
+        method = varargin{1};
+        [rho, nu] = copulafit(family, U, 'method', method);
         copulaparams.rho = rho;
         copulaparams.nu = nu;
         
