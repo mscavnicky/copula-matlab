@@ -13,13 +13,16 @@ names = {...
     'sulphates',...
     'alcohol'};
 
-data = csvread('../Data/winequality-red.csv');
+data = csvread('../Data/Wine/winequality-red.csv');
 [n, d] = size(data);
 d = d - 1;
 
 X = data(:,1:11);
 Y = data(:,12);
 U = uniform(X);
+
+P = X + repmat(std(X), n, 1) .* normrnd(0, 0.001, n, d);
+P = uniform(P);
 
 %% Asses fit of the margins
 
@@ -83,15 +86,20 @@ hist(data(:,10), 20);
 hist(data(:,11), 20);
 hist(data(:,12), 20);
 
+%% Scatter visualizations
+
+plotmatrix(X);
+plotmatrix(P);
+
 %% Fit copulas using CFM in 11 dimensions
 
-f1 = copula.eval('gaussian', U, 100);
-%f2 = copula.eval('t', U, 10); % Computationally infeasible
+f1 = copula.eval('gaussian', P, 100);
+f2 = copula.eval('t', U, 10);
 f3 = copula.eval('clayton', U, 100);
 f4 = copula.eval('gumbel', U, 10);
 f5 = copula.eval('frank', U, 100);
 
-matrix2latex([f1;f3;f4;f5], 'fit.tex',...
+matrix2latex([f1;f2,f3;f4;f5], 'fit.tex',...
 'alignment', 'r', 'format', '%.3f',...
 'rowLabels', {'Gaussian', 'Clayton', 'Gumbel', 'Frank'},...
 'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
@@ -155,9 +163,6 @@ matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex
 
 %% Hierarchy of dependency
 
-%U(:,9) = 1 - U(:,9);
-%U = 1 - U;
-
 claytonTree = hac.fit('clayton', U);
 hac.plot(claytonTree, names);
 
@@ -215,6 +220,7 @@ tree = classregtree(X, Y, 'method', 'classification', 'names', names, 'minleaf',
 view(tree);
 
 %% Correlations
+
 matrix2latex(corr(U), '../Data/Wine/corr.tex', 'format', '%.3f', 'rowLabels', names, 'columnLabels', names);
 
 
