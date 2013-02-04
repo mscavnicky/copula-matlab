@@ -25,7 +25,9 @@ switch method
 case 'full'
     tree = hacfitFull( family, U );    
 case 'okhrin'
-    tree = hacfitOkhrin( family, U );
+    tree = hacfitOkhrin( family, U, 'okhrin' );
+case 'plot'
+    tree = hacfitOkhrin( family, U, 'plot' );    
 end
 
 % Validate generated HAC
@@ -146,7 +148,7 @@ partitions = partitions(1:l);
 end
 
 
-function [ tree ] = hacfitOkhrin( family, U )
+function [ tree ] = hacfitOkhrin( family, U, method )
 %HACFITOKHRIN Find HAC copula using Okhrin's greedy method [1].
 %   Uses only bivariate copula and does not perform joins as Okhrin
 %   suggests. To obtain valid HAC parameter space is shortened for outer
@@ -163,14 +165,18 @@ copulaNumber = d;
 while length(vars) > 1
     copulaNumber = copulaNumber + 1;
     dbg('Iteration %d - %s.\n', copulaNumber - d, mat2str(vars));
+    
     % Find the best fit available for current vars 
-    [ nestedVars, nestedAlpha ] = chooseCopula( family, U, vars, copulas );
+    [ nestedVars, nestedAlpha ] = chooseCopula( family, U, vars, copulas, d, method );
+    
     % Compute output of chocsen nested copula and append it to the data sample
-    U = [U archim.cdf( family, U(:, nestedVars), nestedAlpha )];
+    U = [U archim.cdf( family, U(:, abs(nestedVars)), nestedAlpha )];
+    
     % Insert it into cache using HAC format
     copulas(copulaNumber) = num2cell([nestedVars, nestedAlpha]);    
+    
     % Remove variables used in nested copula and introduce new for the copula
-    vars = [setdiff(vars, nestedVars), copulaNumber];
+    vars = [setdiff(vars, abs(nestedVars)), copulaNumber];
 end
 
 % Recursively build the HAC structure using partial copulas
@@ -180,7 +186,7 @@ tree = buildHacStructure( copulas(vars(1)), copulas );
 
 end
 
-function [ maxVars, maxAlpha ] = chooseCopula( family, U, vars, copulas )
+function [ maxVars, maxAlpha ] = chooseCopula( family, U, vars, copulas, d, method )
 %CHOOSECOPULA Tries to find the combination of variables that gives the
 %highest alpha possible.
     
@@ -191,16 +197,40 @@ maxAlpha = -1;
 combinations = combnk(vars, 2);
 % Go over each combination and compute its fit
 for j = 1:size(combinations, 1)
-    comb = combinations(j,:);
+    comb = combinations(j,:);   
+    
     dbg('* Evaluating combination %s ... ', mat2str(comb));
-    [ lowerBound, upperBound ] = hac.bounds( family );
-    upperBound = min( upperBound, childAlpha( copulas, comb ) );    
+    % Make sure we are using valid upper bound
+    [ lowerBound, upperBound ] = hac.bounds( family );    
+    upperBound = min( upperBound, childAlpha( copulas, comb ) );
+    
+    % Perform using valid bounds and given combination
     alpha = archim.fit( family, U(:, comb), lowerBound, upperBound );
     dbg('%f\n', alpha);
     
     if alpha > maxAlpha
        maxVars = comb;
        maxAlpha = alpha;
+    end
+    
+    % Rotated left
+    if strcmp(method, 'plot') && comb(1) <= d        
+        alpha = archim.fit( family, [1-U(:, comb(1)) U(:, comb(2))], lowerBound, upperBound );
+        
+        if alpha > maxAlpha
+            maxVars = comb .* [-1 1];
+            maxAlpha = alpha;
+        end
+    end
+    
+    % Rotated right
+    if strcmp(method, 'plot') && comb(2) <= d        
+        alpha = archim.fit( family, [U(:, comb(1)) 1-U(:, comb(2))], lowerBound, upperBound );
+        
+        if alpha > maxAlpha
+            maxVars = comb .* [1 -1];
+            maxAlpha = alpha;
+        end        
     end
 end
 

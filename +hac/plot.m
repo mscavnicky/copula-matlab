@@ -19,7 +19,11 @@ if nargin > 1
    for i=1:count
       if ~ischar(labels{i})
           u = labels{i};
-          labels{i} = sprintf('%s', names{u});
+          if u > 0
+            labels{i} = sprintf('%s', names{u});
+          else
+            labels{i} = sprintf('*%s', names{abs(u)});
+          end
       end
    end
 end
