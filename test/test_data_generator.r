@@ -121,5 +121,15 @@ h = hac.full(type=HAC_GUMBEL, c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8"),
 gofTstat(data7, "SnC")
 gofTstat(data7, "SnB")
 
+# Test GOF of seeds
+seeds = read.csv("../../Data/Seeds/seeds.txt");
+seeds = pobs(seeds, ties.method="max")
+# Remove row contatining NA
+seeds = seeds[c(-189),]
+
+seeds.copula = normalCopula(rep(0, 21), dim=7, dispstr="un")
+fitCopula(seeds.copula, seeds[,1:7])
+gofCopula(seeds.copula, seeds[,1:7], N = 10, method="SnB")
+
 
           
