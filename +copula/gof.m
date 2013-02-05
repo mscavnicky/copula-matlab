@@ -12,11 +12,13 @@ end
 
 end
 
-function [h, p] = bootstrap( testfn, N, U, copulaparams, showProgress, varargin )
+function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
     family = copulaparams.family;
     [n, d] = size(U);
+    % Perform Rosenblatt's transform on uniform variates
+    E = copula.pit( family, U, copulaparams );    
     % Compute statistics value for the original dataset
-    t = testfn( family, U, copulaparams );
+    t = stat( E );
     % Boostraped statistics
     T = zeros(N, 1);
     
@@ -28,48 +30,41 @@ function [h, p] = bootstrap( testfn, N, U, copulaparams, showProgress, varargin 
     
     i = 1;
     while i <= N
-        try            
-            tic();
-            % Simulate fitted copula
-            V = uniform(copula.rnd(family, n, d, copulaparams));
-            % Fit simulated data       
-            fitparams = copula.fit(family, V, varargin{:});
-            % Get another bootstrapped statistics
-            T(i) = testfn( family, V, fitparams );
-            % Keep duration of this iteratioin
-            times(i) = toc();
-            % Print estimated time
-            if showProgress
-                timeLeft = mean(times(max(1, i-21):i)) * (N-i);
-                fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
-                fprintf(1, '%4d/%4d (%5.1f)', i, N, timeLeft);
-            end
-            % Increment iterator
-            i = i + 1;            
-        catch err
-            warning('Error handled.', err);
-            if ~strcmp(err.identifier, 'hac:fit:invalid')                
-                rethrow(err);            
-            end
+        tic();
+        % Simulate fitted copula
+        V = uniform(copula.rnd(family, n, d, copulaparams));
+        % Fit simulated data       
+        fitparams = copula.fit(family, V, varargin{:});
+        % Compute Rosenblatt's transform of the fitted param
+        E = copula.pit(family, V, fitparams);
+        % Compute statistics of this bootstrap
+        T(i) = stat(E);
+        % Keep duration of this iteratioin
+        times(i) = toc();
+        % Print estimated time
+        if showProgress
+            timeLeft = mean(times(max(1, i-21):i)) * (N-i);
+            fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
+            fprintf(1, '%4d/%4d (%5.1f)', i, N, timeLeft);
         end
-    end    
+        % Increment iterator
+        i = i + 1;            
+    end   
     
+   
     p = mean(T > t);
     h = p > 0.05;
 end
 
-function [ T ] = snc( family, U, copulaparams )
-    % Perform Rosenblatt's transformation
-    E = copula.pit(family, U, copulaparams);
-    % Compute test statistic
+function [ T ] = snc( E )
     T = sum((copula.emp(E) - prod(E, 2)) .^ 2);
 end
 
-function [ T ] = snb( family, U, copulaparams )
-    % Perform Rosenblatt's transformation
-    E = copula.pit(family, U, copulaparams);
+function [ T ] = snb( E )
     % Compute test statistics
     T = copula.snbstat( E );
+    
+    %[n,d] = size(U);
     
     %t1 = n / 3^d;
     %t2 = sum(prod(1 - E.^2, 2), 1) / 2^(d-1);
@@ -83,6 +78,5 @@ function [ T ] = snb( family, U, copulaparams )
     %t3 = t3 / n;
 
     %T = t1 - t2 + t3;
-
 end
 
