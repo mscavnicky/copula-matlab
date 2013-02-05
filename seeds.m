@@ -1,5 +1,7 @@
 %% Load data
 
+names = {'area', 'perimeter', 'compactness', 'length', 'width', 'assymetry', 'groove'};
+
 data = csvread('../Data/Seeds/seeds.txt');
 X = data(:, 1:7);
 Y = data(:, 8);
@@ -33,44 +35,44 @@ plotmatrix(U);
 
 %% Examine the distributions of marginals
 
-[~, PD1] = allfitdist(X(:,1)); % Generalized Pareto / Inverse Gaussian
+[~, PD1] = allfitdist(X(:,1)); % Inverse Gaussian
 [h, p] = kstest2(X(:,1), PD1{2}.random(n, 1))
 
-[~, PD2] = allfitdist(X(:,2)); % Generalized Pareto / Inverse Gaussian
+[~, PD2] = allfitdist(X(:,2)); % Inverse Gaussian
 [h, p] = kstest2(X(:,2), PD2{3}.random(n, 1))
 
-[~, PD3] = allfitdist(X(:,3)); % t-locationscale
-[h, p] = kstest2(X(:,3), PD3{1}.random(n, 1))
+[~, PD3] = allfitdist(X(:,3)); % Normal
+[h, p] = kstest2(X(:,3), PD3{6}.random(n, 1))
 
-[~, PD4] = allfitdist(X(:,4)); % t-locationscale
-[h, p] = kstest2(X(:,4), PD4{1}.random(n, 1))
+[~, PD4] = allfitdist(X(:,4)); % Inverse Gaussian
+[h, p] = kstest2(X(:,4), PD4{3}.random(n, 1))
 
-[~, PD5] = allfitdist(X(:,5)); % t-locationscale
-[h, p] = kstest2(X(:,5), PD5{1}.random(n, 1))
+[~, PD5] = allfitdist(X(:,5)); % Inverse Gaussian
+[h, p] = kstest2(X(:,5), PD5{3}.random(n, 1))
 
 [~, PD6] = allfitdist(X(:,6)); % Gamma
 [h, p] = kstest2(X(:,6), PD6{4}.random(n, 1))
 
-[~, PD7] = allfitdist(X(:,7)); % t-locationscale
+[~, PD7] = allfitdist(X(:,7)); % Generalized Extreme Value
 [h, p] = kstest2(X(:,7), PD7{1}.random(n, 1))
 
 %% Visualize dependency using HAC
 
-claytonTree = hac.fit('clayton', U);
-hac.plot(claytonTree);
+claytonTree = hac.fit('clayton', U, 'plot');
+hac.plot(claytonTree, names);
 
-gumbelTree = hac.fit('gumbel', U);
-hac.plot(gumbelTree);
+gumbelTree = hac.fit('gumbel', U, 'plot');
+hac.plot(gumbelTree, names);
 
-frankTree = hac.fit('frank', U);
-hac.plot(frankTree);
+frankTree = hac.fit('frank', U, 'plot');
+hac.plot(frankTree, names);
 
 %% Perform Fit using IFM
 
-S = pit(X, {'inversegaussian', 'inversegaussian', 'tlocationscale', 'tlocationscale', 'tlocationscale', 'gamma', 'tlocationscale'});
+S = pit(X, {'inversegaussian', 'inversegaussian', 'normal', 'inversegaussian', 'inversegaussian', 'gamma', 'inversegaussian'});
 plotmatrix(S);
 
-copula.eval('gaussian', S, 1000);
+copula.eval('gaussian', S, 100);
 copula.eval('t', S, 10);
 copula.eval('clayton', S, 100);
 copula.eval('gumbel', S, 100);
@@ -81,7 +83,7 @@ copula.eval('frankhac', S, 0, 'okhrin');
 
 %% Perform Fit using CFM
 
-copula.eval('gaussian', U, 1000);
+copula.eval('gaussian', U, 100);
 copula.eval('t', U, 20, 'approximateml');
 copula.eval('clayton', U, 100);
 copula.eval('gumbel', U, 100);
