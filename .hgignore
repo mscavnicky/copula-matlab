@@ -5,3 +5,5 @@ syntax: glob
 .RData
 .RDataTmp
 *~
+
+*.mex*
