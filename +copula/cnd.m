@@ -1,7 +1,7 @@
 function [ Y ] = cnd( family, U, m, copulaparams )
 % COPULACND Conditional cumulative distribution function for copulas.
-%   Computes conditional CDF of d-dimensional copula, where d-th element is
-%   the only unconditioned variable.
+%   Computes conditional CDF of d-dimensional copula, where ,-th variable
+%   is conditined upon first m-1 variables.
 %
 %   References:
 %       [1] Savu, Trede, GOF tests for parametric families of Archimedean
@@ -39,6 +39,7 @@ case 'gaussian'
     D = mvnpdf( X, 0, rho(1:m-1,1:m-1) );
     
     Y = N ./ D;
+    
 case 't'
     %rho = copulaparams.rho;
     %df = copulaparams.nu;
@@ -76,46 +77,12 @@ case 't'
     Y = N ./ D;    
     
 case {'frank', 'gumbel', 'clayton', 'joe'}
-    alpha = copulaparams.alpha;
-    X1 = sum(archim.inv(family, U(:,1:m), alpha), 2);
-    N = archim.ndiff(family, m-1, X1, alpha);
-    X2 = sum(archim.inv(family, U(:,1:m-1), alpha), 2);
-    D = archim.ndiff(family, m-1, X2, alpha);
-    Y = N ./ D;
+    Y = archim.cnd(family, U, copulaparams.alpha, m);
     
 case {'claytonhac', 'gumbelhac', 'frankhac', 'joehac'}
     family = family(1:end-3);
-    tree = copulaparams.tree;
-    n = size(U, 2);
-    % Get the CDF expression
-    f = hac.sym.cdf(family, tree);
-    % Get all the symbols used
-    vars = symvar(f);
-    % Replace symbols m+1:n with 1
-    for i=m+1:n
-       f = subs(f, vars(i), 1);
-    end
-    % Derivate in variables 1-m-1
-    for i=1:m-1
-       f = diff(f, vars(i)); 
-    end
-    % Create a matlab function to evaluate
-    fn = matlabFunction(f, 'vars', {vars(1:m)});    
-    % Get the result in nominator
-    N = fn(U(:,1:m));        
-
-    g = hac.sym.cdf(family, tree);
-    vars = symvar(g);
-    for i=m:n
-        g = subs(g, vars(i), 1);
-    end
-    for i=1:m-1
-       g = diff(g, vars(i)); 
-    end
-    gn = matlabFunction(g, 'vars', {vars(1:m-1)});
-    D = gn(U(:,1:m-1));
-
-    Y = N ./ D;       
+    Y = hac.cnd(family, U, copulaparams.tree, m);
+     
 otherwise
     error('Copula family not supported.');    
 end
