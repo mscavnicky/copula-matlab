@@ -1,4 +1,4 @@
-function [ Y ] = cnd( family, U, m, copulaparams )
+function [ Y ] = cnd( copulaparams, U, m )
 % COPULACND Conditional cumulative distribution function for copulas.
 %   Computes conditional CDF of d-dimensional copula, where ,-th variable
 %   is conditined upon first m-1 variables.
@@ -6,6 +6,8 @@ function [ Y ] = cnd( family, U, m, copulaparams )
 %   References:
 %       [1] Savu, Trede, GOF tests for parametric families of Archimedean
 %       copulas, 2004
+
+family = copulaparams.family;
 
 switch family
 case 'gaussian'

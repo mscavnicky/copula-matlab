@@ -13,10 +13,9 @@ end
 end
 
 function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
-    family = copulaparams.family;
     [n, d] = size(U);
     % Perform Rosenblatt's transform on uniform variates
-    E = copula.pit( family, U, copulaparams );    
+    E = copula.pit( copulaparams, U );    
     % Compute statistics value for the original dataset
     t = stat( E );
     % Boostraped statistics
@@ -32,11 +31,11 @@ function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
     while i <= N
         tic();
         % Simulate fitted copula
-        V = uniform(copula.rnd(family, n, d, copulaparams));
+        V = uniform(copula.rnd(copulaparams, n, d));
         % Fit simulated data       
-        fitparams = copula.fit(family, V, varargin{:});
+        fitparams = copula.fit(copulaparams.family, V, varargin{:});
         % Compute Rosenblatt's transform of the fitted param
-        E = copula.pit(family, V, fitparams);
+        E = copula.pit(fitparams, V);
         % Compute statistics of this bootstrap
         T(i) = stat(E);
         % Keep duration of this iteratioin

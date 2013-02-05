@@ -1,5 +1,7 @@
-function [ U ] = rnd( family, n, d, copulaparams )
+function [ U ] = rnd( copulaparams, n, d )
 %COPULASIM Random vectors from a copula
+
+family = copulaparams.family;
 
 switch family
 case 'gaussian' 

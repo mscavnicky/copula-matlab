@@ -29,17 +29,15 @@ function testSnBGaussian10D
     assertTrue(p > 0.05);
     
 function testSnCClayton2D
-    clayton2.family = 'clayton';
-    clayton2.alpha = 1.5;
-    U = uniform(copula.rnd('clayton', 1000, 2, clayton2));
+    clayton2 = struct('family', 'clayton', 'alpha', 1.5);
+    U = uniform(copula.rnd(clayton2, 1000, 2));
     copulaparams = copula.fit('clayton', U);
     [~, p] = copula.gof(copulaparams, U, 100, 'snc', 0);
     assertTrue(p > 0.05);
     
 function testSnBClayton2D
-    clayton2.family = 'clayton';
-    clayton2.alpha = 1.5;
-    U = uniform(copula.rnd('clayton', 1000, 2, clayton2));
+    clayton2 = struct('family', 'clayton', 'alpha', 1.5);
+    U = uniform(copula.rnd(clayton2, 1000, 2));
     copulaparams = copula.fit('clayton', U);
     [~, p] = copula.gof(copulaparams, U, 100, 'snb', 0);
     assertTrue(p > 0.05);

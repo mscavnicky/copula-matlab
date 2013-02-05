@@ -1,4 +1,4 @@
-function [ T ] = pit( family, U, copulaparams )
+function [ T ] = pit( copulaparams, U )
 %COPULAPIT Performs probability integral transformation under the null
 %hypothesis that the data are generated using given copula.
 %
@@ -15,7 +15,7 @@ T = zeros(n, d);
 
 T(:,1) = U(:,1);
 for i=2:d
-    T(:,i) = copula.cnd( family, U, i, copulaparams );
+    T(:,i) = copula.cnd( copulaparams, U, i );
 end
 
 end

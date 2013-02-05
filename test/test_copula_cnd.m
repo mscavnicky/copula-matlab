@@ -6,67 +6,64 @@ initTestSuite;
 
 function testGaussianIn2D
     U = csvread('data/data3d.csv');
-    copulaparams.rho = covmat([0.18, 0.23, 0.74]);
-    X = copula.cnd('gaussian', U, 2, copulaparams);
+    gaussian3 = struct('family', 'gaussian', 'rho', covmat([0.18, 0.23, 0.74]));
+    X = copula.cnd(gaussian3, U, 2);
     Y = csvread('data/test_copulacnd_gaussian2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testGaussianIn3D
     U = csvread('data/data3d.csv');
-    copulaparams.rho = covmat([0.18, 0.23, 0.74]);
-    X = copula.cnd('gaussian', U, 3, copulaparams);
+    gaussian3 = struct('family', 'gaussian', 'rho', covmat([0.18, 0.23, 0.74]));
+    X = copula.cnd(gaussian3, U, 3);
     Y = csvread('data/test_copulacnd_gaussian3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testStudentIn2D
     U = csvread('data/data3d.csv');
-    copulaparams.rho = covmat([0.37, 0.52, 0.77]);
-    copulaparams.nu = 5;    
-    X = copula.cnd('t', U, 2, copulaparams);
+    student3 = struct('family', 't', 'rho', covmat([0.37, 0.52, 0.77]), 'nu', 5);
+    X = copula.cnd(student3, U, 2);
     Y = csvread('data/test_copulacnd_t2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testStudentIn3D
     U = csvread('data/data3d.csv');
-    copulaparams.rho = covmat([0.37, 0.52, 0.77]);
-    copulaparams.nu = 5; 
-    X = copula.cnd('t', U, 3, copulaparams);
+    student3 = struct('family', 't', 'rho', covmat([0.37, 0.52, 0.77]), 'nu', 5);
+    X = copula.cnd(student3, U, 3);
     Y = csvread('data/test_copulacnd_t3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testClaytonIn2D
     U = csvread('data/data2d.csv');
-    copulaparams.alpha = 1.4557;
-    X = copula.cnd('clayton', U, 2, copulaparams);
+    clayton2 = struct('family', 'clayton', 'alpha', 1.4557);
+    X = copula.cnd(clayton2, U, 2);
     Y = csvread('data/test_copulacnd_clayton2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testClaytonIn3D
     U = csvread('data/data3d.csv');
-    copulaparams.alpha = 0.9912;
-    X = copula.cnd('clayton', U, 3, copulaparams);
+    clayton3 = struct('family', 'clayton', 'alpha',  0.9912);
+    X = copula.cnd(clayton3, U, 3);
     Y = csvread('data/test_copulacnd_clayton3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testGumbelIn3D
     U = csvread('data/data3d.csv');
-    copulaparams.alpha = 1.4529;
-    X = copula.cnd('gumbel', U, 3, copulaparams);
+    gumbel3 = struct('family', 'gumbel', 'alpha',  1.4529);
+    X = copula.cnd(gumbel3, U, 3);
     Y = csvread('data/test_copulacnd_gumbel3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testFlatHacClaytonIn2D
     U = csvread('data/data2d.csv');
-    copulaparams.tree = {1 2 1.4557};
-    X = copula.cnd('claytonhac', U, 2, copulaparams);
+    hac2 = struct('family', 'claytonhac', 'tree', {{1 2 1.4557}});
+    X = copula.cnd(hac2, U, 2);
     Y = csvread('data/test_copulacnd_clayton2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testFlatHacClaytonIn3D
     U = csvread('data/data3d.csv');
-    copulaparams.tree = {1 2 3 0.9912};
-    X = copula.cnd('claytonhac', U, 3, copulaparams);
+    hac3 = struct('family', 'claytonhac', 'tree', {{1 2 3 0.9912}});
+    X = copula.cnd(hac3, U, 3);
     Y = csvread('data/test_copulacnd_clayton3d.csv');
-    assertVectorsAlmostEqual(X, Y); 
-    
+    assertVectorsAlmostEqual(X, Y);    
     

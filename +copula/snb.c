@@ -3,6 +3,8 @@
 #include "mex.h"
 #include "matrix.h"
 
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+
 /**
  * Computes SnB test statistics given data transformed by Rosenblatt's 
  * transform.
@@ -33,7 +35,9 @@ double snbStat(double* e,mwSize n, mwSize d)
         {
             prod = 1;
             for (k=0; k<d; k++)
-                prod *= 1 - fmax(e[k*n + i], e[k*n + j]);
+            {
+                prod *= 1 - MAX(e[k*n + i], e[k*n + j]);                
+            }
             t3 += prod;
         }
     }    

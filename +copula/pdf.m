@@ -1,5 +1,7 @@
-function [ Y ] = pdf( family, U, copulaparams )
+function [ Y ] = pdf( copulaparams, U )
 %PDF Copula probability distribution function
+
+family = copulaparams.family;
 
 switch family
 case 'gaussian' 

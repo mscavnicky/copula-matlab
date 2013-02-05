@@ -32,6 +32,6 @@ end
 gn = matlabFunction(g, 'vars', {vars(1:m-1)});
 D = gn(U(:,1:m-1));
 
-Y = N ./ D; 
+Y = N ./ D;
 
 end
