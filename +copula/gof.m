@@ -3,9 +3,9 @@ function [ h, p ] = gof( copulaparams, U, bootstraps, method, showProgress, vara
 
 switch method
 case 'snc'
-    [h, p] = bootstrap(@snc, bootstraps, U, copulaparams, showProgress, varargin{:});
+    [h, p] = bootstrap(@copula.snc, bootstraps, U, copulaparams, showProgress, varargin{:});
 case 'snb'
-    [h, p] = bootstrap(@snb, bootstraps, U, copulaparams, showProgress, varargin{:});
+    [h, p] = bootstrap(@copula.snb, bootstraps, U, copulaparams, showProgress, varargin{:});
 otherwise
     error('Method %s not recognized', method);
 end
@@ -54,29 +54,5 @@ function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
    
     p = mean(T > t);
     h = p > 0.05;
-end
-
-function [ T ] = snc( E )
-    T = sum((copula.emp(E) - prod(E, 2)) .^ 2);
-end
-
-function [ T ] = snb( E )
-    % Compute test statistics
-    T = copula.snbstat( E );
-    
-    %[n,d] = size(U);
-    
-    %t1 = n / 3^d;
-    %t2 = sum(prod(1 - E.^2, 2), 1) / 2^(d-1);
-
-    %t3 = 0;
-    %for i=1:n
-    %   for j=1:n
-    %      t3 = t3 + prod(1 - max(E(i,:), E(j,:)), 2);
-    %   end
-    %end
-    %t3 = t3 / n;
-
-    %T = t1 - t2 + t3;
 end
 
