@@ -33,7 +33,7 @@ double snbStat(double* e,mwSize n, mwSize d)
         {
             prod = 1;
             for (k=0; k<d; k++)
-                prod *= 1 - max(e[k*n + i], e[k*n + j]);
+                prod *= 1 - fmax(e[k*n + i], e[k*n + j]);
             t3 += prod;
         }
     }    
@@ -49,13 +49,13 @@ void mexFunction( int nlhs, mxArray *plhs[], int rlhs, const mxArray *prhs[])
     mwSize d;
     double t;
     
-    // Read input data
+    /* Read input data. */
     e = mxGetPr(prhs[0]);
     n = mxGetM(prhs[0]);
     d = mxGetN(prhs[0]);
         
     t = snbStat(e, n, d);
     
-    // Prepare output data
+    /* Prepare output data. */
     plhs[0] = mxCreateDoubleScalar(t);    
 }
