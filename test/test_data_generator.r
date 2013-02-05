@@ -8,6 +8,7 @@ data7 <- as.matrix(read.csv("data/data7d.csv", header=FALSE, sep=","))
 
 normal.cop.2 = normalCopula(c(0.57), dim=2, dispstr="un")
 normal.cop.3 = normalCopula(c(0.18, 0.23, 0.74), dim=3, dispstr="un")
+normal.cop.7 = normalCopula(c(0.1003, 0.0573, 0.0548,-0.0287, 0.0260, 0.0559, 0.0858, -0.0256, -0.0509, -0.0824, 0.0413, 0.1022, -0.1138, 0.0983, 0.0552, 0.0952, -0.0668, 0.0905, -0.0617, 0.0725, 0.0040), dim=7, dispstr="un");
 t.cop.3 = tCopula(c(0.37, 0.52, 0.77), df=5, dim=3, dispstr="un")
 clayton.cop.3 = archmCopula("clayton", param=0.9912, dim=3)  
 gumbel.cop.3 = archmCopula("gumbel", param=1.4529, dim=3)
@@ -42,6 +43,7 @@ to.csv(dCopula(data3, joe.cop.3), "data/test_archim_pdf_joe3d.csv")
 # Rosenblatt's transform
 to.csv(rtrafo(data2, normal.cop.2), "data/test_copula_pit_gaussian2d.csv")
 to.csv(rtrafo(data3, normal.cop.3), "data/test_copula_pit_gaussian3d.csv")
+to.csv(rtrafo(data7, normal.cop.7), "data/test_copula_pit_gaussian7d.csv")
 to.csv(rtrafo(data3, clayton.cop.3), "data/test_copula_pit_clayton3d.csv")
 to.csv(rtrafo(data3, gumbel.cop.3), "data/test_copula_pit_gumbel3d.csv")
 
