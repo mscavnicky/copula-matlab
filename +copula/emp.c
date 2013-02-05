@@ -27,12 +27,12 @@ void mexFunction( int nlhs, mxArray *plhs[], int rlhs, const mxArray *prhs[])
     mwSize d;
     double *y;
     
-    // Read input data
+    /* Read input data. */
     x = mxGetPr(prhs[0]);
     n = mxGetM(prhs[0]);
     d = mxGetN(prhs[0]);
     
-    // Prepare output data
+    /* Prepare output data. */
     plhs[0] = mxCreateDoubleMatrix(n, 1, mxREAL);
     y = mxGetPr(plhs[0]);
     

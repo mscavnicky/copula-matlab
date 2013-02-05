@@ -50,8 +50,7 @@ function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
         % Increment iterator
         i = i + 1;            
     end   
-    
-   
+       
     p = mean(T > t);
     h = p > 0.05;
 end
