@@ -48,17 +48,17 @@ to.csv(rtrafo(data3, clayton.cop.3), "data/test_copula_pit_clayton3d.csv")
 to.csv(rtrafo(data3, gumbel.cop.3), "data/test_copula_pit_gumbel3d.csv")
 
 # Archimedean Copula's sampling
-to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=2)), "data/test_copula_rnd_clayton2d.csv");
+to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=2)), "data/test_copula_rnd_clayton2d.csv")
 
-to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=5)), "data/test_copula_rnd_clayton.csv");
-to.csv(rCopula(1000, archmCopula("gumbel", 1.5, dim=5)), "data/test_copula_rnd_gumbel.csv");
-to.csv(rCopula(1000, archmCopula("frank", 1.5, dim=5)), "data/test_copula_rnd_frank.csv");
-to.csv(rCopula(1000, archmCopula("joe", 1.5, dim=5)), "data/test_copula_rnd_joe.csv");
-to.csv(rCopula(1000, normal.cop.3), "data/test_copula_rnd_gaussian.csv");
+to.csv(rCopula(1000, archmCopula("clayton", 1.5, dim=5)), "data/test_copula_rnd_clayton.csv")
+to.csv(rCopula(1000, archmCopula("gumbel", 1.5, dim=5)), "data/test_copula_rnd_gumbel.csv")
+to.csv(rCopula(1000, archmCopula("frank", 1.5, dim=5)), "data/test_copula_rnd_frank.csv")
+to.csv(rCopula(1000, archmCopula("joe", 1.5, dim=5)), "data/test_copula_rnd_joe.csv")
+to.csv(rCopula(1000, normal.cop.3), "data/test_copula_rnd_gaussian.csv")
 
 # Kolomogorov-Smirnov experiment
-x = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
-y = rCopula(1000, archmCopula("clayton", 1.5, dim=5)
+x = rCopula(1000, archmCopula("clayton", 1.5, dim=5))
+y = rCopula(1000, archmCopula("clayton", 1.5, dim=5))
 ks.test(x[,1], y[,1])
             
 # FX Test comparation
@@ -66,7 +66,7 @@ price2ret <- function(prices) {
   returns = log(1 + diff(prices) / head(prices, -1))
   return (returns)
 }
-
+            
 # GOF tests
 fx.prices <- as.matrix(read.csv("../../Data/fxdata-small.txt", header=FALSE, sep=","))
 fx.returns <- price2ret(fx.prices)
@@ -80,8 +80,7 @@ frank.cop.fx = archmCopula("frank", param=0.92933, dim=4)
             
 gofCopula(clayton.cop.fx, uniform.fx.returns, method="SnC", estim.method="ml", N=10)
             
-# HAC sampling Test
-            
+# HAC sampling Test            
 hac.clayton <- onacopula("Clayton", C(1.25, 1, C(2, c(2,3))))
 hac.gumbel <- onacopula("Gumbel", C(1.25, 1, C(2, c(2,3))))
 hac.frank1 <- onacopula("Frank", C(1.25, 1, C(2, c(2,3))))            
@@ -118,8 +117,9 @@ to.csv(dnacopula(hac.frank7, data7), "data/test_hac_pdf_frank7d.csv")
 h = hac.full(type=HAC_GUMBEL, c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8"), c(1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7)) 
             
             
-# GOF
-U = rCopula(1000, normal.cop.2)
-gofCopula(normal.cop.2, U, N=100, method="SnC", estim.method="ml")
+# SnC and SnB test            
+gofTstat(data7, "SnC")
+gofTstat(data7, "SnB")
+
 
           
