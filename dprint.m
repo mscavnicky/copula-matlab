@@ -31,8 +31,8 @@ function [ str ] = dprint2( obj, depth )
            ss{end+1} = sprintf('%s:%s', dprint2(key, depth+1), dprint2(value, depth+1));           
         end
         str = join(ss, ', ', 'S{', '}');
-    elseif isobject(obj)
-        str = '[~obj]';
+    elseif isobject(obj)        
+        str = evalc('disp(obj)');
     elseif ismatrix(obj)
         str = mat2str(obj, 5);
     else
