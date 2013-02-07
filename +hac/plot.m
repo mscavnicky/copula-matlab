@@ -1,4 +1,4 @@
-function plot( tree, names )
+function plot( family, tree, names )
 %HAC.PLOT Plot structure of given HAC tree
 %   
 %   References:
@@ -7,9 +7,9 @@ function plot( tree, names )
 % Parent of the root node is 0
 nodes(1) = 0;
 % Label of the root node is its alpha
-labels{1} = strcat('\theta=', num2str(tree{end}));
+labels{1} = strcat('\tau=', num2str(copulastat(family, tree{end})));
 % Run DFS to obtain nodes and labels
-[nodes, labels, count] = hac2nodes( tree, nodes, labels, 1 );
+[nodes, labels, count] = hac2nodes( family, tree, nodes, labels, 1 );
 % Plot the tree using nodes
 treeplot(nodes);
 % Write the labels
@@ -31,7 +31,7 @@ text(x, y, labels, 'VerticalAlignment','bottom','HorizontalAlignment','right')
 
 end
 
-function [ nodes, labels, count ] = hac2nodes( tree, nodes, labels, count )
+function [ nodes, labels, count ] = hac2nodes( family, tree, nodes, labels, count )
 %HAC2NODES Given the tree and number of root copula returns nodes for
 %treeplot and number of last numbered copula and names.
 
@@ -44,8 +44,11 @@ for i=1:length(tree)-1
     child = tree{i};
     if iscell(child)        
         % Use alpha as a label of this subtree
-        labels{count} = strcat('\theta=', num2str(child{end}));
-        [nodes, labels, count] = hac2nodes(child, nodes, labels, count);        
+        alpha = child{end};
+        % Convert copula parameter to Kendall's tau
+        tau = copulastat(family, alpha);        
+        labels{count} = strcat('\tau=', num2str(tau));
+        [nodes, labels, count] = hac2nodes(family, child, nodes, labels, count);        
     else
         % Use variable number as a label of this subtree
         labels{count} = child;
