@@ -34,13 +34,13 @@ elseif isstruct(obj)
        value = getfield(obj, names{i});
        ss{end+1} = sprintf('%s:%s', dprint(key, d+1), dprint(value, d+1));           
     end
-    str =  sprintf('S{%s}', strjoin(ss, ', '));
+    str = sprintf('struct(%s)', strjoin(ss, ', '));
 elseif isobject(obj)        
     str = evalc('disp(obj)');
 elseif ismatrix(obj)
     str = mat2str(obj, 5);
 else
-    error 'Type not supported.'
+    error('Type not supported.');
 end
 
 end
