@@ -11,7 +11,7 @@ if isempty(derivatives)
 end
 
 % The key of the derivative function computed
-key = strcat(family, int2str(n));
+key = sprintf('%s%d', family, n);
 
 if isKey(derivatives, key)
     nthDerivative = derivatives(key);
