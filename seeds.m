@@ -59,13 +59,33 @@ plotmatrix(U);
 %% Visualize dependency using HAC
 
 claytonTree = hac.fit('clayton', U, 'plot');
-hac.plot(claytonTree, names);
+hac.plot('clayton', claytonTree, names);
 
 gumbelTree = hac.fit('gumbel', U, 'plot');
-hac.plot(gumbelTree, names);
+hac.plot('gumbel', gumbelTree, names);
 
 frankTree = hac.fit('frank', U, 'plot');
-hac.plot(frankTree, names);
+hac.plot('frank', frankTree, names);
+
+%% KNN classifier
+
+knn = ClassificationKNN.fit(X,Y);
+resubLoss(knn);
+
+cvknn = crossval(knn);
+kloss = kfoldLoss(cvknn);
+
+
+%% Perform Fit using CFM
+
+copula.eval('gaussian', U, 100);
+copula.eval('t', U, 20, 'approximateml');
+copula.eval('clayton', U, 100);
+copula.eval('gumbel', U, 100);
+copula.eval('frank', U, 100);
+copula.eval('claytonhac', U, 0, 'okhrin');
+copula.eval('gumbelhac', U, 0, 'okhrin');
+tic(); copula.eval('frankhac', 0, 'okhrin'); toc();
 
 %% Perform Fit using IFM
 
@@ -80,14 +100,3 @@ copula.eval('frank', S, 100);
 copula.eval('claytonhac', S, 0, 'okhrin');
 copula.eval('gumbelhac', S, 0, 'okhrin');
 copula.eval('frankhac', S, 0, 'okhrin');
-
-%% Perform Fit using CFM
-
-copula.eval('gaussian', U, 100);
-copula.eval('t', U, 20, 'approximateml');
-copula.eval('clayton', U, 100);
-copula.eval('gumbel', U, 100);
-copula.eval('frank', U, 100);
-copula.eval('claytonhac', U, 0, 'okhrin');
-copula.eval('gumbelhac', U, 0, 'okhrin');
-copula.eval('frankhac', U, 0, 'okhrin');

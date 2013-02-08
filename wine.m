@@ -88,7 +88,7 @@ hist(data(:,12), 20);
 
 %% Scatter visualizations
 
-plotmatrix(X);
+plotmatrix(U);
 plotmatrix(P);
 
 %% Fit copulas using CFM in 11 dimensions
@@ -163,17 +163,17 @@ matrix2latex([f1;f2;f3;f4;f5;[f6, NaN, NaN];[f7 NaN NaN];[f8 NaN NaN]], 'fit.tex
 
 %% Hierarchy of dependency
 
-claytonTree = hac.fit('clayton', U);
-hac.plot(claytonTree, names);
+claytonTree = hac.fit('clayton', U, 'plot');
+hac.plot('clayton', claytonTree, names);
 
-gumbelTree = hac.fit('gumbel', U);
-hac.plot(gumbelTree, names);
+gumbelTree = hac.fit('gumbel', U, 'plot');
+hac.plot('gumbel', gumbelTree, names);
 
-frankTree = hac.fit('frank', U);
-hac.plot(frankTree, names);
+frankTree = hac.fit('frank', U, 'plot');
+hac.plot('frank', frankTree, names);
 
 joeTree = hac.fit('joe', U);
-hac.plot(joeTree, names);
+hac.plot('joe', joeTree, names);
 
 %% Modelling 2D dependence
 
@@ -213,6 +213,15 @@ matrix2latex([f1;f2;f3;f4;f5], 'fit.tex',...
 'alignment', 'r', 'format', '%.2f',...
 'rowLabels', {'Gaussian', 't', 'Clayton', 'Gumbel', 'Frank'},...
 'columnLabels', {'LL', 'AIC', 'BIC', 'SnC', 'SnB'});
+
+%% KNN classifier
+
+knn = ClassificationKNN.fit(X,Y);
+resubLoss(knn);
+
+cvknn = crossval(knn);
+kloss = kfoldLoss(cvknn);
+
 
 %% Decision trees
 
