@@ -21,3 +21,36 @@ copulaimg(@(U) copulapdf('gumbel', U, 1.3), '../Images/gumbel-pdf.png', 20, 0.05
 
 %% Frank copula
 copulaimg(@(U) copulapdf('frank', U, -2), '../Images/frank-pdf.png', 20, 0.05, 0.95);
+
+%% Positive and negative dependency scatter
+
+U = copularnd('gumbel', 2.5, 500);
+U1 = 1 - U(:,1);
+U2 = U(:,2);
+
+fig = figure(1);
+set(fig, 'Position', [0, 0, 1000, 250]);
+
+sub1 = subplot(1,3,1);
+scatter(U1, U2, '.');
+xlabel(sub1, 'U1');
+ylabel(sub1, 'U2');
+
+sub2 = subplot(1,3,2);
+scatter(1 - U1, U2, '.');
+xlabel('1 - U1');
+ylabel('U2');
+
+
+sub3 = subplot(1,3,3);
+scatter(U1, 1 - U2, '.');
+xlabel('U1');
+ylabel('1 - U2');
+
+%set(sub1,'Units','normalized', 'position', [0.05 0.12 0.4 0.8]);
+%set(sub2,'Units','normalized', 'position', [0.58 0.17 0.35 0.7]);
+
+set(gcf, 'PaperUnits', 'centimeters');
+set(gcf, 'PaperSize', [16 4]);
+set(gcf, 'PaperPosition', [0 0 16 4]);
+print('-dpng', '-r300', '../Images/rotating-negative-dependence.png');
