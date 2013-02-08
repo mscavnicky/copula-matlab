@@ -10,7 +10,7 @@ if nargin < 2
 end
 
 if ischar(obj)
-    str = obj; 
+    str = sprintf('''%s''', obj); 
 elseif iscell(obj)
     ss = {};
     for i=1:length(obj)
