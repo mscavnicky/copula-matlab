@@ -22,31 +22,33 @@ for i=1:numel(operators)
 end
 
 % Unnest tokens array
-tokens = [tokens{:}];
-
+if numel(tokens) > 1
+    tokens = [tokens{:}];
+end
+    
 % Convert tokens to postfix expression
 stack = {};
-ssize = 0;
+len = 0;
 
 postexpr = {};
 
 for i=1:numel(tokens)
     token = tokens(i);
     if isKey(pr, token)
-        if ssize == 0
-           ssize = ssize + 1;
-           stack{ssize} =  token;
+        if len == 0
+           len = len + 1;
+           stack{len} =  token;
         else
-            if pr(token) > pr(stack{ssize})
-                ssize = ssize + 1;
-                stack{ssize} = token;
+            if pr(token) > pr(stack{len})
+                len = len + 1;
+                stack{len} = token;
             else
-                while (ssize > 0) && (pr(token) <= pr(stack{ssize}))
-                    postexpr{end+1} = stack{ssize};
-                    ssize = ssize - 1;             
+                while (len > 0) && (pr(token) <= pr(stack{len}))
+                    postexpr{end+1} = stack{len};
+                    len = len - 1;             
                 end
-                ssize = ssize + 1;
-                stack{ssize} = token;
+                len = len + 1;
+                stack{len} = token;
             end
         end
     else
@@ -55,12 +57,11 @@ for i=1:numel(tokens)
 end
 
 % Put the rest of the stack to the output
-for i=1:ssize
+for i=1:len
    postexpr{end+1} = stack{i}; 
 end
 
-
-postexpr = strjoin(postexpr);
+postexpr = [postexpr{:}];
 
 end
 
