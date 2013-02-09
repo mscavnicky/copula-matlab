@@ -2,7 +2,8 @@ function [ Y, cdfcache ] = evalcdf( expr, family, U, params, cdfcache )
 %HAC.FPDF Evaluate copula cdf expression
 %   Example C1(C2(u1, u3), u4) which is an expression in a prefix notation.
 
-stack = coll.Stack;    
+stack = {};
+top = 0;
 
 while ~isempty(expr)
     if regexp(expr, '^C[0-9]+') > 0
@@ -10,7 +11,9 @@ while ~isempty(expr)
         id = id{1};
         
         if isKey(cdfcache, id)
-            stack.push(cdfcache(id));
+            top = top + 1;
+            stack{top} = cdfcache(id);
+            
             % Skip id and first parenthesis;
             pos = length(id) + 2;            
             parens = 1;            
@@ -25,7 +28,8 @@ while ~isempty(expr)
             
             expr = expr(pos:end);
         else
-            stack.push(id);
+            top = top + 1;
+            stack{top} = id;
             expr = expr(numel(id)+1:end);
         end        
     elseif expr(1) == '('
@@ -34,18 +38,22 @@ while ~isempty(expr)
         var = regexp(expr, '[0-9]+', 'match');
         var = var{1};
         u = U(:, str2num(var));
-        stack.push(u);
+        top = top + 1;
+        stack{top} = u;
         expr = expr(numel(var)+2:end);    
     elseif expr(1) == ')'
         % Pop symbols
         V = [];
-        while ~ischar(stack.peek())
-            V = [V stack.pop()];
+        while ~ischar(stack{top})
+            V = [V stack{top}];
+            top = top - 1;
         end
-        id = stack.pop();
+        id = stack{top};
+        top = top - 1;
         
         X = archim.cdf(family, V, params(id));
-        stack.push(X);
+        top = top + 1;
+        stack{top} = X;
         cdfcache(id) = X;
         expr = expr(2:end);
     elseif strcmp(expr(1:2), ', ')
@@ -55,12 +63,11 @@ while ~isempty(expr)
     end   
 end
 
-if stack.empty() == 1
+if top == 0
     error('Cdf expression not correct.');    
 end
 
-cells = stack.content();
-Y = horzcat(cells{:});
+Y = horzcat(stack{1:top});
 
 end
 
