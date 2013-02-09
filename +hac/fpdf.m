@@ -22,17 +22,14 @@ end
 postexpr = hac.fpdf.in2post(inexpr);
 
 %Evaluate the postfix form
-stack = {};
-len = 0;
+stack = coll.Stack();
 
 for i=1:numel(postexpr)
     token = postexpr{i};
     
     if regexp(token, '\+|\*|\^') == 1
-        T2 = stack{len};
-        len = len - 1;       
-        T1 = stack{len};
-        len = len - 1;        
+        T2 = stack.pop();
+        T1 = stack.pop();
         
         if strcmp(token, '+')
             T = T1 + T2;
@@ -42,25 +39,22 @@ for i=1:numel(postexpr)
             T = T1 .^ T2;
         end
         
-        len = len + 1;
-        stack{len} = T;                
+        stack.push(T);        
         
     elseif regexp(token, 't_[0-9]+_[0-9]+') == 1
         term = terms(token);        
         T = hac.fpdf.evalterm(family, term, U, params);
-        
-        len = len + 1;
-        stack{len} = T;        
+        stack.push(T);
     else
-        len = len + 1; 
-        stack{len} = hac.fpdf.evalterm(family, token, U, params);              
+        T = hac.fpdf.evalterm(family, token, U, params);
+        stack.push(T);
     end    
 end
 
-if len ~= 1
+if stack.size() ~= 1
     error('Implementation error in hacfpdf.');
 end
 
-Y = stack{1};
+Y = stack.pop();
 
 end
