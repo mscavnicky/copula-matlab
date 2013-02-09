@@ -28,16 +28,18 @@ len = 0;
 for i=1:numel(postexpr)
     token = postexpr{i};
     
-    if regexp(token, '\+|\*') == 1
-        T1 = stack{len};
-        len = len - 1;       
+    if regexp(token, '\+|\*|\^') == 1
         T2 = stack{len};
+        len = len - 1;       
+        T1 = stack{len};
         len = len - 1;        
         
         if strcmp(token, '+')
             T = T1 + T2;
-        else
+        elseif strcmp(token, '*')
             T = T1 .* T2;
+        elseif strcmp(token, '^')
+            T = T1 .^ T2;
         end
         
         len = len + 1;
@@ -52,9 +54,6 @@ for i=1:numel(postexpr)
     else
         len = len + 1; 
         stack{len} = hac.fpdf.evalterm(family, token, U, params);              
-        if size(stack{len}, 1) ~= 100
-            error('Wrong size - %s', token);
-        end
     end    
 end
 

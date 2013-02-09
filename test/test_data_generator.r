@@ -1,4 +1,5 @@
 library(copula)
+library(HAC)
 setwd("D:/Dropbox/Copulas/Matlab/test")
 
 data3 <- as.matrix(read.csv("data/data3d.csv", header=FALSE, sep=","))
@@ -93,6 +94,10 @@ to.csv(rnacopula(1000, hac.frank2), "data/test_hac_rnd_frank3d_2.csv")
 to.csv(rnacopula(1000, hac.clayton), "data/test_hac_rnd_clayton3d.csv")    
 to.csv(rnacopula(1000, hac.joe), "data/test_hac_rnd_joe3d.csv")
 
+to.csv(dnacopula(hac.clayton, data3), "data/test_hac_pdf_clayton3d.csv")
+to.csv(dnacopula(hac.gumbel, data3), "data/test_hac_pdf_gumbel3d.csv")
+to.csv(dnacopula(hac.frank1, data3), "data/test_hac_pdf_frank3d.csv")
+
 hac.clayton7 <- onacopula("Clayton", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
 hac.gumbel7 <- onacopula("Gumbel", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
 hac.frank7.1 <- onacopula("Frank", C(1.15, c(), list(  C(1.3, c(1,2)), C(1.4, c(3,4), C(2.2, c(5,6,7))) )))
@@ -115,6 +120,10 @@ to.csv(dnacopula(hac.frank7, data7), "data/test_hac_pdf_frank7d.csv")
             
 # HAC Test
 h = hac.full(type=HAC_GUMBEL, c("X1", "X2", "X3", "X4", "X5", "X6", "X7", "X8"), c(1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7)) 
+
+clayton.hac3 = hac.full(type=HAC_CLAYTON, c("X1, "X2", "X3), c(0.5, 1.5))
+
+
             
             
 # SnC and SnB test            
@@ -130,6 +139,17 @@ seeds = seeds[c(-189),]
 seeds.copula = normalCopula(rep(0, 21), dim=7, dispstr="un")
 fitCopula(seeds.copula, seeds[,1:7])
 gofCopula(seeds.copula, seeds[,1:7], N = 10, method="SnB")
+
+
+
+
+# HAC Density according to Okhrin
+y = c("V4", "V3", "V2", "V1")
+theta = c(1.2, 1.5, 2.0)
+data4 = data7[1:10,1:4]
+model = hac.full(type = HAC_CLAYTON, y, theta)
+d.values = dHAC(data4, model);
+
 
 
           

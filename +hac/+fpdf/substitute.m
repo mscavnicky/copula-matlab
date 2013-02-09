@@ -20,16 +20,31 @@ for i = 1:numel(summands)
     for j = 1:numel(factors)
         factor = strtrim(factors{j});
         
-        if regexp(factor, 'D\(\[[0-9, ]+\], C[0-9]+\)\([0-9Cu, ()]+\)')
+        exponent = 0;
+        if regexp(factor, '\^') > 1
+            tokens = regexp(factor, '\^', 'split');
+            factor = tokens{1};
+            exponent = tokens{2};            
+        end
+        
+        if regexp(factor, '^D\(\[[0-9, ]+\], C[0-9]+\)\([0-9Cu, ()]+\)$')
             alias = sprintf('t_%d_%d', i, j);
             terms(alias) = factor;
-            newfactors{end+1} = alias;
-        elseif regexp(factor, 'diff\(C[0-9]+\([0-9u,() ]+\),[0-9u,() ]+\)')
+            if exponent == 0
+                newfactors{end+1} = alias;            
+            else
+                newfactors{end+1} = sprintf('%s^%s', alias, exponent);
+            end            
+        elseif regexp(factor, '^diff\(C[0-9]+\([0-9u,() ]+\),[0-9u,() ]+\)$')
             alias = sprintf('t_%d_%d', i, j);
             terms(alias) = factor;
-            newfactors{end+1} = alias; 
+            if exponent == 0
+                newfactors{end+1} = alias;            
+            else
+                newfactors{end+1} = sprintf('%s^%s', alias, exponent);
+            end 
         elseif regexp(factor, '^[0-9]+$')
-            newfactors{end+1} = strtrim(factor);
+            newfactors{end+1} = factor;
         else
             error('Unexpected symbolic expression %s', factor);
         end

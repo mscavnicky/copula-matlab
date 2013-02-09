@@ -7,11 +7,11 @@ function [ postexpr ] = in2post( inexpr )
 %#ok<*AGROW>
 
 % Map of operator precendence
-pr = containers.Map({'+', '-', '*', '/'}, {1, 1, 3, 3});
+pr = containers.Map({'+', '-', '*', '/', '^'}, {1, 1, 3, 3, 9});
 
 % Extract tokens from infix expression
-operands = regexp(inexpr, '\+|\*', 'split');
-operators = regexp(inexpr, '\+|\*', 'match');
+operands = regexp(inexpr, '\+|\*|\^', 'split');
+operators = regexp(inexpr, '\+|\*|\^', 'match');
 
 assert(numel(operands) == numel(operators) + 1);
 
