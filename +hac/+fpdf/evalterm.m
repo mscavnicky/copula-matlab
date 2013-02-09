@@ -30,7 +30,7 @@ elseif regexp(term, 'diff') > 0
     
 else
     n = size(U, 1);
-    Y = repmat(str2double(term), n, 1);
+    Y = repmat(sscanf(term, '%d'), n, 1);
 end
 
 end
@@ -41,6 +41,6 @@ function [ vars ] = str2vars( str )
     
     vars = zeros(n, 1);
     for i=1:n
-        vars(i) = str2num(tokens{i});
+        vars(i) = sscanf(tokens{i}, '%d');
     end
 end

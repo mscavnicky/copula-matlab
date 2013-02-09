@@ -18,7 +18,7 @@ for i = 1:numel(summands)
             tokens = regexp(factor, '\^', 'split');
             
             factor = tokens{1};
-            exponent = str2num(tokens{2});            
+            exponent = sscanf(tokens{2}, '%d');            
                         
             [F, cdfcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache);
             E = repmat(exponent, n, 1);

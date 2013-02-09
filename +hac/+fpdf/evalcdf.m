@@ -37,7 +37,7 @@ while ~isempty(expr)
     elseif regexp(expr, '^u[0-9]+') > 0
         var = regexp(expr, '[0-9]+', 'match');
         var = var{1};
-        u = U(:, str2num(var));
+        u = U(:, sscanf(var, '%d'));
         top = top + 1;
         stack{top} = u;
         expr = expr(numel(var)+2:end);    
