@@ -6,6 +6,7 @@ Y = zeros(n, 1);
 % Cache for copula cdf results
 cdfcache = containers.Map;
 % Cache for simple derivations
+% Containts up to d*5 expressions for bivariate copulas
 diffcache = containers.Map;
 
 summands = regexp(expr, ' \+ ', 'split');
@@ -30,7 +31,7 @@ for i = 1:numel(summands)
             [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache);
             S = S .* F;
         end
-    end  
+    end
     
     Y = Y + S;
 end
