@@ -8,18 +8,10 @@ if regexp(term, 'D') > 0
     % Extract id, vars and diffvars
     id = tokens.id;
     diffvars = str2vars(tokens.diffvars);    
-    vars = children(sym(sprintf('%s(%s)', id, tokens.vars)));    
+    expr = tokens.vars;
     
-    % Compute subcopulas used as arguments
-    n = size(U, 1);
-    d = numel(vars);
-    V = zeros(n ,d);
-    
-    for i=1:d
-       expr = char(vars(i));
-       V(:,i) = hac.fpdf.evalcdf(expr, family, U, params);       
-    end
-    
+    % Evaluate copula expression
+    V = hac.fpdf.evalcdf(expr, family, U, params);    
     % Finally evaluate the derivative
     Y = archim.cdfdiff(family, V, params(id), diffvars);       
     
