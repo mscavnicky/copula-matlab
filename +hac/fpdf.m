@@ -15,11 +15,13 @@ for i=1:numel(vars)
     fexpr = diff(fexpr, vars(i));
 end
 
+Y = hac.fpdf.evalinfix( family, U, char(fexpr), params );
+
 % Replace terms inside it with variables
-[inexpr, terms] = hac.fpdf.substitute(char(fexpr));
+%[inexpr, terms] = hac.fpdf.substitute(char(fexpr));
 % Convert infix expression into its postfix form
-postexpr = hac.fpdf.in2post(inexpr);
+%postexpr = hac.fpdf.in2post(inexpr);
 % Evaluate substituted expression in a postfix form
-Y = hac.fpdf.evalpostfix(family, U, postexpr, terms, params);
+%Y = hac.fpdf.evalpostfix(family, U, postexpr, terms, params);
 
 end
