@@ -21,11 +21,6 @@ for i=1:numel(operators)
    tokens{end+1} = operands{i+1};
 end
 
-% Unnest tokens array
-if numel(tokens) > 1
-    tokens = [tokens{:}];
-end
-    
 % Convert tokens to postfix expression
 stack = {};
 len = 0;
@@ -34,6 +29,8 @@ postexpr = {};
 
 for i=1:numel(tokens)
     token = tokens(i);
+    % Unwrap token from cell array
+    token = token{1};
     if isKey(pr, token)
         if len == 0
            len = len + 1;
@@ -60,8 +57,6 @@ end
 for i=1:len
    postexpr{end+1} = stack{i}; 
 end
-
-postexpr = [postexpr{:}];
 
 end
 

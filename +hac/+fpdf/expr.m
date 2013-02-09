@@ -15,7 +15,7 @@ expr = {id, '('};
 for i=1:numel(tree) - 1
     node = tree{i};    
     if iscell(node)
-        [subexpr, subparams, d ] = hac.sym.expr( node, d );
+        [subexpr, subparams, d ] = hac.fpdf.expr( node, d );
         expr{end+1} = subexpr;
         params = [params; subparams];                
     else

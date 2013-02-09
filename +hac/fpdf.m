@@ -47,7 +47,7 @@ for i=1:numel(postexpr)
         if strcmp(token, '+')
             T = T1 + T2;
         else
-            T = T1 * T2;
+            T = T1 .* T2;
         end
         
         len = len + 1;
