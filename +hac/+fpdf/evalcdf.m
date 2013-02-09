@@ -6,7 +6,26 @@ stack = {};
 top = 0;
 
 while ~isempty(expr)
-    if regexp(expr, '^C[0-9]+') > 0
+    if expr(1) == '('
+        expr = expr(2:end);  
+    elseif expr(1) == ','
+        expr = expr(3:end);
+    elseif expr(1) == ')'
+        % Pop symbols
+        V = [];
+        while ~ischar(stack{top})
+            V = [V stack{top}];
+            top = top - 1;
+        end
+        id = stack{top};
+        top = top - 1;
+        
+        X = archim.cdf(family, V, params(id));
+        top = top + 1;
+        stack{top} = X;
+        cdfcache(id) = X;
+        expr = expr(2:end);  
+    elseif expr(1) == 'C'
         id = regexp(expr, '^C[0-9]+', 'match');
         id = id{1};
         
@@ -32,32 +51,14 @@ while ~isempty(expr)
             stack{top} = id;
             expr = expr(numel(id)+1:end);
         end        
-    elseif expr(1) == '('
-        expr = expr(2:end);
-    elseif regexp(expr, '^u[0-9]+') > 0
+    elseif expr(1) == 'u'
+        % FIXME doesn't this find all occurences?
         var = regexp(expr, '[0-9]+', 'match');
         var = var{1};
         u = U(:, sscanf(var, '%d'));
         top = top + 1;
         stack{top} = u;
         expr = expr(numel(var)+2:end);    
-    elseif expr(1) == ')'
-        % Pop symbols
-        V = [];
-        while ~ischar(stack{top})
-            V = [V stack{top}];
-            top = top - 1;
-        end
-        id = stack{top};
-        top = top - 1;
-        
-        X = archim.cdf(family, V, params(id));
-        top = top + 1;
-        stack{top} = X;
-        cdfcache(id) = X;
-        expr = expr(2:end);
-    elseif strcmp(expr(1:2), ', ')
-        expr = expr(3:end);
     else 
        error('Invalid copula expression %s.', expr);            
     end   

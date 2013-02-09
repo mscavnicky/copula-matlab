@@ -22,11 +22,9 @@ else
     f = archim.sym.cdfdiff( family, d, diffvars );
     % We are taking the assumption that alpha parameter is the first one
     args = symvar(f);
-
     % Convert symbolic version into matlabFunction
     fhandle = matlabFunction(f, 'vars', {args(2:end), args(1)});
-
-    % Cache resulting function
+    % Cache the resulting matlab function
     cache(id) = fhandle;
 end
 
