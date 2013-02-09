@@ -54,8 +54,9 @@ for i=1:numel(tokens)
 end
 
 % Put the rest of the stack to the output
-for i=1:len
-   postexpr{end+1} = stack{i}; 
+while len > 0
+   postexpr{end+1} = stack{len};
+   len = len - 1;
 end
 
 end

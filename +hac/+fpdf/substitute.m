@@ -18,7 +18,7 @@ for i = 1:numel(summands)
     factors = regexp(summand, '\*', 'split');
     newfactors = {};
     for j = 1:numel(factors)
-        factor = factors{j};
+        factor = strtrim(factors{j});
         
         if regexp(factor, 'D\(\[[0-9, ]+\], C[0-9]+\)\([0-9Cu, ()]+\)')
             alias = sprintf('t_%d_%d', i, j);
@@ -28,10 +28,10 @@ for i = 1:numel(summands)
             alias = sprintf('t_%d_%d', i, j);
             terms(alias) = factor;
             newfactors{end+1} = alias; 
-        elseif regexp(factor, '[0-9]+')
+        elseif regexp(factor, '^[0-9]+$')
             newfactors{end+1} = strtrim(factor);
         else
-            error('Unexpected symbolic expression.');
+            error('Unexpected symbolic expression %s', factor);
         end
     end  
     

@@ -16,7 +16,8 @@ if regexp(term, 'D') > 0
     V = zeros(n ,d);
     
     for i=1:d
-       V(:,i) = hac.fpdf.evalcdf(char(vars(i)), family, U, params);       
+       expr = char(vars(i));
+       V(:,i) = hac.fpdf.evalcdf(expr, family, U, params);       
     end
     
     % Finally evaluate the derivative
@@ -37,7 +38,7 @@ elseif regexp(term, 'diff') > 0
     
 else
     n = size(U, 1);
-    Y = repmat(n, 1, str2double(term));
+    Y = repmat(str2double(term), n, 1);
 end
 
 end

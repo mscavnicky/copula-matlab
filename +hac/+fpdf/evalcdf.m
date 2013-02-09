@@ -7,8 +7,6 @@ if regexp(expr, '^u[0-9]$') == 1
 else
     id = regexp(expr, '^C[0-9]+', 'match');
     
-    dprint(expr)
-    
     vars = children(sym(expr));
     d = numel(vars);
     n = size(U, 1);
