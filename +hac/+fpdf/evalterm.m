@@ -1,4 +1,4 @@
-function [ Y ] = evalterm( family, term, U, params )
+function [ Y, cdfcache ] = evalterm( family, term, U, params, cdfcache )
 %EVALTERM Evaluate term in derivation expression.
 %   There are 3 types of terms: D, diff and constant.
 
@@ -11,7 +11,7 @@ if regexp(term, 'D') > 0
     expr = tokens.vars;
     
     % Evaluate copula expression
-    V = hac.fpdf.evalcdf(expr, family, U, params);    
+    [V, cdfcache] = hac.fpdf.evalcdf(expr, family, U, params, cdfcache);    
     % Finally evaluate the derivative
     Y = archim.cdfdiff(family, V, params(id), diffvars);       
     

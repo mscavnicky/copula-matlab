@@ -21,7 +21,9 @@ end
 % Convert infix expression into its postfix form
 postexpr = hac.fpdf.in2post(inexpr);
 
-%Evaluate the postfix form
+% Initialized empty cdf cache
+cdfcache = containers.Map;
+% Evaluate the postfix form
 stack = coll.Stack();
 
 for i=1:numel(postexpr)
@@ -43,10 +45,10 @@ for i=1:numel(postexpr)
         
     elseif regexp(token, 't_[0-9]+_[0-9]+') == 1
         term = terms(token);        
-        T = hac.fpdf.evalterm(family, term, U, params);
+        [T, cdfcache] = hac.fpdf.evalterm(family, term, U, params, cdfcache);
         stack.push(T);
     else
-        T = hac.fpdf.evalterm(family, token, U, params);
+        [T, cdfcache] = hac.fpdf.evalterm(family, token, U, params, cdfcache);
         stack.push(T);
     end    
 end

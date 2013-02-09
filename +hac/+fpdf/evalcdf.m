@@ -1,4 +1,4 @@
-function [ Y ] = evalcdf( expr, family, U, params )
+function [ Y, cdfcache ] = evalcdf( expr, family, U, params, cdfcache )
 %HAC.FPDF Evaluate copula cdf expression
 %   Example C1(C2(u1, u3), u4) which is an expression in a prefix notation.
 
@@ -8,8 +8,26 @@ while ~isempty(expr)
     if regexp(expr, '^C[0-9]+') > 0
         id = regexp(expr, '^C[0-9]+', 'match');
         id = id{1};
-        stack.push(id);
-        expr = expr(numel(id)+1:end);
+        
+        if isKey(cdfcache, id)
+            stack.push(cdfcache(id));
+            % Skip id and first parenthesis;
+            pos = length(id) + 2;            
+            parens = 1;            
+            while parens > 0
+                if expr(pos) == '('
+                    parens = parens+1;
+                elseif expr(pos) == ')'
+                    parens = parens-1;
+                end                
+                pos = pos + 1;
+            end
+            
+            expr = expr(pos:end);
+        else
+            stack.push(id);
+            expr = expr(numel(id)+1:end);
+        end        
     elseif expr(1) == '('
         expr = expr(2:end);
     elseif regexp(expr, '^u[0-9]+') > 0
@@ -26,7 +44,9 @@ while ~isempty(expr)
         end
         id = stack.pop();
         
-        stack.push(archim.cdf(family, V, params(id)));
+        X = archim.cdf(family, V, params(id));
+        stack.push(X);
+        cdfcache(id) = X;
         expr = expr(2:end);
     elseif strcmp(expr(1:2), ', ')
         expr = expr(3:end);
