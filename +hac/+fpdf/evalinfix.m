@@ -3,9 +3,12 @@ function [ Y ] = evalinfix( family, U, expr, params )
 n = size(U, 1);
 Y = zeros(n, 1);
 
+% Cache for copula cdf results
 cdfcache = containers.Map;
+% Cache for simple derivations
+diffcache = containers.Map;
 
-summands = regexp(expr, '\+', 'split');
+summands = regexp(expr, ' \+ ', 'split');
 for i = 1:numel(summands)    
     summand = summands{i};
     S = ones(n, 1);
@@ -20,11 +23,11 @@ for i = 1:numel(summands)
             factor = tokens{1};
             exponent = sscanf(tokens{2}, '%d');            
                         
-            [F, cdfcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache);
+            [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache);
             E = repmat(exponent, n, 1);
             S = S .* (F .^ E);       
         else
-            [F, cdfcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache);
+            [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache);
             S = S .* F;
         end
     end  
