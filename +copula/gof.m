@@ -24,7 +24,7 @@ function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
     times = zeros(N, 1);
     
     if showProgress
-        fprintf('   0/%4d ( Inf)', N);
+        fprintf('%4d/%4d (%7.1f)', 0, N, Inf);
     end
     
     i = 1;
@@ -43,8 +43,8 @@ function [h, p] = bootstrap( stat, N, U, copulaparams, showProgress, varargin )
         % Print estimated time
         if showProgress
             timeLeft = mean(times(max(1, i-21):i)) * (N-i);
-            fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
-            fprintf(1, '%4d/%4d (%5.1f)', i, N, timeLeft);
+            fprintf(1, '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
+            fprintf(1, '%4d/%4d (%7.1f)', i, N, timeLeft);
         end
         % Increment iterator
         i = i + 1;            
