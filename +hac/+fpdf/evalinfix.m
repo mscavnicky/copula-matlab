@@ -1,4 +1,4 @@
-function [ Y ] = evalinfix( family, U, expr, params )
+function [ Y ] = evalinfix( family, U, expr, params, cacheLevel )
 
 n = size(U, 1);
 Y = zeros(n, 1);
@@ -10,7 +10,7 @@ cdfcache = containers.Map;
 diffcache = containers.Map;
 
 summands = regexp(expr, ' \+ ', 'split');
-for i = 1:numel(summands)    
+for i = 1:numel(summands);    
     summand = summands{i};
     S = ones(n, 1);
     
@@ -24,11 +24,11 @@ for i = 1:numel(summands)
             factor = tokens{1};
             exponent = sscanf(tokens{2}, '%d');            
                         
-            [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache);
+            [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache, cacheLevel);
             E = repmat(exponent, n, 1);
             S = S .* (F .^ E);       
         else
-            [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache);
+            [F, cdfcache, diffcache] = hac.fpdf.evalterm(family, factor, U, params, cdfcache, diffcache, cacheLevel);
             S = S .* F;
         end
     end

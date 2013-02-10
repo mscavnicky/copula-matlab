@@ -1,4 +1,4 @@
-function [ Y, cdfcache, diffcache ] = evalterm( family, term, U, params, cdfcache, diffcache )
+function [ Y, cdfcache, diffcache ] = evalterm( family, term, U, params, cdfcache, diffcache, cacheLevel )
 %EVALTERM Evaluate term in derivation expression.
 %   There are 3 types of terms: D, diff and constant.
 
@@ -21,9 +21,9 @@ if regexp(term, 'D') > 0
     Y = archim.cdfdiff(family, V, params(id), diffvars);
     
     % Store simple derivation in diffcache
-    if numel(diffvars) == 1
+    if numel(diffvars) <= cacheLevel
         diffcache(term) = Y;
-    end    
+    end
     
 elseif regexp(term, 'diff') > 0
     % Match interesting part expression
