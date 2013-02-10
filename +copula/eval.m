@@ -9,6 +9,7 @@ fprintf('\nFit:\n');
 tic();
 copulaparams = copula.fit(family, U, varargin{:});
 fprintf('  Duration: %f s\n', toc());
+fit.copulaparams = copulaparams;
 
 % Print fit result
 switch family
@@ -25,19 +26,19 @@ end
 
 % Compute log likelihood, AIC and BIC
 ll = -loglike(copula.pdf(copulaparams, U));
+fit.ll = ll;
 k = copulaparams.numParams;
-aic = -2*ll + (2*n*(k+1))/(n-k-2);
-bic = -2*ll + k*log(n);
-fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, aic, bic);
+fit.aic = -2*ll + (2*n*(k+1))/(n-k-2);
+fit.bic = -2*ll + k*log(n);
+fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, fit.aic, fit.bic);
 
-fit = [ll, aic, bic];
 
 % Perform SnC GOF test
 if (bootstraps > 0)
     fprintf('\nSnC GOF Test:\n  ');
     [~, p] = copula.gof(copulaparams, U, bootstraps, 'snc', 1, varargin{:});
     fprintf('  p-value: %f\n', p);
-    fit = [fit p];
+    fit.snc = p;
 end
 
 % Perform SnB GOF test
@@ -45,13 +46,10 @@ if (bootstraps > 0)
     fprintf('\nSnB GOF Test:\n  ');
     [~, p] = copula.gof(copulaparams, U, bootstraps, 'snb', 1, varargin{:});
     fprintf('  p-value: %f\n', p);
-    fit = [fit p];
+    fit.snc = p;
 end
 
 % New line for better readability
 fprintf('\n');
-
-% Signal finished evaluation
-%beep; pause(0.11); beep; pause(0.11); beep;
 
 end
