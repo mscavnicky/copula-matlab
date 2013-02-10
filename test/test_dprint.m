@@ -27,4 +27,4 @@ function testPrintCellArray
     
 function testPrintMap
     m = containers.Map({'a', 'b', 'c'}, {1, 2, 3});
-    assertEqual('#{a:1, b:2, c:3}', dprint(m));
+    assertEqual('#{''a'':1, ''b'':2, ''c'':3}', dprint(m));

@@ -14,17 +14,12 @@ end
 % Compose high level symbolic functions
 [expr, params] = hac.fpdf.expr(tree);
 
-fprintf('Deriving...\n');
-
 % Perform its derivations in all variables
 fexpr = sym(expr);
 vars = symvar(fexpr);
 for i=1:numel(vars)
-    fprintf('u%d...\n', i);
     fexpr = diff(fexpr, vars(i));
 end
-
-fprintf('Done!\n');
 
 Y = hac.fpdf.evalinfix( family, U, char(fexpr), params, cacheLevel );
 
