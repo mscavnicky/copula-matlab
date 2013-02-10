@@ -9,7 +9,6 @@ fprintf('\nFit:\n');
 tic();
 copulaparams = copula.fit(family, U, varargin{:});
 fprintf('  Duration: %f s\n', toc());
-fit.copulaparams = copulaparams;
 
 % Print fit result
 switch family
@@ -26,30 +25,43 @@ end
 
 % Compute log likelihood, AIC and BIC
 ll = -loglike(copula.pdf(copulaparams, U));
-fit.ll = ll;
 k = copulaparams.numParams;
-fit.aic = -2*ll + (2*n*(k+1))/(n-k-2);
-fit.bic = -2*ll + k*log(n);
-fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, fit.aic, fit.bic);
+aic = -2*ll + (2*n*(k+1))/(n-k-2);
+bic = -2*ll + k*log(n);
+fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, aic, bic);
 
 
 % Perform SnC GOF test
 if (bootstraps > 0)
     fprintf('\nSnC GOF Test:\n  ');
-    [~, p] = copula.gof(copulaparams, U, bootstraps, 'snc', 1, varargin{:});
-    fprintf('  p-value: %f\n', p);
-    fit.snc = p;
+    [~, snc] = copula.gof(copulaparams, U, bootstraps, 'snc', 1, varargin{:});
+    fprintf('  p-value: %f\n', snc);
 end
 
 % Perform SnB GOF test
 if (bootstraps > 0)
     fprintf('\nSnB GOF Test:\n  ');
-    [~, p] = copula.gof(copulaparams, U, bootstraps, 'snb', 1, varargin{:});
-    fprintf('  p-value: %f\n', p);
-    fit.snc = p;
+    [~, snb] = copula.gof(copulaparams, U, bootstraps, 'snb', 1, varargin{:});
+    fprintf('  p-value: %f\n', snb);
 end
 
 % New line for better readability
 fprintf('\n');
+
+% Fill the fit struct
+if numel(varargin) > 0
+    fit.method = varargin{1};
+end
+fit.bootstraps = bootstraps;
+fit.copulaparams = copulaparams;
+fit.ll = ll;
+fit.aic = aic;
+fit.bic = bic;
+if exist('snc', 'var')
+    fit.snc = snc;
+end
+if exist('snb', 'var')
+    fit.snb = snb;
+end
 
 end
