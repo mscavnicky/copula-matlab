@@ -1,13 +1,16 @@
 function plot( family, tree, names )
-%HAC.PLOT Plot structure of given HAC tree
-%   
+%HAC.PLOT Plot structure of given HAC tree.
+%   Generates a figure of HAC where each leaf represents an attribute and
+%   each inner node represents an Archimedean copula. Parameter of the
+%   copula is displayed as Kendall's tau.
+%
 %   References:
 %       [1] http://stackoverflow.com/questions/5065051/add-node-numbers-get-node-locations-from-matlabs-treeplot
 
 % Parent of the root node is 0
 nodes(1) = 0;
 % Label of the root node is its alpha
-labels{1} = strcat('\tau=', num2str(copulastat(family, tree{end})));
+labels{1} = sprintf('\\tau=%.3f', copulastat(family, tree{end}));
 % Run DFS to obtain nodes and labels
 [nodes, labels, count] = hac2nodes( family, tree, nodes, labels, 1 );
 % Plot the tree using nodes
@@ -47,7 +50,7 @@ for i=1:length(tree)-1
         alpha = child{end};
         % Convert copula parameter to Kendall's tau
         tau = copulastat(family, alpha);        
-        labels{count} = strcat('\tau=', num2str(tau));
+        labels{count} = sprintf('\\tau=%.3f', tau);
         [nodes, labels, count] = hac2nodes(family, child, nodes, labels, count);        
     else
         % Use variable number as a label of this subtree
