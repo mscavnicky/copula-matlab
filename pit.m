@@ -12,5 +12,8 @@ for i=1:length(dists)
     U(:,i) = PD.cdf(X(:,i));
 end
 
+% Values must be strictly between 0 and 1
+U(U == 0) = 1e6;
+
 end
 
