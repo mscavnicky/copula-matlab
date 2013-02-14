@@ -17,7 +17,7 @@ assert(alpha > lowerBound && alpha < upperBound, 'Copula parameter out of range.
 assert(alpha ~= 0, 'Copula parameter cannot be zero.');
 
 % Evaluate PDF
-N = archim.ndiff( family, d, sum(archim.inv( family, U, alpha ), 2), alpha );
+N = archim.gendiff( family, d, sum(archim.inv( family, U, alpha ), 2), alpha );
 D = prod( archim.diff( family, archim.inv( family, U, alpha ), alpha ), 2 );
 Y = N ./ D;
 
