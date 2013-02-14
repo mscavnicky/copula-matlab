@@ -31,8 +31,8 @@ dists = {...
     'tlocationscale',...
     'inversegaussian',...
     'inversegaussian'};
-S = pit(X, dists);
-    
+% dists = {'inversegaussian','gamma','exponential','tlocationscale','tlocationscale','gamma','inversegaussian','tlocationscale','tlocationscale','inversegaussian','inversegaussian'};
+S = pit(X, dists);    
 
 [n, d] = size(X);
 
@@ -122,14 +122,14 @@ copula.eval('frank', U, 100);
 
 Q = U(:, [1:3,5:9,11]);
 
-writefit('wine-fit.csv', 'CFM', copula.eval('gaussian', Q, 1000));
-writefit('wine-fit.csv', 'CFM', copula.eval('t', Q, 1000));
-writefit('wine-fit.csv', 'CFM', copula.eval('clayton', Q, 100));
-writefit('wine-fit.csv', 'CFM', copula.eval('gumbel', Q, 100));
-writefit('wine-fit.csv', 'CFM', copula.eval('frank', Q, 100));
-writefit('wine-fit.csv', 'CFM', copula.eval('claytonhac', Q, 0, 'okhrin'));
-writefit('wine-fit.csv', 'CFM', copula.eval('gumbelhac', Q, 0, 'okhrin'));
-writefit('wine-fit.csv', 'CFM', copula.eval('frankhac', Q, 0, 'okhrin'));
+writefit('wine-fit.csv', 'CML', copula.eval('gaussian', Q, 100));
+writefit('wine-fit.csv', 'CML', copula.eval('t', Q, 10));
+writefit('wine-fit.csv', 'CML', copula.eval('clayton', Q, 100));
+writefit('wine-fit.csv', 'CML', copula.eval('gumbel', Q, 100));
+writefit('wine-fit.csv', 'CML', copula.eval('frank', Q, 100));
+writefit('wine-fit.csv', 'CML', copula.eval('claytonhac', Q, 0, 'okhrin'));
+writefit('wine-fit.csv', 'CML', copula.eval('gumbelhac', Q, 0, 'okhrin'));
+writefit('wine-fit.csv', 'CML', copula.eval('frankhac', Q, 0, 'okhrin'));
 
 
 %% Fit copulas using IFM in 9 dimensions
@@ -137,15 +137,14 @@ writefit('wine-fit.csv', 'CFM', copula.eval('frankhac', Q, 0, 'okhrin'));
 
 Q = S(:, [1:3,5:9,11]);
 
-writefit('wine-fit.csv', 'IFM', copula.eval('gaussian', Q, 1000));
-writefit('wine-fit.csv', 'IFM', copula.eval('t', Q, 1000));
-writefit('wine-fit.csv', 'IFM', copula.eval('clayton', Q, 100));
-writefit('wine-fit.csv', 'IFM', copula.eval('gumbel', Q, 100));
-writefit('wine-fit.csv', 'IFM', copula.eval('frank', Q, 100));
+writefit('wine-fit.csv', 'IFM', copula.eval('gaussian', Q, 0));
+writefit('wine-fit.csv', 'IFM', copula.eval('t', Q, 0));
+writefit('wine-fit.csv', 'IFM', copula.eval('clayton', Q, 0));
+writefit('wine-fit.csv', 'IFM', copula.eval('gumbel', Q, 0));
+writefit('wine-fit.csv', 'IFM', copula.eval('frank', Q, 0));
 writefit('wine-fit.csv', 'IFM', copula.eval('claytonhac', Q, 0, 'okhrin'));
 writefit('wine-fit.csv', 'IFM', copula.eval('gumbelhac', Q, 0, 'okhrin'));
 writefit('wine-fit.csv', 'IFM', copula.eval('frankhac', Q, 0, 'okhrin'));
-
 
 
 %% Hierarchy of dependency
