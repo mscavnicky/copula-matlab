@@ -14,14 +14,11 @@ end
 % Compose high level symbolic functions
 [expr, params] = hac.fpdf.expr(tree);
 
-% Perform its derivations in all variables
-fexpr = sym(expr);
-vars = symvar(fexpr);
-for i=1:numel(vars)
-    fexpr = diff(fexpr, vars(i));
-end
+% Differentiate expression symbolically
+dexpr = hac.fpdf.diffexpr(expr);
 
-Y = hac.fpdf.evalinfix( family, U, char(fexpr), params, cacheLevel );
+% Evaluate differentiated expression
+Y = hac.fpdf.evalinfix( family, U, dexpr, params, cacheLevel );
 
 % Replace terms inside it with variables
 %[inexpr, terms] = hac.fpdf.substitute(char(fexpr));
