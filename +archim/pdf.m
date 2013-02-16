@@ -10,6 +10,12 @@ function [ Y ] = pdf( family, U, alpha )
 
 % Copula dimension is necessary for parameter validation and derivative
 d = size(U, 2);
+% For 2-dimensional case used existing MATLAB copulas
+if d == 2
+   Y = copulapdf(family, U, alpha);
+   return;
+end
+
 % Get bounds for family and dimension
 [ lowerBound, upperBound ] = archim.bounds(family, d);
 % Verify parameter against bounds
