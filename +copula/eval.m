@@ -24,12 +24,8 @@ case {'claytonhac', 'gumbelhac', 'frankhac'}
 end
 
 % Compute log likelihood, AIC and BIC
-ll = -loglike(copula.pdf(copulaparams, U));
-k = copulaparams.numParams;
-aic = -2*ll + (2*n*(k+1))/(n-k-2);
-bic = -2*ll + k*log(n);
+[ll, aic, bic] = copula.fitstat(copulaparams, U);
 fprintf('  NLL: %f\n  AIC: %f\n  BIC: %f\n', ll, aic, bic);
-
 
 % Perform SnC GOF test
 if (bootstraps > 0)

@@ -9,7 +9,7 @@ Y = data(:, 8);
 n = size(X, 1);
 
 U = uniform(X);
-S = pit(X, {'inversegaussian', 'inversegaussian', 'normal', 'inversegaussian', 'inversegaussian', 'gamma', 'inversegaussian'});
+S = pit(X, {'inversegaussian', 'inversegaussian', 'weibull', 'inversegaussian', 'inversegaussian', 'weibull', 'inversegaussian'});
 
 %% Histograms
 
@@ -38,30 +38,11 @@ plotmatrix(S);
 
 %% Examine the distributions of marginals
 
-[~, PD1] = allfitdist(X(:,1)); % Inverse Gaussian
-[h, p] = kstest2(X(:,1), PD1{2}.random(n, 1))
-
-[D, PD2] = allfitdist(X(:,2)); % Inverse Gaussian
-[h, p] = kstest2(X(:,2), PD2{3}.random(n, 1))
-
-[~, PD3] = allfitdist(X(:,3)); % Normal
-[h, p] = kstest2(X(:,3), PD3{6}.random(n, 1))
-
-[~, PD4] = allfitdist(X(:,4)); % Inverse Gaussian
-[h, p] = kstest2(X(:,4), PD4{3}.random(n, 1))
-
-[~, PD5] = allfitdist(X(:,5)); % Inverse Gaussian
-[h, p] = kstest2(X(:,5), PD5{3}.random(n, 1))
-
-[~, PD6] = allfitdist(X(:,6)); % Gamma
-[h, p] = kstest2(X(:,6), PD6{4}.random(n, 1))
-
-[~, PD7] = allfitdist(X(:,7)); % Generalized Extreme Value
-[h, p] = kstest2(X(:,7), PD7{1}.random(n, 1))
+[ dists, pvalues ] = fitmargins(X);
 
 %% Visualize dependency using HAC
 
-claytonTree = hac.fit('clayton', U, 'plot');
+claytonTree = hac.fit('clayton', U, 'okhrin');
 hac.plot('clayton', claytonTree, names);
 
 gumbelTree = hac.fit('gumbel', U, 'plot');
@@ -70,27 +51,16 @@ hac.plot('gumbel', gumbelTree, names);
 frankTree = hac.fit('frank', U, 'plot');
 hac.plot('frank', frankTree, names);
 
-%% Perform Fit using CFM
+%% Fit copulas
 
-writefit('seeds-fit.csv', 'CML', copula.eval('gaussian', U, 1000));
-writefit('seeds-fit.csv', 'CML', copula.eval('t', U, 1000, 'ml'));
-writefit('seeds-fit.csv', 'CML', copula.eval('clayton', U, 1000));
-writefit('seeds-fit.csv', 'CML', copula.eval('gumbel', U, 1000));
-writefit('seeds-fit.csv', 'CML', copula.eval('frank', U, 1000));
-writefit('seeds-fit.csv', 'CML', copula.eval('claytonhac', U, 0, 'okhrin'));
-writefit('seeds-fit.csv', 'CML', copula.eval('gumbelhac', U, 0, 'okhrin'));
-writefit('seeds-fit.csv', 'CML', copula.eval('frankhac', U, 0, 'okhrin'));
+fitcopulas(X(Y==1, :), 'CML')
+fitcopulas(X(Y==2, :), 'CML')
+fitcopulas(X(Y==3, :), 'CML')
 
-%% Perform Fit using IFM
+fitcopulas(X(Y==1, :), 'IFM')
+fitcopulas(X(Y==2, :), 'IFM')
+fitcopulas(X(Y==3, :), 'IFM')
 
-writefit('seeds-fit.csv', 'IFM', copula.eval('gaussian', S, 1000));
-writefit('seeds-fit.csv', 'IFM', copula.eval('t', S, 1000, 'ml'));
-writefit('seeds-fit.csv', 'IFM', copula.eval('clayton', S, 1000));
-writefit('seeds-fit.csv', 'IFM', copula.eval('gumbel', S, 1000));
-writefit('seeds-fit.csv', 'IFM', copula.eval('frank', S, 1000));
-writefit('seeds-fit.csv', 'IFM', copula.eval('claytonhac', S, 0, 'okhrin'));
-writefit('seeds-fit.csv', 'IFM', copula.eval('gumbelhac', S, 0, 'okhrin'));
-writefit('seeds-fit.csv', 'IFM', copula.eval('frankhac', S, 0, 'okhrin'));
 
 %% KNN classifier
 
