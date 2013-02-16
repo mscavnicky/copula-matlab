@@ -4,10 +4,10 @@ function [ Y ] = cnd( family, U, alpha, m )
 %   is conditined upon first m-1 variables.
 
 X1 = sum(archim.inv(family, U(:,1:m), alpha), 2);
-N = archim.ndiff(family, m-1, X1, alpha);
+N = archim.gendiff(family, m-1, X1, alpha);
 
 X2 = sum(archim.inv(family, U(:,1:m-1), alpha), 2);
-D = archim.ndiff(family, m-1, X2, alpha);
+D = archim.gendiff(family, m-1, X2, alpha);
 
 Y = N ./ D;
 
