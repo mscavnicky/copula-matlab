@@ -1,5 +1,6 @@
 function [ copulaparams ] = fit( family, U, varargin )
-%COPULA.FIT Fit data to copula.
+%COPULA.FIT Estimates copula parameters for given copula family.
+%   Returns struct of copula parameters.
 
 d = size(U, 2);
 
@@ -13,7 +14,11 @@ switch family
         
         copulaparams.numParams = d*(d-1) / 2;
     case {'t'}
-        method = varargin{1};
+        if numel(varargin) > 0
+            method = varargin{1};
+        else
+            method = 'approximateml';
+        end
         [rho, nu] = copulafit(family, U, 'method', method);
         copulaparams.rho = rho;
         copulaparams.nu = nu;
@@ -25,7 +30,11 @@ switch family
         
         copulaparams.numParams = 1;
     case {'claytonhac', 'gumbelhac', 'frankhac'}
-        method = varargin{1};
+        if numel(varargin) > 0
+            method = varargin{1};
+        else
+            method = 'okhrin';
+        end
         tree = hac.fit(family(1:end-3), U, method);
         copulaparams.tree = tree;
         
