@@ -14,7 +14,7 @@ end
 
 % Debugging function plot
 if 0
-    L = linspace(0.1, min(upperBound, 20), 100);
+    L = linspace(0.1, min(upperBound, 100), 500);
     fig = figure;
     plot(L, arrayfun( @(alpha)(loglike(archim.pdf( family, U, alpha ))), L));
     pause(10);
@@ -22,6 +22,7 @@ if 0
 end
 
 % Find some reasonable upper bound
+originalUpperBound = upperBound;
 if upperBound == Inf
     newUpperBound = 4;    
     while optimfun(newUpperBound) > optimfun(newUpperBound * 2)
@@ -32,8 +33,8 @@ end
 
 alphahat = estimateAlpha(optimfun, max(lowerBound, -10), upperBound);
 
-if abs(alphahat - upperBound) < 0.01
-    warning('archim:fit:alpha', 'Estimated alpha too close to upper bound.');
+if originalUpperBound == Inf && abs(alphahat - upperBound) < 0.001
+    warning('archim:fit:alpha', 'Estimated alpha too close to the upper bound.');
 end
 
 end

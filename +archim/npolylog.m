@@ -4,7 +4,7 @@ function [ Y ] = npolylog( n, X )
 %   References:
 %       [1] http://en.wikipedia.org/wiki/Polylogarithm#Particular_values
 
-assert(n < 0, 'Polylogarithm only implemented for negative numbers.');
+assert(n <= 0, 'Polylogarithm only implemented for non-positive numbers.');
 
 n = abs(n);
 W = X ./ (1 - X);
