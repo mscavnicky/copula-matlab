@@ -35,6 +35,11 @@ function testArchimPdfClaytonAgainstR
     Y = csvread('data/test_archimpdf_clayton3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
+function testArchimPdfFrankWithHighAlpha
+% Test 2-dimensional Clayton density against values produced by R
+    U = csvread('data/data2d.csv');
+    assertVectorsAlmostEqual(archim.pdf('frank', U, 50.0), copulapdf('frank', U, 50));
+    
 function IGNOREtestArchimPdfJoeAgainstR
 % Test 3-dimensional Clayton density against values produced by R
     U = csvread('data/data3d.csv');
