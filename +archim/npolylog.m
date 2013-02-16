@@ -1,6 +1,12 @@
 function [ Y ] = npolylog( n, X )
-%NPOLYLOG Negative polylogarithm function
+%NPOLYLOG Polylogratihm function for n < 0.
+%
+%   References:
+%       [1] http://en.wikipedia.org/wiki/Polylogarithm#Particular_values
 
+assert(n < 0, 'Polylogarithm only implemented for negative numbers.');
+
+n = abs(n);
 W = X ./ (1 - X);
 
 Y = zeros(size(X));

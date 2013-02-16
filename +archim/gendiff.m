@@ -23,7 +23,7 @@ case 'gumbel'
     
     Y = archim.gen('gumbel', X, p) ./ (X.^m) .* P;  
 case 'frank'
-    Y = (1/p) * archim.npolylog(m-1, (1-exp(-p)) * exp(-X));
+    Y = (1/p) * archim.npolylog(-m+1, (1-exp(-p)) * exp(-X));
 end
 
 Y = Y * (-1)^m;
