@@ -1,4 +1,4 @@
-function [ bestfit, allfits ] = fitcopulas( X, method )
+function [ fits ] = fitcopulas( X, method )
 %FITCOPULAS Fits all possible copulas functions to sample U and returns the
 %   best fit according to BIC and all other fits. Method can be either CML
 %   or IFM.
@@ -16,9 +16,8 @@ else
     error('Method %s not recognized.', method);
 end    
 
-bestfit = {};
 families = {'gaussian' 't' 'clayton' 'frank' 'gumbel' 'claytonhac' 'gumbelhac' 'frankhac'};
-allfits = cell(size(families));
+fits = cell(size(families));
 
 for i=1:numel(families)    
     family = families{i};
@@ -30,13 +29,9 @@ for i=1:numel(families)
     fit.family = copulaparams.family;
     fit.ll = ll;
     fit.aic = aic;
-    fit.bic = bic;
+    fit.bic = bic;  
     
-    if isempty(bestfit) || fit.bic < bestfit.bic
-       bestfit = fit;
-    end
-    
-    allfits{i} = fit;
+    fits{i} = fit;
 end
 
 end
