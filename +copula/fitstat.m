@@ -2,7 +2,7 @@ function [ ll, aic, bic, ks ] = fitstat( copulaparams, U )
 %COPULA.FITSTAT Given copula structure and data U compuates fit statistics.
 %   Computes LL, AIC and BIC statistics.
 
-n = size(U, 1);
+[n, d] = size(U);
 
 % Compute log likelihood
 ll = -loglike(copula.pdf(copulaparams, U));

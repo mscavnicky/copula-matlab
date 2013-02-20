@@ -23,13 +23,14 @@ for i=1:numel(families)
     family = families{i};
     fprintf('Fitting family %s...\n', family);
     copulaparams = copula.fit(family, U);
-    [ll, aic, bic] = copula.fitstat(copulaparams, U);
+    [ll, aic, bic, ks] = copula.fitstat(copulaparams, U);
     
     fit.copulaparams = copulaparams;
     fit.family = copulaparams.family;
     fit.ll = ll;
     fit.aic = aic;
-    fit.bic = bic;  
+    fit.bic = bic;
+    fit.ks = ks;
     
     fits{i} = fit;
 end
