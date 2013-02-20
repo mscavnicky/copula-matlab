@@ -25,6 +25,7 @@ set(gca, 'XColor', [0.1 0.1 0.1])
 set(gca, 'YColor', [0.1 0.1 0.1])
 % Show overlay grid
 grid on;
+set(gca,'XGrid', 'off');
 set(gca,'Layer','top');
 % Use more appealing colormap
 colormap(summer);
@@ -39,8 +40,8 @@ legend('boxoff');
 
 % Print out the figure
 set(gcf, 'PaperUnits', 'centimeters');
-set(gcf, 'PaperSize', [15.0 4.5]);
-set(gcf, 'PaperPosition', [0 0 15.0 4.5]);
+set(gcf, 'PaperSize', [14.5 4.5]);
+set(gcf, 'PaperPosition', [0 0 14.5 4.5]);
 imagename = sprintf('%s/%s-%d-bar.pdf', folder, dataset, classnum );
 print('-dpdf', '-r300', imagename);
 
