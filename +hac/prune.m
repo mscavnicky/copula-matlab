@@ -1,6 +1,6 @@
 function [ prunedTree ] = prune( tree, m )
-%HAC.PRUNE Recursively prunes bivariate HAC tree to contain m variables.
-%   Uses property of bivariate Archimedean copula that C(u,1) = u.
+%HAC.PRUNE Recursively prunes bivariate HAC tree to first m variables.
+%   Uses property of bivariate Archimedean copula that C(u,1) = C(1,u) = u.
 
 assert(numel(tree) <= 4, 'HAC.PRUNE:TooManyDimensions', 'Pruning only works for bivariate HAC.');
 

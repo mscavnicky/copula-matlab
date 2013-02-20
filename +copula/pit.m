@@ -1,5 +1,5 @@
 function [ T ] = pit( copulaparams, U )
-%COPULAPIT Performs probability integral transformation under the null
+%COPULA.PIT Performs probability integral transformation under the null
 %hypothesis that the data are generated using given copula.
 %
 %   Computation of conditional probability is currently performing

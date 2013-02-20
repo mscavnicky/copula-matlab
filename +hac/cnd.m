@@ -1,9 +1,10 @@
 function [ Y ] = cnd( family, U, tree, m )
-% COPULACND Conditional cumulative distribution function for copulas.
+% HAC.CND Conditional cumulative distribution function for copulas.
 %   Computes conditional CDF of d-dimensional copula, where m-th variable
 %   is conditined upon first m-1 variables.
 
 n = size(U, 2);
+
 % Get the CDF expression
 f = hac.sym.cdf(family, tree);
 % Get all the symbols used
@@ -18,8 +19,7 @@ for i=1:m-1
 end
 % Create a matlab function to evaluate
 fn = matlabFunction(f, 'vars', {vars(1:m)});    
-% Get the result in nominator
-N = fn(U(:,1:m));        
+   
 
 g = hac.sym.cdf(family, tree);
 vars = symvar(g);
@@ -30,8 +30,10 @@ for i=1:m-1
    g = diff(g, vars(i)); 
 end
 gn = matlabFunction(g, 'vars', {vars(1:m-1)});
-D = gn(U(:,1:m-1));
 
+
+N = fn(U(:,1:m));    
+D = gn(U(:,1:m-1));
 Y = N ./ D;
 
 end
