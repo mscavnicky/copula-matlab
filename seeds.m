@@ -1,6 +1,7 @@
 %% Load data
 
-names = {'area', 'perimeter', 'compactness', 'length', 'width', 'assymetry', 'groove'};
+names = {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove'};
+classnames = {'Kama', 'Rosa', 'Canadian'};
 
 data = csvread('../Data/Seeds/seeds.txt');
 X = data(:, 1:7);
@@ -42,7 +43,7 @@ plotmatrix(S);
 
 %% Visualize dependency using HAC
 
-claytonTree = hac.fit('clayton', U, 'okhrin');
+claytonTree = hac.fit('clayton', U, 'plot');
 hac.plot('clayton', claytonTree, names);
 
 gumbelTree = hac.fit('gumbel', U, 'plot');
@@ -53,13 +54,31 @@ hac.plot('frank', frankTree, names);
 
 %% Fit copulas
 
-fitcopulas(X(Y==1, :), 'CML')
-fitcopulas(X(Y==2, :), 'CML')
-fitcopulas(X(Y==3, :), 'CML')
+cmlFits = cell(3, 1);
+ifmFits = cell(3, 1);
 
-fitcopulas(X(Y==1, :), 'IFM')
-fitcopulas(X(Y==2, :), 'IFM')
-fitcopulas(X(Y==3, :), 'IFM')
+for i=1:3
+    cmlFits{i} = fitcopulas(X(Y==i, :), 'CML');
+    ifmFits{i} = fitcopulas(X(Y==i, :), 'IFM');    
+end
+
+%% Produce results
+
+for i=1:3    
+    dists2table('../Results', ifmFits{i}{1}, names, 'Seeds', i, classnames{i});
+    fit2table('../Results', cmlFits{i}, ifmFits{i}, 'Seeds', i, classnames{i});
+    fit2bars('../Results', cmlFits{i}, ifmFits{i}, 'Seeds', i, classnames{i});
+end
+
+%% Produce trees
+
+for i=1:3
+   U = uniform(X(Y==i, :));
+   tree = hac.fit('gumbel', U, 'plot');
+   filename = sprintf('../Results/%s-%d-tree.pdf', 'Seeds', i);
+   hac.plot('gumbel', tree, names, filename);    
+end
+
 
 
 %% KNN classifier

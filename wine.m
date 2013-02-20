@@ -75,18 +75,15 @@ copula.eval('frank', U, 100);
 X = X(:, [1:3,5:9,11]);
 
 % Does not make sense fitting class 3 as there is only 10 elements
-%fitcopulas(X(Y==3, :), 'CML')
 fitcopulas(X(Y==4, :), 'CML')
 fitcopulas(X(Y==5, :), 'CML')
 fitcopulas(X(Y==6, :), 'CML')
 fitcopulas(X(Y==7, :), 'CML')
-fitcopulas(X(Y==8, :), 'CML')
 
-fitcopulas(X(Y==1, :), 'IFM')
-fitcopulas(X(Y==2, :), 'IFM')
-fitcopulas(X(Y==3, :), 'IFM')
-
-
+fitcopulas(X(Y==4, :), 'IFM')
+fitcopulas(X(Y==5, :), 'IFM')
+fitcopulas(X(Y==6, :), 'IFM')
+fitcopulas(X(Y==7, :), 'IFM')
 
 %% Hierarchy of dependency
 
