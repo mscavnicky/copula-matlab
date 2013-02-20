@@ -34,36 +34,49 @@ function testStudentIn3D
     
 function testClaytonIn2D
     U = csvread('data/data2d.csv');
-    clayton2 = struct('family', 'clayton', 'alpha', 1.4557);
-    X = copula.cnd(clayton2, U, 2);
+    X = archim.cnd('clayton', U, 1.4557, 2);
     Y = csvread('data/test_copulacnd_clayton2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testClaytonIn3D
     U = csvread('data/data3d.csv');
-    clayton3 = struct('family', 'clayton', 'alpha',  0.9912);
-    X = copula.cnd(clayton3, U, 3);
+    X = archim.cnd('clayton', U, 0.9912, 3);
     Y = csvread('data/test_copulacnd_clayton3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testGumbelIn3D
     U = csvread('data/data3d.csv');
-    gumbel3 = struct('family', 'gumbel', 'alpha',  1.4529);
-    X = copula.cnd(gumbel3, U, 3);
+    X = archim.cnd('gumbel', U, 1.4529, 3);
     Y = csvread('data/test_copulacnd_gumbel3d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testFlatHacClaytonIn2D
     U = csvread('data/data2d.csv');
-    hac2 = struct('family', 'claytonhac', 'tree', {{1 2 1.4557}});
-    X = copula.cnd(hac2, U, 2);
+    X = hac.cnd('clayton', U, {1 2 1.4557}, 2);
     Y = csvread('data/test_copulacnd_clayton2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testFlatHacClaytonIn3D
     U = csvread('data/data3d.csv');
-    hac3 = struct('family', 'claytonhac', 'tree', {{1 2 3 0.9912}});
-    X = copula.cnd(hac3, U, 3);
+    X = hac.cnd('clayton', U, {1 2 3 0.9912}, 3);
     Y = csvread('data/test_copulacnd_clayton3d.csv');
-    assertVectorsAlmostEqual(X, Y);    
+    assertVectorsAlmostEqual(X, Y);
+    
+function testFlatFastHacClaytonIn2D
+    U = csvread('data/data2d.csv');
+    X = hac.fcnd('clayton', U, {1 2 1.4557}, 2);
+    Y = csvread('data/test_copulacnd_clayton2d.csv');
+    assertVectorsAlmostEqual(X, Y);
+    
+function testClaytonHacIn3D
+    U = csvread('data/data3d.csv');
+    X = hac.cnd('clayton', U, {1 { 2 3 2.2 } 0.9912}, 3);
+    Y = hac.fcnd('clayton', U, {1 { 2 3 2.2 } 0.9912}, 3);
+    assertVectorsAlmostEqual(X, Y);
+    
+function testClaytonHacIn4D
+    U = csvread('data/data7d.csv');
+    X = hac.cnd('clayton', U(:, 1:4), {{1 2 2.2} { 3 4 1.2 } 0.9912}, 3);
+    Y = hac.fcnd('clayton', U(:, 1:4), {{1 2 2.2} { 3 4 1.2 } 0.9912}, 3);
+    assertVectorsAlmostEqual(X, Y);
     

@@ -12,6 +12,13 @@ nDiffExpr = hac.fpdf.diffexpr(nExpr, m-1);
 % Evaluate differentiated expression
 N = hac.fpdf.evalinfix( family, U, nDiffExpr, nParams, m-1 );
 
+% In 2 dimensions denominator tree reduces to single variable that is
+% derived to 1, therefore we only need to return nominator.
+if m == 2
+    Y = N;
+    return;
+end
+
 % Denominator tree is pruned to m-1 dimensions
 dTree = hac.prune( tree, m-1 );
 % Copula expression string is produced

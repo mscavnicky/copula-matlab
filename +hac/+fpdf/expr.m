@@ -1,5 +1,5 @@
 function [ expr, params, d ] = expr( tree, d )
-%HAC.SYM.EXPR Generate string expression for HAC copula.
+%HAC.SYM.EXPR Recursively generate HAC string expression.
 
 %#ok<*AGROW>
 
