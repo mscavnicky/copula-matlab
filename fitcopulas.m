@@ -3,7 +3,7 @@ function [ fits ] = fitcopulas( X, method )
 %   best fit according to BIC and all other fits. Method can be either CML
 %   or IFM.
 
-fprintf('Uniforming data...\n');
+dbg('fitcopulas', 1, 'Uniforming data.\n');
 
 if strcmp(method, 'CML')
     U = uniform(X);
@@ -21,8 +21,9 @@ fits = cell(size(families));
 
 for i=1:numel(families)    
     family = families{i};
-    fprintf('Fitting family %s...\n', family);
+    dbg('fitcopulas', 2, 'Fitting family %s.\n', family);
     copulaparams = copula.fit(family, U);
+    dbg('fitcopulas', 2, 'Computing statistics.\n');
     [ll, aic, bic, ks] = copula.fitstat(copulaparams, U);
     
     fit.copulaparams = copulaparams;

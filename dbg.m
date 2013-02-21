@@ -1,12 +1,13 @@
-function dbg( varargin )
+function dbg( method, level, msg, varargin )
 %DBG Print debug output.
 %   Prints debug output to console only if showDebug is defined. Use the
 %   same arguments that you would use for fprintf functions.
 
-global showDebug;
+global logLevel;
 
-if showDebug
-   fprintf(varargin{:});
+if logLevel >= level
+   fprintf('%s [%s]: ', datestr(now, 'HH:MM:SS'), method);
+   fprintf(msg, varargin{:});
 end
 
 end

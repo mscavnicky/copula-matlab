@@ -50,7 +50,7 @@ trees = generateBinaryTrees(1:d);
 for i=1:length(trees)
     tree = evaluateTree(family, U, trees{i});
     ll = loglike(hacpdf(family, U, tree));    
-    dbg('Evaluated %s: %f\n', dprint(tree), ll);
+    dbg('hac.fit', 5, 'Evaluated %s: %f\n', dprint(tree), ll);
     
     if ll < minLogLike
        minLogLike = ll;
@@ -164,7 +164,7 @@ vars = 1:d;
 copulaNumber = d;
 while length(vars) > 1
     copulaNumber = copulaNumber + 1;
-    dbg('Iteration %d - %s.\n', copulaNumber - d, mat2str(vars));
+    dbg('hac.fit', 4, 'Iteration %d - %s.\n', copulaNumber - d, mat2str(vars));
     
     % Find the best fit available for current vars 
     [ nestedVars, nestedAlpha ] = chooseCopula( family, U, vars, copulas, d, method );
@@ -199,14 +199,14 @@ combinations = combnk(vars, 2);
 for j = 1:size(combinations, 1)
     comb = combinations(j,:);   
     
-    dbg('* Evaluating combination %s ... ', mat2str(comb));
+    dbg('hac.fit', 5, '* Evaluating combination %s ... \n', mat2str(comb));
     % Make sure we are using valid upper bound
     [ lowerBound, upperBound ] = hac.bounds( family );    
     upperBound = min( upperBound, childAlpha( copulas, comb ) );
     
     % Perform using valid bounds and given combination
     alpha = archim.fit( family, U(:, comb), lowerBound, upperBound );
-    dbg('%f\n', alpha);
+    dbg('hac.fit', 5, '%f\n', alpha);
     
     if alpha > maxAlpha
        maxVars = comb;
