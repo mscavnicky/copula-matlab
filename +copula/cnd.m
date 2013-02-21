@@ -79,7 +79,7 @@ case {'frank', 'gumbel', 'clayton', 'joe'}
     
 case {'claytonhac', 'gumbelhac', 'frankhac', 'joehac'}
     family = family(1:end-3);
-    Y = hac.cnd(family, U, copulaparams.tree, m);
+    Y = hac.fcnd(family, U, copulaparams.tree, m);
      
 otherwise
     error('Copula family not supported.');    
