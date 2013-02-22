@@ -16,6 +16,10 @@ gumbel.cop.3 = archmCopula("gumbel", param=1.4529, dim=3)
 joe.cop.3 = archmCopula("joe", param=1.85, dim=3)
 clayton.cop.2 = archmCopula("clayton", param=1.4557, dim=2)
 
+clayton.cop.7 = archmCopula("clayton", param=5.0, dim=7)
+gumbel.cop.7 = archmCopula("gumbel", param=5.0, dim=7)
+frank.cop.7 = archmCopula("frank", param=5.0, dim=7)
+
 to.csv <- function(data, filename) {
   write.table(data, filename, sep=',', row.names=FALSE, col.names=FALSE);
 }
@@ -40,6 +44,9 @@ to.csv(pCopula(data3, joe.cop.3), "data/test_archim_cdf_joe3d.csv")
 # Copula densities
 to.csv(dCopula(data3, clayton.cop.3), "data/test_archimpdf_clayton3d.csv")
 to.csv(dCopula(data3, joe.cop.3), "data/test_archim_pdf_joe3d.csv")
+to.csv(dCopula(data7, clayton.cop.7), "data/test_archim_pdf_clayton7d.csv")
+to.csv(dCopula(data7, gumbel.cop.7), "data/test_archim_pdf_gumbel7d.csv")
+to.csv(dCopula(data7, frank.cop.7), "data/test_archim_pdf_frank7d.csv")
 
 # Rosenblatt's transform
 to.csv(rtrafo(data2, normal.cop.2), "data/test_copula_pit_gaussian2d.csv")
