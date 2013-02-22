@@ -1,4 +1,4 @@
-function [ ll, aic, bic, ks ] = fitstat( copulaparams, U )
+function [ ll, aic, bic, ks, aks ] = fitstat( copulaparams, U )
 %COPULA.FITSTAT Given copula structure and data U compuates fit statistics.
 %   Computes LL, AIC and BIC statistics.
 
@@ -20,7 +20,8 @@ E = copula.pit( copulaparams, U );
 C = sum( norminv( E ) .^ 2, 2 );
 % Compute KS statistics
 ks = sqrt(n) * max(abs(chi2cdf(C, d) - uniform(C)));
-
+% Compute AKS statistics
+aks = sum(abs(chi2cdf(C, d) - uniform(C))) / sqrt(n);
 
 end
 

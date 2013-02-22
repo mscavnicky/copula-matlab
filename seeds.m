@@ -1,5 +1,6 @@
 %% Load data
 
+dataset = 'Seeds';
 names = {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove'};
 classnames = {'Kama', 'Rosa', 'Canadian'};
 
@@ -52,6 +53,19 @@ hac.plot('gumbel', gumbelTree, names);
 frankTree = hac.fit('frank', U, 'plot');
 hac.plot('frank', frankTree, names);
 
+%% Fit margins and generate table
+
+allDists = cell(3, 1);
+allPValues = cell(3, 1);
+
+for i=1:3
+    [dists, pvalues] = fitmargins(X(Y==i, :));
+    allDists{i} = dists;
+    allPValues{i} = pvalues;
+end
+
+alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
+
 %% Fit copulas
 
 cmlFits = cell(3, 1);
@@ -59,15 +73,14 @@ ifmFits = cell(3, 1);
 
 for i=1:3
     cmlFits{i} = fitcopulas(X(Y==i, :), 'CML');
-    ifmFits{i} = fitcopulas(X(Y==i, :), 'IFM');    
+    ifmFits{i} = fitcopulas(X(Y==i, :), 'IFM', allDists{i});
 end
 
 %% Produce results
 
 for i=1:3    
-    dists2table('../Results', ifmFits{i}{1}, names, 'Seeds', i, classnames{i});
-    fit2table('../Results', cmlFits{i}, ifmFits{i}, 'Seeds', i, classnames{i});
-    fit2bars('../Results', cmlFits{i}, ifmFits{i}, 'Seeds', i, classnames{i});
+    fit2table('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
+    fit2bars('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
 end
 
 %% Produce trees
@@ -78,7 +91,6 @@ for i=1:3
    filename = sprintf('../Results/%s-%d-tree.pdf', 'Seeds', i);
    hac.plot('gumbel', tree, names, filename);    
 end
-
 
 
 %% KNN classifier

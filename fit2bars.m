@@ -8,8 +8,8 @@ function fit2bars( folder, cml, ifm, dataset, classnum, classname )
 bic = zeros(8, 2);
 
 for i=1:8
-   bic(i,1) = cml{i}.aic;
-   bic(i,2) = ifm{i}.aic;
+   bic(i,1) = cml{i}.stats(2);
+   bic(i,2) = ifm{i}.stats(2);
 end
 
 % Start the invisible figure

@@ -7,3 +7,5 @@ syntax: glob
 *~
 
 *.mex*
+
++archim/+diff
