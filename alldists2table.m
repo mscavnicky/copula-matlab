@@ -47,7 +47,7 @@ function alldists2table( folder, allDists, allPValues, names, dataset, className
     for a=1:numel(names)
         fprintf(fid, '%s & ', names{a});    
         for i=1:numClasses
-            fprintf(fid, '%s & %.4f', prettyDistName(allDists{i}{a}), allPValues{i}(a));
+            fprintf(fid, '%s & %.3f', prettyDistName(allDists{i}{a}), allPValues{i}(a));
             if i ~= numClasses
                 fprintf(fid, ' && ');
             end

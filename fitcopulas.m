@@ -3,7 +3,8 @@ function [ fits ] = fitcopulas( X, method, dists )
 %   best fit according to BIC and all other fits. Method can be either CML
 %   or IFM.
 
-dbg('fitcopulas', 1, 'Uniforming data.\n');
+dbg('fitcopulas', 1, 'Fiting copulas using %s method.\n', method);
+dbg('fitcopulas', 2, 'Uniforming data.\n');
 
 if strcmp(method, 'CML')
     U = uniform(X);

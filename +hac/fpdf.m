@@ -15,9 +15,11 @@ end
 [expr, params] = hac.fpdf.expr(tree);
 
 % Differentiate expression symbolically
+dbg('hac.fpdf', 4, 'Differentiating expression.\n')
 dexpr = hac.fpdf.diffexpr(expr);
 
 % Evaluate differentiated expression
+dbg('hac.fpdf', 4, 'Evaluating expression.\n')
 Y = hac.fpdf.evalinfix( family, U, dexpr, params, cacheLevel );
 
 % Replace terms inside it with variables
