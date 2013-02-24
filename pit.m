@@ -13,7 +13,8 @@ for i=1:length(dists)
 end
 
 % Values must be strictly between 0 and 1
-U(U == 0) = 1e6;
+U(U == 0) = 1e-6;
+U(U == 1) = 1 - 1e-6;
 
 end
 
