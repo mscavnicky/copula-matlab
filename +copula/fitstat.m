@@ -9,7 +9,7 @@ ll = -loglike(copula.pdf(copulaparams, U));
 k = copulaparams.numParams;
 
 % Compute aic
-aic = -2*ll + (2*n*(k+1))/(n-k-2);
+aic = -2*ll + (2*n*k)/(n-k-1);
 
 % Compute bic
 bic = -2*ll + k*log(n);
