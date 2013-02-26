@@ -55,10 +55,14 @@ for i=1:numel(labels)
 end
 
 % Print to file if argument specified
+% Size is set according to dimensions
+
+d = hac.dim(tree);
+
 if nargin > 3
     set(gcf, 'PaperUnits', 'centimeters');
-    set(gcf, 'PaperSize', [5.0 6.0]);
-    set(gcf, 'PaperPosition', [0 0 5.0 6.0]);
+    set(gcf, 'PaperSize', [d+1 d+2]);
+    set(gcf, 'PaperPosition', [0 0 d+1 d+2]);
     print('-dpdf', '-r300', imagename);
 end
 
