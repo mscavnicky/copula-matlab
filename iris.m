@@ -60,9 +60,9 @@ end
 
 for i=1:3
    U = uniform(X(Y==i, :));
-   tree = hac.fit('gumbel', U, 'plot');
+   tree = hac.fit('frank', U, 'plot');
    filename = sprintf('../Results/%s-%d-tree.pdf', 'Iris', i);
-   hac.plot('gumbel', tree, names, filename);    
+   hac.plot('frank', tree, names, filename);    
 end
 
 

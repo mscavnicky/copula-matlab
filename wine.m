@@ -1,37 +1,25 @@
-%% Load red wine data
+%% Load white wine data
+
+% We have dropped fixed acidity, chlorides and pH as they are least
+% important
 
 names = {...
-    'fixed acidity',...
-    'volatile acidity',...
-    'citric acid',...
-    'residual sugar',...
-    'chlorides',...
-    'free SO^2',...
-    'total SO^2',...
-    'density',...
-    'pH',...
-    'sulphates',...
-    'alcohol'};
+    'Volatile Acidity',...
+    'Citric Acid',...
+    'Residual Sugar',...
+    'Free SO2',...
+    'Total SO2',...
+    'Density',...
+    'Sulphates',...
+    'Alcohol'};
+dataset = 'Wine';
+classnames = {'5', '6', '7'};
 
-data = csvread('../Data/Wine/winequality-red.csv');
+data = csvread('../Data/Wine/winequality-white.csv');
 
-X = data(:,1:11);
+X = data(:,[2:4, 6:8, 10:11]);
 Y = data(:,12);
 U = uniform(X);
-
-dists = {...
-    'inversegaussian',...
-    'gamma',...
-    'exponential',...
-    'tlocationscale',...
-    'tlocationscale',...
-    'gamma',...
-    'inversegaussian',...
-    'loglogistic',...
-    'loglogistic',...
-    'loglogistic',...
-    'inversegaussian'};
-S = pit(X, dists);    
 
 [n, d] = size(X);
 
@@ -61,43 +49,47 @@ plotmatrix(U);
 plotmatrix(X);
 plotmatrix(P);
 
-%% Fit copulas using CML in 11 dimensions
+%% Fit margins and generate table
 
-copula.eval('gaussian', U, 100);
-copula.eval('t', U, 10);
-copula.eval('clayton', U, 100);
-copula.eval('gumbel', U, 10);
-copula.eval('frank', U, 100);
+allDists = cell(3, 1);
+allPValues = cell(3, 1);
 
+for i=5:7
+    [dists, pvalues] = fitmargins(X(Y==i, :));
+    allDists{i-4} = dists;
+    allPValues{i-4} = pvalues;
+end
+
+alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
 
 %% Fit copulas
 
-X = X(:, [1:3,5:9,11]);
+cmlFits = cell(3, 1);
+ifmFits = cell(3, 1);
 
-% Does not make sense fitting class 3 as there is only 10 elements
-fitcopulas(X(Y==4, :), 'CML')
-fitcopulas(X(Y==5, :), 'CML')
-fitcopulas(X(Y==6, :), 'CML')
-fitcopulas(X(Y==7, :), 'CML')
+for i=5:7
+    cmlFits{i-4} = fitcopulas(X(Y==i, :), 'CML');
+    ifmFits{i-4} = fitcopulas(X(Y==i, :), 'IFM', allDists{i-4});
+end
 
-fitcopulas(X(Y==4, :), 'IFM')
-fitcopulas(X(Y==5, :), 'IFM')
-fitcopulas(X(Y==6, :), 'IFM')
-fitcopulas(X(Y==7, :), 'IFM')
+%% Produce results
 
-%% Hierarchy of dependency
+for i=5:7    
+    fit2table('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
+    fit2bars('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
+end
 
-claytonTree = hac.fit('clayton', U, 'plot');
-hac.plot('clayton', claytonTree, names);
 
-gumbelTree = hac.fit('gumbel', U, 'plot');
-hac.plot('gumbel', gumbelTree, names);
+%% Produce trees
 
-frankTree = hac.fit('frank', U, 'plot');
-hac.plot('frank', frankTree, names);
+for i=5:7
+   U = uniform(X(Y==i, :));
+   tree = hac.fit('frank', U, 'plot');
+   filename = sprintf('../Results/%s-%d-tree.pdf', dataset, i);
+   hac.plot('frank', tree, names, filename);    
+end
 
-joeTree = hac.fit('joe', U);
-hac.plot('joe', joeTree, names);
+
 
 %% KNN classifier
 

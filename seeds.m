@@ -83,6 +83,7 @@ for i=1:3
     fit2bars('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
 end
 
+
 %% Produce trees
 
 for i=1:3
