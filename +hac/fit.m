@@ -26,8 +26,10 @@ case 'full'
     tree = hacfitFull( family, U );    
 case 'okhrin'
     tree = hacfitOkhrin( family, U, 'okhrin' );
-case 'plot'
-    tree = hacfitOkhrin( family, U, 'plot' );    
+case 'okhrin*'
+    tree = hacfitOkhrin( family, U, 'okhrin*' );    
+otherwise
+    error('hac:fit:method', 'Fitting method %s not recognized', method);
 end
 
 % Validate generated HAC
@@ -214,7 +216,7 @@ for j = 1:size(combinations, 1)
     end
     
     % Rotated left
-    if strcmp(method, 'plot') && comb(1) <= d        
+    if strcmp(method, 'okhrin*') && comb(1) <= d        
         alpha = archim.fit( family, [1-U(:, comb(1)) U(:, comb(2))], lowerBound, upperBound );
         
         if alpha > maxAlpha

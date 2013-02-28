@@ -74,12 +74,17 @@ case 't'
     D = mvtpdf( X, rho(1:m-1,1:m-1), nu );  
     Y = N ./ D;    
     
-case {'frank', 'gumbel', 'clayton', 'joe'}
+case {'frank', 'gumbel', 'clayton'}
     Y = archim.cnd(family, U, copulaparams.alpha, m);
     
-case {'claytonhac', 'gumbelhac', 'frankhac', 'joehac'}
+case {'claytonhac', 'gumbelhac', 'frankhac'}
     family = family(1:end-3);
     Y = hac.fcnd(family, U, copulaparams.tree, m);
+
+case {'claytonhac*', 'gumbelhac*', 'frankhac*'}
+    [tree, U] = hac.preprocess(copulaparams.tree, U);
+    family = family(1:end-4);
+    Y = hac.fcnd(family, U, tree, m);
      
 otherwise
     error('Copula family not supported.');    
