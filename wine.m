@@ -89,6 +89,17 @@ for i=5:7
    hac.plot('frank', tree, names, filename);    
 end
 
+%% Visualize dependency using HAC
+
+claytonTree = hac.fit('clayton', U, 'okhrin*');
+hac.plot('clayton', claytonTree, names);
+
+gumbelTree = hac.fit('gumbel', U, 'okhrin*');
+hac.plot('gumbel', gumbelTree, names);
+
+frankTree = hac.fit('frank', U, 'okhrin*');
+hac.plot('frank', frankTree, names);
+
 
 
 %% KNN classifier

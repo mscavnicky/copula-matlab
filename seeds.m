@@ -44,13 +44,13 @@ plotmatrix(S);
 
 %% Visualize dependency using HAC
 
-claytonTree = hac.fit('clayton', U, 'plot');
+claytonTree = hac.fit('clayton', U, 'okhrin*');
 hac.plot('clayton', claytonTree, names);
 
-gumbelTree = hac.fit('gumbel', U, 'plot');
+gumbelTree = hac.fit('gumbel', U, 'okhrin*');
 hac.plot('gumbel', gumbelTree, names);
 
-frankTree = hac.fit('frank', U, 'plot');
+frankTree = hac.fit('frank', U, 'okhrin*');
 hac.plot('frank', frankTree, names);
 
 %% Fit margins and generate table
