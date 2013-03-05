@@ -1,14 +1,14 @@
-function [ M ] = crossval( family, U, Y, k )
+function [ M ] = crossval( family, method, X, Y, k )
 %COPULA.CROSSVAL
 
 % Find existing classes
 C = unique(Y);
-% Split data into partitions
+% Split data into k stratified partitions
 P = cvpartition(Y, 'k', k);
 
-f = @(X, Y, TX, TY) confusionmat(TY, copula.classify(family, TX, X, Y), 'order', C);
+classifyFun = @(X, Y, TX, TY) confusionmat(TY, copula.classify(family, method, TX, X, Y), 'order', C);
 
-M = crossval(f, U, Y, 'partition', P);
+M = crossval(classifyFun, X, Y, 'partition', P);
 M = reshape(sum(M), 3, 3);
 
 end
