@@ -3,6 +3,9 @@ function [ M ] = crossval( family, method, X, Y, k )
 
 % Find existing classes
 C = unique(Y);
+
+% Reset random numbe generator to obtain same partition every time
+rng(42);
 % Split data into k stratified partitions
 P = cvpartition(Y, 'k', k);
 
