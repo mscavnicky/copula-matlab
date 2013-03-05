@@ -22,11 +22,4 @@ dexpr = hac.fpdf.diffexpr(expr);
 dbg('hac.fpdf', 4, 'Evaluating expression.\n')
 Y = hac.fpdf.evalinfix( family, U, dexpr, params, cacheLevel );
 
-% Replace terms inside it with variables
-%[inexpr, terms] = hac.fpdf.substitute(char(fexpr));
-% Convert infix expression into its postfix form
-%postexpr = hac.fpdf.in2post(inexpr);
-% Evaluate substituted expression in a postfix form
-%Y = hac.fpdf.evalpostfix(family, U, postexpr, terms, params);
-
 end
