@@ -31,21 +31,25 @@ U2 = U(:,2);
 fig = figure(1);
 set(fig, 'Position', [0, 0, 1000, 250]);
 
+
 sub1 = subplot(1,3,1);
 scatter(U1, U2, '.');
-xlabel(sub1, 'U1');
-ylabel(sub1, 'U2');
+set(gca, 'FontName', 'NewCenturySchlbk');
+xlabel(sub1, 'U1', 'FontName', 'NewCenturySchlbk');
+ylabel(sub1, 'U2', 'FontName', 'NewCenturySchlbk');
 
 sub2 = subplot(1,3,2);
 scatter(1 - U1, U2, '.');
-xlabel('1 - U1');
-ylabel('U2');
+set(gca, 'FontName', 'NewCenturySchlbk');
+xlabel('1 - U1', 'FontName', 'NewCenturySchlbk');
+ylabel('U2', 'FontName', 'NewCenturySchlbk');
 
 
 sub3 = subplot(1,3,3);
 scatter(U1, 1 - U2, '.');
-xlabel('U1');
-ylabel('1 - U2');
+set(gca, 'FontName', 'NewCenturySchlbk');
+xlabel('U1', 'FontName', 'NewCenturySchlbk');
+ylabel('1 - U2', 'FontName', 'NewCenturySchlbk');
 
 %set(sub1,'Units','normalized', 'position', [0.05 0.12 0.4 0.8]);
 %set(sub2,'Units','normalized', 'position', [0.58 0.17 0.35 0.7]);
@@ -53,4 +57,4 @@ ylabel('1 - U2');
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperSize', [16 4]);
 set(gcf, 'PaperPosition', [0 0 16 4]);
-print('-dpng', '-r300', '../Images/rotating-negative-dependence.png');
+print('-dpdf', '-r300', '../Images/rotating-negative-dependence.pdf');
