@@ -23,9 +23,9 @@ stats = zeros(numel(families), 4);
 
 for i=1:numel(families)    
     family = families{i};
-    dbg('fitcopulas', 2, 'Fitting family %s.\n', family);
+    dbg('fitcopulas', 3, 'Fitting family %s.\n', family);
     copulaparams = copula.fit(family, U);
-    dbg('fitcopulas', 2, 'Computing statistics.\n');    
+    dbg('fitcopulas', 3, 'Computing statistics.\n');    
     
     fit.copulaparams = copulaparams;
     fit.family = copulaparams.family;    

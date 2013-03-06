@@ -7,8 +7,8 @@ dists = cell(d, 1);
 pvalues = NaN(d, 1);
 
 for i=1:d   
-    [~, PD] = allfitdist(X(:,i));
-    
+    [~, PD] = allfitdist(X(:,i));    
+    warning('off', 'all');
     
     j = 1;
     while j <= numel(PD)
@@ -17,11 +17,13 @@ for i=1:d
             [~, pvalue] = kstest(X(:,i), PD{j});
             pvalues(i) = pvalue;    
             break;
-        catch
-            warning('fitmargins:kstest', 'Kolmogorov-Smirnov test failed %s.', dists{i});
+        catch            
+            % Skip this distribution
             j = j + 1;
         end
     end
+    
+    warning('on', 'all');    
 end
 
 end
