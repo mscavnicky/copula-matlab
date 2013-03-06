@@ -1,6 +1,8 @@
 function [ M ] = crossval( family, method, X, Y, k )
 %COPULA.CROSSVAL
 
+dbg('copula.crossval', 2, 'Cross validation for family %s.\n', family);
+
 % Find existing classes
 C = unique(Y);
 
