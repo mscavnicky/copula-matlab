@@ -60,7 +60,7 @@ for i=5:7
     allPValues{i-4} = pvalues;
 end
 
-alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
+gen.alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
 
 %% Fit copulas
 
@@ -75,8 +75,8 @@ end
 %% Produce results
 
 for i=5:7    
-    fit2table('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
-    fit2bars('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
+    gen.fit2table('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
+    gen.fit2bars('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
 end
 
 

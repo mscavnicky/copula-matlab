@@ -6,7 +6,7 @@ function fit2table( folder, cmlfits, ifmfits, dataset, classnum, classname )
     ifmbest = [max(ifmstats(:,1)) min(ifmstats(:,2:4))];
 
 
-    families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC' };
+    families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC', 'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*' };
 
     filename = sprintf('%s/%s-%d-fits.tex', folder, dataset, classnum );
     fid = fopen(filename, 'w');

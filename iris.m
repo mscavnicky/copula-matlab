@@ -37,7 +37,7 @@ for i=1:3
     allPValues{i} = pvalues;
 end
 
-alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
+gen.alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
 
 %% Fit copulas
 
@@ -52,8 +52,8 @@ end
 %% Produce results
 
 for i=1:3    
-    fit2table('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
-    fit2bars('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
+    gen.fit2table('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
+    gen.fit2bars('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
 end
 
 %% Produce trees

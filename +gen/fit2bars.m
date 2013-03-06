@@ -5,9 +5,9 @@ function fit2bars( folder, cml, ifm, dataset, classnum, classname )
 %       [1] http://alex.bikfalvi.com/research/latex_in_matlab_ticks/
 %       [2] http://stats.stackexchange.com/questions/577/is-there-any-reason-to-prefer-the-aic-or-bic-over-the-other
 
-bic = zeros(8, 2);
+bic = zeros(11, 2);
 
-for i=1:8
+for i=1:11
    bic(i,1) = cml{i}.stats(2);
    bic(i,2) = ifm{i}.stats(2);
 end
@@ -34,14 +34,16 @@ set(gca,'box','off')
 % Set bar edge color to none
 set(handle, 'EdgeColor', 'None');
 % Add unboxed legend
-families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC'};
+families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank',...
+    'Clayton HAC', 'Gumbel HAC', 'Frank HAC',...
+    'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*'};
 legend(families, 'Location', 'eastoutside');
 legend('boxoff');
 
 % Print out the figure
 set(gcf, 'PaperUnits', 'centimeters');
-set(gcf, 'PaperSize', [14.5 4.5]);
-set(gcf, 'PaperPosition', [0 0 14.5 4.5]);
+set(gcf, 'PaperSize', [14.5 5.0]);
+set(gcf, 'PaperPosition', [0 0 14.5 5.0]);
 imagename = sprintf('%s/%s-%d-bar.pdf', folder, dataset, classnum );
 print('-dpdf', '-r300', imagename);
 

@@ -14,7 +14,10 @@ else
     error('Method %s not recognized.', method);
 end    
 
-families = {'gaussian' 't' 'clayton' 'frank' 'gumbel' 'claytonhac' 'gumbelhac' 'frankhac', 'claytonhac*', 'gumbelhac*', 'frankhac*'};
+families = {...
+    'gaussian' 't' 'clayton' 'frank' 'gumbel'...
+    'claytonhac' 'gumbelhac' 'frankhac'...
+    'claytonhac*' 'gumbelhac*' 'frankhac*'};
 fits = cell(numel(families), 1);
 stats = zeros(numel(families), 4);
 
