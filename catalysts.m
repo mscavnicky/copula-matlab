@@ -2,10 +2,10 @@
 
 data = double(importdata('../Data/Chemistry/chemistry.mat'));
 dataset = 'Chemistry';
-names = {'X', 'Y', 'Z'};
+names = {'X', 'Y'};
 classnames = {'1', '2', '3'};
 
-X = data(:, 3:5);
+X = data(:, 6:7);
 Z1 = data(:, 1);
 Z2 = data(:, 2);
 
@@ -24,7 +24,7 @@ allDists = cell(3, 1);
 allPValues = cell(3, 1);
 
 for i=1:3
-    [dists, pvalues] = fitmargins(X(Y2==i, :));
+    [dists, pvalues] = fitmargins(X(Y2<=i, :));
     allDists{i} = dists;
     allPValues{i} = pvalues;
 end
@@ -36,8 +36,8 @@ gen.alldists2table('../Results', allDists, allPValues, names, dataset, classname
 ifmFits = cell(3, 1);
 cmlFits = cell(3, 1);
 for i=1:3
-    ifmFits{i} = fitcopulas(X(Y2==i, :), 'IFM', allDists{i});
-    cmlFits{i} = fitcopulas(X(Y2==i, :), 'CML');
+    ifmFits{i} = fitcopulas(X(Y2<=i, :), 'IFM', allDists{i});
+    cmlFits{i} = fitcopulas(X(Y2<=i, :), 'CML');
 end
 
 %% Produce results
@@ -50,10 +50,10 @@ end
 %% Produce trees
 
 for i=1:3
-   U = uniform(X(Y2==i, :));
-   tree = hac.fit('gumbel', U, 'plot');
+   U = uniform(X(Y2<=i, :));
+   tree = hac.fit('frank', U, 'okhrin*');
    filename = sprintf('../Results/%s-%d-tree.pdf', dataset, i);
-   hac.plot('gumbel', tree, names, filename);    
+   hac.plot('frank', tree, names, filename);    
 end
 
 

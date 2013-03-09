@@ -1,12 +1,11 @@
 function alldists2table( folder, allDists, allPValues, names, dataset, classNames )
-    % Number of classes
     numClasses = numel(classNames);
     
     filename = sprintf('%s/%s-dists.tex', folder, dataset );
     fid = fopen(filename, 'w');
-    fprintf(fid, '\\begin{sidewaystable}\n');
-    fprintf(fid, '\\small\n');
-    fprintf(fid, '\\centering\n');
+    %fprintf(fid, '\\begin{sidewaystable}\n');
+    %fprintf(fid, '\\small\n');
+    %fprintf(fid, '\\centering\n');
     
     
     fprintf(fid, '\\begin{tabular}{l');
@@ -15,7 +14,7 @@ function alldists2table( folder, allDists, allPValues, names, dataset, className
         if i ~= numClasses
             fprintf(fid, 'c');
         end
-    end    
+    end
     
     fprintf(fid, '}\n');
     fprintf(fid, '\\toprule\n');
@@ -57,12 +56,16 @@ function alldists2table( folder, allDists, allPValues, names, dataset, className
     
     fprintf(fid, '\\bottomrule\n');
     fprintf(fid, '\\end{tabular}\n');
+    % Fix bug in spacing
+    fprintf(fid, '\\vspace{0em}\n');
     
-    fprintf(fid, '\\caption{Fitted margins of the %s dataset.}\n', dataset);
-    fprintf(fid, '\\end{sidewaystable}\n');
+    %fprintf(fid, '\\caption{Fitted margins of the %s dataset.}\n', dataset);
+    %fprintf(fid, '\\end{sidewaystable}\n');
     fclose(fid);
 end
 
+
+%TODO Replace this with container map
 function pretty = prettyDistName( distname )
 switch distname
     case 'beta'
