@@ -1,7 +1,9 @@
 function [ f ] = cdf( family, symbols, alpha )
-%ARCHIMSYM Produces symbolic expression of given Archimedean copula CDF.
+%ARCHIM.SYM.CDF Produces symbolic expression of given Archimedean copula
+%CDF.
 %   Given dimension produces symbolic expression n-dimensional Archimedean
-%   copula using provided symbols for variables and alpha for parameter symbol.
+%   copula using provided symbols for variables and alpha for parameter
+%   symbol.
 
 % Sum together all inverse generators
 f = sym(0);

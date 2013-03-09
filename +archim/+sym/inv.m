@@ -1,5 +1,5 @@
 function [ f ] = inv( family, x, p )
-%ARCHIMINVSYM Symbolic represenatation of inverse of archimedean copula 
+%ARCHIM.SYM.INV Symbolic represenatation of inverse of archimedean copula 
 %generator.
 
 switch family
