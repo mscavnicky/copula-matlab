@@ -14,9 +14,9 @@ function testArchimNDiff
 function testArchimGenDiff
 % normal diff
     X = [0.1 0.2; 0.2 0.8; 1.0 0.4; 0.5 0.4];
-    assertElementsAlmostEqual(archim.gendiff('clayton', 1, X, 1.2), archim.diff('clayton', X, 1.2))
-    assertElementsAlmostEqual(archim.gendiff('gumbel', 1, X, 1.2), archim.diff('gumbel', X, 1.2))
-    assertElementsAlmostEqual(archim.gendiff('frank', 1, X, 1.2), archim.diff('frank', X, 1.2))
+    assertElementsAlmostEqual(archim.gendiff('clayton', X, 1.2, 1), archim.diff('clayton', X, 1.2))
+    assertElementsAlmostEqual(archim.gendiff('gumbel', X, 1.2, 1), archim.diff('gumbel', X, 1.2))
+    assertElementsAlmostEqual(archim.gendiff('frank', X, 1.2, 1), archim.diff('frank', X, 1.2))
     
 function testArchimPdfAgainstMatlab
     X = [0.1 0.2; 0.3 0.8; 0.9 0.9; 0.5 0.5];

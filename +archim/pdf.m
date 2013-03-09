@@ -1,5 +1,6 @@
 function [ Y ] = pdf( family, U, alpha )
-%ARCHIMPDF Probability density function for multivariate archimedean copula.
+%ARCHIM.PDF Probability density function for multivariate archimedean
+%copula.
 %   PDF is computed as described in [1]. Extremal values where at least one
 %   margin is set to 1 are also computed according to the equation. MATLAB
 %   in this case returns 0, R returns NaN.
@@ -10,7 +11,7 @@ function [ Y ] = pdf( family, U, alpha )
 
 % Copula dimension is necessary for parameter validation and derivative
 d = size(U, 2);
-% For 2-dimensional case used existing MATLAB copulas
+% For 2-dimensional case use existing MATLAB implementation
 if d == 2
    Y = copulapdf(family, U, alpha);
    return;
@@ -23,7 +24,7 @@ assert(alpha > lowerBound && alpha < upperBound, 'Copula parameter out of range.
 assert(alpha ~= 0, 'Copula parameter cannot be zero.');
 
 % Evaluate PDF
-N = archim.gendiff( family, d, sum(archim.inv( family, U, alpha ), 2), alpha );
+N = archim.gendiff( family, sum(archim.inv( family, U, alpha ), 2), alpha, d );
 D = prod( archim.diff( family, archim.inv( family, U, alpha ), alpha ), 2 );
 Y = N ./ D;
 
