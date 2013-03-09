@@ -1,6 +1,5 @@
 function [ Y ] = gen( family, X, p )
-%ARCHIMGEN Archimedean copula function generator.
-%   Supports Frank, Gumbel and Clayton copulas.
+%ARCHIM.GEN Archimedean copula function generator.
 %   Please not that no parameter checking is done in this function.
 %
 %   Reference:
@@ -13,8 +12,6 @@ switch family
         Y = exp( -X .^ ( 1 / p ) );
     case 'frank'
         Y = ( -1 / p ) * log( 1 - ( 1 - exp(-p) ) .* exp(-X) );
-    case 'joe'
-        Y = 1 - ( 1 - exp(-X) ) .^ (1 / p);       
     otherwise
         error 'Copula family not recognized.'
 end

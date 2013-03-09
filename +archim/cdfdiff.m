@@ -1,7 +1,8 @@
 function [ Y ] = cdfdiff( family, U, alpha, diffvars )
-%ARCHIM.CDFDIFF Derives d-dimensionsal cdf by all provided vars.
-%   Returns symbolic expression. Vars is an array of numbers where number
-%   represents symbol.
+%ARCHIM.CDFDIFF Computes derivative of d-dimensionsal Archimedean cdf with
+%respect to all provided variables.
+%   Uses symbolic version of cdfdiff to compure derivatives. Caches
+%   derivatives of the cdf.
 
 % Cache containing references to Matlab functions
 persistent cache;

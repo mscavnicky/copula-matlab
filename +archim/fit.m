@@ -1,8 +1,8 @@
 function [ alphahat ] = fit( family, U, lowerBound, upperBound )
-%ARCHIMFIT Fit multivariate archimedean copula to data.
+%ARCHIM.FIT Fit a multivariate archimedean copula to data.
 %   Data must be within interval [0, 1]. Returns value of fitted parameters
 %   and likelihood of fit to data. Minimization is performed using fminbnd
-%   method which requires methods to be continuouos.
+%   method which requires likelihood method to be continuouos.
 
 % Function giving likelihood of the sample for given alpha
 optimfun = @(alpha) loglike(archim.pdf( family, U, alpha ));
@@ -28,7 +28,8 @@ if 0
     close(fig);
 end
 
-% Find some reasonable upper bound
+% If upperBoudn is infinite, estimate some close upperBound assuming the
+% function is monotone
 originalUpperBound = upperBound;
 if upperBound == Inf
     newUpperBound = 4;    
@@ -38,6 +39,7 @@ if upperBound == Inf
     upperBound = newUpperBound * 2;
 end
 
+% Estimate the alpha using MATLAB's optimization methods
 alphahat = estimateAlpha(optimfun, max(lowerBound, -10), upperBound);
 
 if originalUpperBound == Inf && abs(alphahat - upperBound) < 0.001

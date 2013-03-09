@@ -17,9 +17,3 @@ function testArchimCdfAgainstMatlabForHighAlpha
     assertVectorsAlmostEqual(archim.cdf('clayton', X, 50), copulacdf('clayton', X, 50));
     assertVectorsAlmostEqual(archim.cdf('gumbel', X, 50), copulacdf('gumbel', X, 50));
     assertVectorsAlmostEqual(archim.cdf('frank', X, 50), copulacdf('frank', X, 50), 'absolute', 1e-3);
-    
-function testArchimCdfAgainstR
-    U = csvread('data/data3d.csv');
-    X = archim.cdf('joe', U, 1.85);
-    Y = csvread('data/test_archim_cdf_joe3d.csv');
-    assertVectorsAlmostEqual(X, Y);

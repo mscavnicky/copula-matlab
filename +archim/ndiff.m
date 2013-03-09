@@ -1,8 +1,7 @@
-function [ Y ] = ndiff( family, n, X, alpha )
-%ARCHIMNDIFF Computes n-th derivate of Archimedean generator and evaluates.
-%   Derivation is computed analytically. Supports Frank, Gumbel and Clayton 
-%   copulas. To improve performance derivatives are cached in persistent
-%   map.
+function [ Y ] = ndiff( family, X, alpha, m )
+%ARCHIM.GENDIFF Computes values of the m-th derivative of the generator of
+%the Archimedean copula family using symbolic toolbox.
+%   Symbolic derivations are cached to speed up computations.
 
 % Initialized cache for functions repsenting generator derivatives
 persistent derivatives;
@@ -11,7 +10,7 @@ if isempty(derivatives)
 end
 
 % The key of the derivative function computed
-key = sprintf('%s%d', family, n);
+key = sprintf('%s%d', family, m);
 
 if isKey(derivatives, key)
     nthDerivative = derivatives(key);
@@ -21,7 +20,7 @@ else
     % Acquire symbolic version of generator
     f = archim.sym.gen(family, x, p);
     % Analytically compute n-th derivation
-    fn = diff(f, n, x);
+    fn = diff(f, m, x);
     % Simplify equation for performance reasons
     fn = simplify(fn);    
     % Convert derivation to Matlab function

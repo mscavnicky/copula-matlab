@@ -6,10 +6,9 @@ initTestSuite;
 
 function testArchimNDiff
     X = [0.1 0.2; 0.2 0.8; 1.0 0.4; 0.5 0.4];
-    assertElementsAlmostEqual(archim.ndiff('clayton', 1, X, 1.2), archim.diff('clayton', X, 1.2))
-    assertElementsAlmostEqual(archim.ndiff('frank', 1, X, 1.2), archim.diff('frank', X, 1.2))
-    assertElementsAlmostEqual(archim.ndiff('gumbel', 1, X, 1.2), archim.diff('gumbel', X, 1.2))
-    assertElementsAlmostEqual(archim.ndiff('joe', 1, X, 1.2), archim.diff('joe', X, 1.2))
+    assertElementsAlmostEqual(archim.ndiff('clayton', X, 1.2, 1), archim.diff('clayton', X, 1.2))
+    assertElementsAlmostEqual(archim.ndiff('frank', X, 1.2, 1), archim.diff('frank', X, 1.2))
+    assertElementsAlmostEqual(archim.ndiff('gumbel', X, 1.2, 1), archim.diff('gumbel', X, 1.2))
     
 function testArchimGenDiff
 % normal diff
