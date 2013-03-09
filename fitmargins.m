@@ -10,16 +10,23 @@ for i=1:d
     [~, PD] = allfitdist(X(:,i));    
     warning('off', 'all');
     
-    j = 1;
-    while j <= numel(PD)
-        dists{i} = PD{j}.DistName;
+    for j=1:numel(PD)
         try 
+            % Try running cdf functions over X to verify it is stable
+            Y = PD{j}.cdf(X(:,i));
+            if isnan(Y) | isinf(Y)
+                throw('Distribution is not numerically stable.')
+            end
+           
+            % Perform Kolmogorov-Smirnov test
             [~, pvalue] = kstest(X(:,i), PD{j});
-            pvalues(i) = pvalue;    
+            
+            % Store distribution and its p-value
+            dists{i} = PD{j}.DistName;
+            pvalues(i) = pvalue;            
             break;
-        catch            
+        catch          
             % Skip this distribution
-            j = j + 1;
         end
     end
     
