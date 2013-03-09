@@ -84,8 +84,8 @@ end
 
 for i=5:7
    U = uniform(X(Y==i, :));
-   tree = hac.fit('frank', U, 'plot');
-   filename = sprintf('../Results/%s-%d-tree.pdf', dataset, i);
+   tree = hac.fit('frank', U, 'okhrin');
+   filename = sprintf('../Results/%s-%d-tree2.pdf', dataset, i);
    hac.plot('frank', tree, names, filename);    
 end
 

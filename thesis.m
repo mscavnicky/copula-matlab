@@ -28,6 +28,8 @@ U = copularnd('gumbel', 2.5, 500);
 U1 = 1 - U(:,1);
 U2 = U(:,2);
 
+archim.fit('gumbel', [U1 U2]);
+
 fig = figure(1);
 set(fig, 'Position', [0, 0, 1000, 250]);
 

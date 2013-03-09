@@ -65,6 +65,24 @@ for i=1:3
    hac.plot('frank', tree, names, filename);    
 end
 
+%% Perform classificatin experiment
+
+ifmCm = cell(11, 1);
+cmlCm = cell(11, 1);
+families = {...
+    'gaussian' 't' 'clayton' 'frank' 'gumbel'...
+    'claytonhac' 'gumbelhac' 'frankhac'...
+    'claytonhac*' 'gumbelhac*' 'frankhac*'};
+for i=1:numel(families)
+    cmlCm{i} = copula.crossval(families{i}, 'CML', X, Y, 10);
+    ifmCm{i} = copula.crossval(families{i}, 'IFM', X, Y, 10);   
+end
+
+%% Plot the classification
+
+gen.cm2table('../Results', 'Iris', 'CML', cmlCm);
+gen.cm2table('../Results', 'Iris', 'IFM', ifmCm);
+
 
 
 

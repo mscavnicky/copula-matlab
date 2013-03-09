@@ -93,6 +93,23 @@ for i=1:3
    hac.plot('gumbel', tree, names, filename);    
 end
 
+%% Produce classification results
+
+ifmCm = cell(11, 1);
+cmlCm = cell(11, 1);
+families = {...
+    'gaussian' 't' 'clayton' 'frank' 'gumbel'...
+    'claytonhac' 'gumbelhac' 'frankhac'...
+    'claytonhac*' 'gumbelhac*' 'frankhac*'};
+for i=1:numel(families)
+    cmlCm{i} = copula.crossval(families{i}, 'CML', X, Y, 10);
+    ifmCm{i} = copula.crossval(families{i}, 'IFM', X, Y, 10);   
+end
+
+%% Plot the classification
+
+gen.cm2table('../Results', dataset, 'CML', cmlCm);
+gen.cm2table('../Results', dataset, 'IFM', ifmCm);
 
 %% KNN classifier
 
