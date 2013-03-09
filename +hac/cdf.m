@@ -1,8 +1,6 @@
 function [ Y ] = cdf( family, U, tree )
-%HACCDF Cumulative distribution function of hierarchical Archimedean copula.
+%HAC.CDF Cumulative distribution function of hierarchical Archimedean copula.
 %   Given structure of HAC computes CDF in given points. 
-%
-%   { 1, 2, { 3, 4, [5.2] } [1.2] }
 
 % Dimensions of top-level copula in hac structure
 d = length(tree) - 1;

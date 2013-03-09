@@ -1,5 +1,6 @@
 function [ outTree, U ] = preprocess( tree, U )
-%HAC.PREPROCESS
+%HAC.PREPROCESS Given HAC tree containing rotated arguments preprocesses
+%given sample and returns tree without rotated arguments.
 
 if iscell(tree)
     outTree = {};
@@ -8,7 +9,7 @@ if iscell(tree)
         outTree{i} = preprocessedTree;
     end
     % Add alpha at the end of the tree
-    outTree{end+1} = tree{end};    
+    outTree{end+1} = tree{end};
 else
     % If is rotated attribute
     if tree < 0

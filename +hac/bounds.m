@@ -1,4 +1,4 @@
-function [ l, u ] = bounds( family )
+function [ lowerBound, upperBound ] = bounds( family )
 %HAC.BOUNDS Bounds of parameters of Hierarchical Archimedean Copulas
 %   Returns maximum and lower bound of the interval for parameter for given
 %   Archimedean copula family.
@@ -9,17 +9,14 @@ function [ l, u ] = bounds( family )
 
 switch family
     case 'clayton'
-        l = 0;
-        u = Inf;
+        lowerBound = 0;
+        upperBound = Inf;
     case 'gumbel'
-        l = 1;
-        u = Inf;
+        lowerBound = 1;
+        upperBound = Inf;
     case 'frank'
-        l = 0;
-        u = Inf;
-    case 'joe'
-        l = 1;
-        u = Inf;        
+        lowerBound = 0;
+        upperBound = Inf;      
     otherwise
         error 'Copula family not recognized.'
 end

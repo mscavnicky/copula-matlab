@@ -1,5 +1,5 @@
 function [ Y ] = pdf( family, U, tree )
-%HACPDF Probability distribution function of family of HAC.
+%HAC.PDF Probability distribution function of family of HAC.
 %   Derives and evalutes symbolic expression of density function for given
 %   HAC.
 

@@ -1,5 +1,5 @@
 function [ tree ] = fit( family, U, method )
-%HACFIT Fits sample to Hierachical Archimedean Copula. Return tree.
+%HAC.FIT Fits sample to Hierachical Archimedean Copula. Return tree.
 %   Uses method by Okhrin to select HAC structure. HAC structure and alphas
 %   are all encoded in resulting parameters.
 %
@@ -7,12 +7,7 @@ function [ tree ] = fit( family, U, method )
 %       [1] Okhrin. O, Ristig. A, Hierarchical Archimedean Copulae: The HAC
 %       Package
 
-% Expose subfunctions for unit-testing
-if nargin == 0
-   tree = {@findBestFit, @generateBinaryTrees, @splitVars, @evaluateTree}; 
-   return;
-end
-
+% Use Okhrin's method by default
 if nargin < 3
    method = 'okhrin';
 end

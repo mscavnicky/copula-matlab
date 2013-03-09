@@ -1,5 +1,5 @@
 function [ f ] = cdf( family, tree )
-%HACCDF Symbolic representation of HAC of given family and structure.
+%HAC.SYM.CDF Symbolic representation of HAC of given family and structure.
 %   Note that alphas are already part of an expression.
 
 % Dimensions of top-level copula in hac structure
