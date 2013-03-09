@@ -14,9 +14,16 @@ end
 
 % Debugging function plot
 if 0
-    L = linspace(0.1, min(upperBound, 100), 500);
+    L = linspace(1.0, min(5), 500);
     fig = figure;
     plot(L, arrayfun( @(alpha)(loglike(archim.pdf( family, U, alpha ))), L));
+    xlabel('$\theta$', 'interpreter', 'latex');
+    ylabel('$-\ell(\theta)$', 'interpreter', 'latex');
+    set(gca, 'FontName', 'NewCenturySchlbk');
+    set(gcf, 'PaperUnits', 'centimeters');
+    set(gcf, 'PaperSize', [10 4]);
+    set(gcf, 'PaperPosition', [0 0 10 4]);
+    %print('-dpdf', '-r300', '../Images/archim-likelihood.pdf');
     pause(10);
     close(fig);
 end
