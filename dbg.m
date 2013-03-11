@@ -8,6 +8,10 @@ global logLevel;
 if logLevel >= level
    fprintf('%s [%s]: ', datestr(now, 'HH:MM:SS'), method);
    fprintf(msg, varargin{:});
+   
+   if ~strcmp(msg(end-1:end), '\n')
+       fprintf('\n');
+   end      
 end
 
 end

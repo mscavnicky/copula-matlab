@@ -1,105 +1,63 @@
 %% Load white wine data
 
 % We have dropped fixed acidity, chlorides and pH as they are least
-% important
+% important. Only classes 5, 6 and 7 are used.
 
-names = {...
-    'Volatile Acidity',...
-    'Citric Acid',...
-    'Residual Sugar',...
-    'Free SO2',...
-    'Total SO2',...
-    'Density',...
-    'Sulphates',...
-    'Alcohol'};
 dataset = 'Wine';
-classnames = {'5', '6', '7'};
+attributes = {...
+    'Volatile Acidity', 'Citric Acid',...
+    'Residual Sugar', 'Free SO2',...
+    'Total SO2', 'Density',...
+    'Sulphates', 'Alcohol'};
+classes = {'Q5', 'Q6', 'Q7'};
+folder = sprintf('../Results/%s', dataset);
 
 data = csvread('../Data/Wine/winequality-white.csv');
 
 X = data(:,[2:4, 6:8, 10:11]);
-Y = data(:,12);
-U = uniform(X);
+Y = data(:,12) - 4;
 
-[n, d] = size(X);
+%% Fit copulas to data
 
-%% Histograms
-
-hist(X(:,1), 20);
-hist(X(:,2), 20);
-hist(X(:,3), 20);
-hist(X(:,4), 20);
-hist(X(:,5), 20);
-hist(X(:,6), 20);
-hist(X(:,7), 20);
-hist(X(:,8), 20);
-hist(X(:,9), 20);
-hist(X(:,10), 20);
-hist(X(:,11), 20);
-hist(Y, 20);
-
-%% Asses fit of the margins
-
-[ dists, pvalues ] = fitmargins(X);
-
-%% Scatter visualizations
-
-plotmatrix(S);
-plotmatrix(U);
-plotmatrix(X);
-plotmatrix(P);
-
-%% Fit margins and generate table
-
-allDists = cell(3, 1);
-allPValues = cell(3, 1);
-
-for i=5:7
-    [dists, pvalues] = fitmargins(X(Y==i, :));
-    allDists{i-4} = dists;
-    allPValues{i-4} = pvalues;
+for i=1:numel(classes)  
+   margins = fitmargins(X(Y==i, :));
+   cml = fitcopulas(X(Y==i, :), 'CML');
+   ifm = fitcopulas(X(Y==i, :), 'IFM', {margins.DistName});
+   
+   class = classes{i};
+   filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
+   save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
 end
 
-gen.alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
+%% Generate thesis materials
 
-%% Fit copulas
+gen.margins2table(folder, dataset, attributes, classes);
 
-cmlFits = cell(3, 1);
-ifmFits = cell(3, 1);
-
-for i=5:7
-    cmlFits{i-4} = fitcopulas(X(Y==i, :), 'CML');
-    ifmFits{i-4} = fitcopulas(X(Y==i, :), 'IFM', allDists{i-4});
+for i=1:numel(classes)  
+    gen.fit2table(folder, dataset, classes{i});
+    gen.fit2bars(folder, dataset, classes{i});
 end
 
-%% Produce results
+%% Generate tree plots
 
-for i=5:7    
-    gen.fit2table('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
-    gen.fit2bars('../Results', cmlFits{i-4}, ifmFits{i-4}, dataset, i, classnames{i-4});
-end
-
-
-%% Produce trees
-
-for i=5:7
+for i=1:numel(classes)
    U = uniform(X(Y==i, :));
-   tree = hac.fit('frank', U, 'okhrin');
-   filename = sprintf('../Results/%s-%d-tree2.pdf', dataset, i);
-   hac.plot('frank', tree, names, filename);    
+   tree = hac.fit('frank', U, 'okhrin*');
+   filename = sprintf('%s/%s-%s-Tree.pdf', folder, dataset, classes{i});
+   hac.plot('frank', tree, attributes, filename);    
 end
+
 
 %% Visualize dependency using HAC
 
 claytonTree = hac.fit('clayton', U, 'okhrin*');
-hac.plot('clayton', claytonTree, names);
+hac.plot('clayton', claytonTree, attributes);
 
 gumbelTree = hac.fit('gumbel', U, 'okhrin*');
-hac.plot('gumbel', gumbelTree, names);
+hac.plot('gumbel', gumbelTree, attributes);
 
 frankTree = hac.fit('frank', U, 'okhrin*');
-hac.plot('frank', frankTree, names);
-
+hac.plot('frank', frankTree, attributes);
 
 
 %% KNN classifier
@@ -113,5 +71,5 @@ kloss = kfoldLoss(cvknn);
 
 %% Decision trees
 
-tree = classregtree(X, Y, 'method', 'classification', 'names', names, 'minleaf', 10);
+tree = classregtree(X, Y, 'method', 'classification', 'names', attributes, 'minleaf', 10);
 view(tree);
