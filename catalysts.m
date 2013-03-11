@@ -1,59 +1,34 @@
 %% Load the data
 
-data = double(importdata('../Data/Chemistry/chemistry.mat'));
 dataset = 'Chemistry';
-names = {'X', 'Y'};
-classnames = {'1', '2', '3'};
+attributes = {'X', 'Y'};
+classes = {'T1', 'T2', 'T3'};
+folder = sprintf('../Results/%s', dataset);
 
+data = double(importdata('../Data/Chemistry/chemistry.mat'));
 X = data(:, 6:7);
-Z1 = data(:, 1);
-Z2 = data(:, 2);
-
 Y1 = toclasses(data(:, 1), 3);
 Y2 = toclasses(data(:, 2), 3);
 
-U = uniform(X);
+%% Fit copulas to data
 
-%% Plotmatrix
-
-plotmatrix(U)
-
-%% Fit marginal distributions
-
-allDists = cell(3, 1);
-allPValues = cell(3, 1);
-
-for i=1:3
-    [dists, pvalues] = fitmargins(X(Y2<=i, :));
-    allDists{i} = dists;
-    allPValues{i} = pvalues;
+for i=1:numel(classes) 
+   margins = fitmargins(X(Y2<=i, :));
+   cml = fitcopulas(X(Y2<=i, :), 'CML');
+   ifm = fitcopulas(X(Y2<=i, :), 'IFM', {margins.DistName});
+   
+   class = classes{i};
+   filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
+   save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
 end
 
-gen.alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
+%% Generate thesis materials
 
-%% Fit copulas
+gen.margins2table(folder, dataset, attributes, classes);
 
-ifmFits = cell(3, 1);
-cmlFits = cell(3, 1);
-for i=1:3
-    ifmFits{i} = fitcopulas(X(Y2<=i, :), 'IFM', allDists{i});
-    cmlFits{i} = fitcopulas(X(Y2<=i, :), 'CML');
-end
-
-%% Produce results
-
-for i=1:3    
-    gen.fit2table('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
-    gen.fit2bars('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
-end
-
-%% Produce trees
-
-for i=1:3
-   U = uniform(X(Y2<=i, :));
-   tree = hac.fit('frank', U, 'okhrin*');
-   filename = sprintf('../Results/%s-%d-tree.pdf', dataset, i);
-   hac.plot('frank', tree, names, filename);    
+for i=1:numel(classes)  
+    gen.fit2table(folder, dataset, classes{i});
+    gen.fit2bars(folder, dataset, classes{i});
 end
 
 
