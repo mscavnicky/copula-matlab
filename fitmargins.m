@@ -15,7 +15,8 @@ for i=1:d
             % Try running cdf functions over X to verify it is numerically stable
             Y = PD{j}.cdf(X(:,i));
             if isnan(Y) | isinf(Y)
-                throw('Distribution is not numerically stable.')
+                exception = MException('fitmargins:unstable', 'Distribution is not numerically stable.');
+                throw(exception);
             end          
             
             % Store distribution and its p-value
