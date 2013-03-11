@@ -1,14 +1,13 @@
-function fit2table( folder, cmlfits, ifmfits, dataset, classnum, classname )
-    cmlstats = fits2stats( cmlfits );
-    ifmstats = fits2stats( ifmfits );
-    
-    cmlbest = [max(cmlstats(:,1)) min(cmlstats(:,2:4))];
-    ifmbest = [max(ifmstats(:,1)) min(ifmstats(:,2:4))];
-
+function fit2table( folder, dataset, class )
+    % Load the IFM anc CML fits
+    filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
+    data = load(filename, 'cml', 'ifm');
+    cml = data.cml;
+    ifm = data.ifm;
 
     families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC', 'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*' };
 
-    filename = sprintf('%s/%s-%d-fits.tex', folder, dataset, classnum );
+    filename = sprintf('%s/%s-%s-Fits.tex', folder, dataset, class );
     fid = fopen(filename, 'w');
     fprintf(fid, '\\begin{table}\n');
     fprintf(fid, '\\small\n');
@@ -21,30 +20,23 @@ function fit2table( folder, cmlfits, ifmfits, dataset, classnum, classname )
     fprintf(fid, '& AIC & BIC & AKS && AIC & BIC & AKS \\\\\n');
     fprintf(fid, '\\midrule\n');
     for i=1:numel(families)        
-        cmlstr = strcat(stat2str('%.1f', cmlstats(i,2), cmlbest(2)),' & ',...
-                        stat2str('%.1f', cmlstats(i,3), cmlbest(3)),' & ',...
-                        stat2str('%.3f', cmlstats(i,4), cmlbest(4)));
-        ifmstr = strcat(stat2str('%.1f', ifmstats(i,2), ifmbest(2)),' & ',...
-                        stat2str('%.1f', ifmstats(i,3), ifmbest(3)),' & ',...
-                        stat2str('%.3f', ifmstats(i,4), ifmbest(4)));        
+        cmlstr = strcat(textbf('%.1f', cml(i).AIC, min([cml.AIC])),' & ',...
+                        textbf('%.1f', cml(i).BIC, min([cml.BIC])),' & ',...
+                        textbf('%.3f', cml(i).AKS, min([cml.AKS])));
+        ifmstr = strcat(textbf('%.1f', ifm(i).AIC, min([ifm.AIC])),' & ',...
+                        textbf('%.1f', ifm(i).BIC, min([ifm.BIC])),' & ',...
+                        textbf('%.3f', ifm(i).AKS, min([ifm.AKS])));        
         fprintf(fid, '%s & %s && %s \\\\\n', families{i}, cmlstr, ifmstr);
     end    
     fprintf(fid, '\\bottomrule\n');
     fprintf(fid, '\\end{tabular}\n');    
     
-    fprintf(fid, '\\caption{Fitted of copulas fits of the %s dataset for class %s.}\n', dataset, classname);
+    fprintf(fid, '\\caption{Fitted of copulas fits of the %s dataset for class %s.}\n', dataset, class);
     fprintf(fid, '\\end{table}\n');
     fclose(fid);
 end
 
-function stats = fits2stats( fits )
-    stats = zeros(numel(fits), 4);
-    for i=1:numel(fits)
-       stats(i, :) = fits{i}.stats; 
-    end        
-end
-
-function str = stat2str( fmt, stat, best )  
+function str = textbf( fmt, stat, best )
     str = sprintf(fmt, stat);
     if stat == best
         str = strcat('\textbf{', str, '}'); 

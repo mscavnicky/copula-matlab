@@ -1,27 +1,33 @@
-function alldists2table( folder, allDists, names, dataset, classNames )
-    numClasses = numel(classNames);
+function alldists2table( folder, dataset, attributes, classes )
+    numClasses = numel(classes);
     
-    filename = sprintf('%s/%s-dists.tex', folder, dataset );
+    % Read margins from MAT files
+    margins = {};    
+    for i=1:numClasses
+        filename = sprintf('%s/%s-%s.mat', folder, dataset, classes{i});
+        data = load(filename, 'margins');
+        margins{i} = data.margins;
+    end
+    
+    % Open latex file for reading
+    filename = sprintf('%s/%s-Margins.tex', folder, dataset );
     fid = fopen(filename, 'w');
-    %fprintf(fid, '\\begin{sidewaystable}\n');
-    %fprintf(fid, '\\small\n');
-    %fprintf(fid, '\\centering\n');
     
-    
+    % Print the header of the tables
     fprintf(fid, '\\begin{tabular}{l');
     for i=1:numClasses
         fprintf(fid, 'lr');
         if i ~= numClasses
             fprintf(fid, 'c');
         end
-    end
-    
+    end    
     fprintf(fid, '}\n');
-    fprintf(fid, '\\toprule\n');
     
+    % Print the header with class names
+    fprintf(fid, '\\toprule\n');    
     fprintf(fid, 'Attribute ');
     for i=1:numClasses
-        fprintf(fid, ' & \\multicolumn{2}{c}{%s}', classNames{i});
+        fprintf(fid, ' & \\multicolumn{2}{c}{%s}', classes{i});
         if i ~= numClasses
             fprintf(fid, ' & \\phantom{abc}');
         end        
@@ -42,11 +48,13 @@ function alldists2table( folder, allDists, names, dataset, classNames )
     end
     fprintf(fid, ' \\\\\n');
     
+    % Print the actual data
     fprintf(fid, '\\midrule\n');
-    for a=1:numel(names)
-        fprintf(fid, '%s & ', names{a});    
+    for attr=1:numel(attributes)
+        fprintf(fid, '%s & ', attributes{attr});    
         for i=1:numClasses
-            fprintf(fid, '%s & %.3f', prettyDistName(allDists{i}(a).DistName), allDists{i}(a).PValue);
+            m = margins{i}(attr);
+            fprintf(fid, '%s & %.3f', prettyDistName(m.DistName), m.PValue);
             if i ~= numClasses
                 fprintf(fid, ' && ');
             end
@@ -56,11 +64,9 @@ function alldists2table( folder, allDists, names, dataset, classNames )
     
     fprintf(fid, '\\bottomrule\n');
     fprintf(fid, '\\end{tabular}\n');
-    % Fix bug in spacing
+    % Fixed bug in spacing
     fprintf(fid, '\\vspace{0em}\n');
-    
-    %fprintf(fid, '\\caption{Fitted margins of the %s dataset.}\n', dataset);
-    %fprintf(fid, '\\end{sidewaystable}\n');
+
     fclose(fid);
 end
 

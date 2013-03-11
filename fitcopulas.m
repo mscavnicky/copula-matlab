@@ -12,28 +12,29 @@ elseif strcmp(method, 'IFM');
     U = pit(X, dists);
 else
     error('Method %s not recognized.', method);
-end    
+end
 
 families = {...
     'gaussian' 't' 'clayton' 'frank' 'gumbel'...
     'claytonhac' 'gumbelhac' 'frankhac'...
     'claytonhac*' 'gumbelhac*' 'frankhac*'};
-fits = cell(numel(families), 1);
-stats = zeros(numel(families), 4);
 
 for i=1:numel(families)    
     family = families{i};
     dbg('fitcopulas', 3, 'Fitting family %s.\n', family);
     copulaparams = copula.fit(family, U);
     dbg('fitcopulas', 3, 'Computing statistics.\n');    
+    [ll, aic, bic, ks, aks] = copula.fitstat(copulaparams, U);
     
-    fit.copulaparams = copulaparams;
-    fit.family = copulaparams.family;    
-    [ll, aic, bic, ~, aks] = copula.fitstat(copulaparams, U);
-    fit.stats = [ll, aic, bic, aks];
-    stats(i, :) = fit.stats;
-    
-    fits{i} = fit;
+    % Compose the rseulting fit object
+    fits(i).Family = copulaparams.family;
+    fits(i).Params = copulaparams;
+    fits(i).Method = method;
+    fits(i).NLogL = ll;
+    fits(i).AIC = aic;
+    fits(i).BIC = bic;
+    fits(i).KS = ks;
+    fits(i).AKS = aks;
 end
 
 end
