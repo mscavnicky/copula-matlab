@@ -14,8 +14,11 @@ folder = sprintf('../Results/%s', dataset);
 
 data = csvread('../Data/Wine/winequality-white.csv');
 
-X = data(:,[2:4, 6:8, 10:11]);
-Y = data(:,12) - 4;
+
+Z = data(:, 12);
+X = data((Z >= 5 & Z <= 7), [2:4, 6:8, 10:11]);
+Y = data((Z >= 5 & Z <= 7), 12) - 4;
+
 
 %% Fit copulas to data
 
@@ -45,6 +48,31 @@ for i=1:numel(classes)
    tree = hac.fit('frank', U, 'okhrin*');
    filename = sprintf('%s/%s-%s-Tree.pdf', folder, dataset, classes{i});
    hac.plot('frank', tree, attributes, filename);    
+end
+
+%% Perform classificatin experiment
+
+families = {...
+    'gaussian' 't' 'clayton' 'gumbel' 'frank'...
+    'claytonhac' 'gumbelhac' 'frankhac'...
+    'claytonhac*' 'gumbelhac*' 'frankhac*'};
+filename = sprintf('%s/%s-Confus.mat', folder, dataset);
+matrices = {};
+save(filename, 'matrices');
+for i=1:numel(families)
+    family = families{i};
+    
+    cmlCm = copula.crossval(family, 'CML', X, Y, 10);    
+    s = load(filename, 'matrices');
+    matrices = s.matrices;
+    matrices{end+1} = struct('family', family, 'method', 'CML', 'confus', cmlCm);
+    save(filename, 'matrices', '-append');
+    
+    ifmCm = copula.crossval(family, 'IFM', X, Y, 10);
+    s = load(filename, 'matrices');
+    matrices = s.matrices;
+    matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', cmlCm);
+    save(filename, 'matrices', '-append');    
 end
 
 
