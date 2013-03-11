@@ -1,4 +1,4 @@
-function alldists2table( folder, allDists, allPValues, names, dataset, classNames )
+function alldists2table( folder, allDists, names, dataset, classNames )
     numClasses = numel(classNames);
     
     filename = sprintf('%s/%s-dists.tex', folder, dataset );
@@ -46,7 +46,7 @@ function alldists2table( folder, allDists, allPValues, names, dataset, className
     for a=1:numel(names)
         fprintf(fid, '%s & ', names{a});    
         for i=1:numClasses
-            fprintf(fid, '%s & %.3f', prettyDistName(allDists{i}{a}), allPValues{i}(a));
+            fprintf(fid, '%s & %.3f', prettyDistName(allDists{i}(a).DistName), allDists{i}(a).PValue);
             if i ~= numClasses
                 fprintf(fid, ' && ');
             end

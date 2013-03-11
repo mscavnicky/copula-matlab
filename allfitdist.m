@@ -238,6 +238,9 @@ for indx=1:length(distname)
         D(num).Paramci=PD.paramci;
         D(num).ParamCov=PD.ParamCov;
         D(num).Support=PD.Support;
+        [~, pval] = kstest(data, PD);
+        D(num).PValue=pval;
+        
     catch err %#ok<NASGU>
         %Ignore distribution
     end
