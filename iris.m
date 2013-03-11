@@ -24,7 +24,7 @@ end
 
 %% Generate thesis materials
 
-gen.alldists2table(folder, dataset, attributes, classes);
+gen.margins2table(folder, dataset, attributes, classes);
 
 for i=1:numel(classes)  
     gen.fit2table(folder, dataset, classes{i});
