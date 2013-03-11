@@ -3,17 +3,15 @@ function [ M ] = crossval( family, method, X, Y, k )
 
 dbg('copula.crossval', 2, 'Cross validation for family %s.\n', family);
 
-% Find existing classes
-C = unique(Y);
-
 % Reset random numbe generator to obtain same partition every time
 rng(42);
-% Split data into k stratified partitions
-P = cvpartition(Y, 'k', k);
 
+% Find existing classes
+C = unique(Y);
 classifyFun = @(X, Y, TX, TY) confusionmat(TY, copula.classify(family, method, TX, X, Y), 'order', C);
 
-M = crossval(classifyFun, X, Y, 'partition', P);
+% Run cross-validation
+M = crossval(classifyFun, X, Y, 'kfold', k, 'stratify', Y);
 M = reshape(sum(M), 3, 3);
 
 end

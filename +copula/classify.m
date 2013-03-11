@@ -27,7 +27,7 @@ for i=1:c
         UC{i} = uniform(XC{i});
     elseif strcmp(method, 'IFM')
         DC{i} = fitmargins(XC{i});
-        UC{i} = pit(XC{i}, DC{i});
+        UC{i} = pit(XC{i}, {DC{i}.DistName});
     else
         error('Unknown method %s', method); 
     end        
@@ -40,12 +40,13 @@ L = zeros(size(TX, 1), c);
 for i=1:c
     dbg('copulas.classify', 3, 'Computing likelihood for class %d.\n', i);
     if strcmp(method, 'CML')  
-        L(:, i) = copula.pdf(copulas{i}, empcdf(XC{i}, TX)) .* prod(emppdf(XC{i}, TX), 2) * P(i);
+        L(:, i) = copula.pdf(copulas{i}, empcdf(XC{i}, TX)) .* prod(emppdf(XC{i}, TX), 2);
     elseif strcmp(method, 'IFM')
-        L(:, i) = copula.pdf(copulas{i}, pit(TX, DC{i})) .* prod(problike(TX, DC{i}), 2) * P(i);
+        L(:, i) = copula.pdf(copulas{i}, pit(TX, {DC{i}.DistName})) .* prod(problike(TX, {DC{i}.DistName}), 2);
     else
         error('Unknown method %s', method);
     end
+    L(:, i) = L(:, i) * P(i);
 end
 
 % Chooses classes with higherst likelihood
