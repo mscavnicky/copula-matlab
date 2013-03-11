@@ -3,7 +3,7 @@
 dataset = 'Iris';
 attributes = {'Sepal length', 'Sepal width', 'Petal length', 'Petal width'};
 classes = {'Setosa', 'Versicolor', 'Virginica'};
-folder = sprintf('../Results/%s', 'Iris');
+folder = sprintf('../Results/%s', dataset);
 
 data = dlmread('../Data/Iris/iris.data', ',');
 
@@ -12,7 +12,7 @@ Y = data(:, 5);
 
 %% Fit copulas to data
 
-for i=1:3   
+for i=1:numel(classes) 
    margins = fitmargins(X(Y==i, :));
    cml = fitcopulas(X(Y==i, :), 'CML');
    ifm = fitcopulas(X(Y==i, :), 'IFM', {margins.DistName});

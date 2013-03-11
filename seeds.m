@@ -1,96 +1,43 @@
 %% Load data
 
 dataset = 'Seeds';
-names = {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove'};
-classnames = {'Kama', 'Rosa', 'Canadian'};
+attributes = {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove'};
+classes = {'Kama', 'Rosa', 'Canadian'};
+folder = sprintf('../Results/%s', dataset);
 
 data = csvread('../Data/Seeds/seeds.txt');
+
 X = data(:, 1:7);
 Y = data(:, 8);
 
-n = size(X, 1);
+%% Fit copulas to data
 
-U = uniform(X);
-S = pit(X, {'inversegaussian', 'inversegaussian', 'weibull', 'inversegaussian', 'inversegaussian', 'weibull', 'inversegaussian'});
-
-%% Histograms
-
-hist(X(:,1),100);
-hist(X(:,2),100);
-hist(X(:,3),100);
-hist(X(:,4),100);
-hist(X(:,5),100);
-hist(X(:,6),100);
-hist(X(:,7),100);
-
-%% Histograms of uniformed data
-
-hist(U(:,1));
-hist(U(:,2));
-hist(U(:,3));
-hist(U(:,4));
-hist(U(:,5));
-hist(U(:,6));
-hist(U(:,7));
-
-%% Plot all scatters
-
-plotmatrix(U);
-plotmatrix(S);
-
-%% Examine the distributions of marginals
-
-[ dists, pvalues ] = fitmargins(X);
-
-%% Visualize dependency using HAC
-
-claytonTree = hac.fit('clayton', U, 'okhrin*');
-hac.plot('clayton', claytonTree, names);
-
-gumbelTree = hac.fit('gumbel', U, 'okhrin*');
-hac.plot('gumbel', gumbelTree, names);
-
-frankTree = hac.fit('frank', U, 'okhrin*');
-hac.plot('frank', frankTree, names);
-
-%% Fit margins and generate table
-
-allDists = cell(3, 1);
-allPValues = cell(3, 1);
-
-for i=1:3
-    [dists, pvalues] = fitmargins(X(Y==i, :));
-    allDists{i} = dists;
-    allPValues{i} = pvalues;
+for i=1:numel(classes)  
+   margins = fitmargins(X(Y==i, :));
+   cml = fitcopulas(X(Y==i, :), 'CML');
+   ifm = fitcopulas(X(Y==i, :), 'IFM', {margins.DistName});
+   
+   class = classes{i};
+   filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
+   save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
 end
 
-gen.alldists2table('../Results', allDists, allPValues, names, dataset, classnames);
+%% Generate thesis materials
 
-%% Fit copulas
+gen.margins2table(folder, dataset, attributes, classes);
 
-cmlFits = cell(3, 1);
-ifmFits = cell(3, 1);
-
-for i=1:3
-    cmlFits{i} = fitcopulas(X(Y==i, :), 'CML');
-    ifmFits{i} = fitcopulas(X(Y==i, :), 'IFM', allDists{i});
+for i=1:numel(classes)  
+    gen.fit2table(folder, dataset, classes{i});
+    gen.fit2bars(folder, dataset, classes{i});
 end
 
-%% Produce results
+%% Generate tree plots
 
-for i=1:3    
-    gen.fit2table('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
-    gen.fit2bars('../Results', cmlFits{i}, ifmFits{i}, dataset, i, classnames{i});
-end
-
-
-%% Produce trees
-
-for i=1:3
+for i=1:numel(classes)
    U = uniform(X(Y==i, :));
-   tree = hac.fit('gumbel', U, 'plot');
-   filename = sprintf('../Results/%s-%d-tree.pdf', 'Seeds', i);
-   hac.plot('gumbel', tree, names, filename);    
+   tree = hac.fit('frank', U, 'okhrin*');
+   filename = sprintf('%s/%s-%s-Tree.pdf', folder, dataset, classes{i});
+   hac.plot('frank', tree, attributes, filename);    
 end
 
 %% Produce classification results
@@ -118,3 +65,16 @@ resubLoss(knn);
 
 cvknn = crossval(knn);
 kloss = kfoldLoss(cvknn);
+
+%% Visualize dependency using HAC
+
+U = uniform(X);
+
+claytonTree = hac.fit('clayton', U, 'okhrin*');
+hac.plot('clayton', claytonTree, names);
+
+gumbelTree = hac.fit('gumbel', U, 'okhrin*');
+hac.plot('gumbel', gumbelTree, names);
+
+frankTree = hac.fit('frank', U, 'okhrin*');
+hac.plot('frank', frankTree, names);
