@@ -63,11 +63,13 @@ for i=1:numel(families)
     ifmCm = copula.crossval(family, 'IFM', X, Y, 10);
     s = load(filename, 'matrices');
     matrices = s.matrices;
-    matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', cmlCm);
+    matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', ifmCm);
     save(filename, 'matrices', '-append');    
 end
 
 %% Plot the classification
+
+gen.cm2bar(folder, dataset);
 
 gen.cm2table('../Results', dataset, 'CML', cmlCm);
 gen.cm2table('../Results', dataset, 'IFM', ifmCm);

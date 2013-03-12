@@ -71,9 +71,13 @@ for i=1:numel(families)
     ifmCm = copula.crossval(family, 'IFM', X, Y, 10);
     s = load(filename, 'matrices');
     matrices = s.matrices;
-    matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', cmlCm);
+    matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', ifmCm);
     save(filename, 'matrices', '-append');    
 end
+
+%%
+
+gen.cm2bar(folder, dataset);
 
 
 %% Visualize dependency using HAC
@@ -101,3 +105,18 @@ kloss = kfoldLoss(cvknn);
 
 tree = classregtree(X, Y, 'method', 'classification', 'names', attributes, 'minleaf', 10);
 view(tree);
+
+%% Funky stuff
+
+ load('../Results/Wine/Wine-Confus.mat');
+ for i=1:numel(matrices)
+     m = matrices{i};
+     matrices{i}.correct = sum(m.confus(eye(3) == 1));
+     matrices{i}.misclassified = sum(m.confus(eye(3) == 0));
+ end
+ save('../Results/Wine/Wine-Confus.mat', 'matrices');
+ 
+ 
+ 
+ 
+
