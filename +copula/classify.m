@@ -4,54 +4,49 @@ function [ TY ] = classify( family, method, TX, X, Y )
 n = size(Y, 1);
 
 % Obtain list of classes
-C = unique(Y);
-c = numel(C);
-
-% Prepare data structures
-XC = cell(c, 1);
-UC = cell(c, 1);
-DC = cell(c, 1);
-
-% Prior class probabilities
-P = zeros(c, 1);
-for i=1:c
-    P(i) = sum(Y == C(i)) / n;
-end
+K = unique(Y);
+numClasses = numel(K);
 
 % Fit a copula for each class depending on the fit method
 dbg('copulas.classify', 3, 'Fitting copulas for class.\n');
-copulas = cell(c, 1);
-for i=1:c
-    XC{i} = X(Y == C(i), :);
+for i=1:numClasses
+    % Prior class probability
+    C(i).P = sum(Y == K(i)) / n;
+    % Training data for class i
+    C(i).X = X(Y == K(i), :);
+    % Uniformed data for C(i)
     if strcmp(method, 'CML')  
-        UC{i} = uniform(XC{i});
+        C(i).U = uniform(C(i).X);
     elseif strcmp(method, 'IFM')
-        DC{i} = fitmargins(XC{i});
-        UC{i} = pit(XC{i}, {DC{i}.DistName});
+        C(i).Margins = fitmargins(C(i).X);
+        C(i).U = pit(C(i).X, {C(i).Margins.ProbDist});
     else
-        error('Unknown method %s', method); 
+        error('Unknown method %s', method);
     end        
     
-    copulas{i} = copula.fit(family, UC{i});
+    C(i).Copula = copula.fit(family, C(i).U);
 end
 
 % Compute likelihood for test sample in each copula
-L = zeros(size(TX, 1), c);
-for i=1:c
+L = zeros(size(TX, 1), numClasses);
+for i=1:numClasses
     dbg('copulas.classify', 3, 'Computing likelihood for class %d.\n', i);
-    if strcmp(method, 'CML')  
-        L(:, i) = copula.pdf(copulas{i}, empcdf(XC{i}, TX)) .* prod(emppdf(XC{i}, TX), 2);
+    if strcmp(method, 'CML')
+        copulaLikelihood = copula.pdf(C(i).Copula, empcdf(C(i).X, TX));
+        marginsLikelihood = prod(emppdf(C(i).X, TX), 2);
     elseif strcmp(method, 'IFM')
-        L(:, i) = copula.pdf(copulas{i}, pit(TX, {DC{i}.DistName})) .* prod(problike(TX, {DC{i}.DistName}), 2);
+        copulaLikelihood = copula.pdf(C(i).Copula, pit(TX, {C(i).Margins.ProbDist}));
+        marginsLikelihood = prod(problike(TX, {C(i).Margins.ProbDist}), 2);
     else
         error('Unknown method %s', method);
     end
-    L(:, i) = L(:, i) * P(i);
+    classProbability = C(i).P;
+    L(:, i) = copulaLikelihood .* marginsLikelihood * classProbability;
 end
 
-% Chooses classes with higherst likelihood
+% Chooses classes with highest likelihood
 [~, m] = max(L, [], 2);
-TY = C(m);
+TY = K(m);
 
 end
 

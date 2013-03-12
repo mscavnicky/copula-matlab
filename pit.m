@@ -1,18 +1,15 @@
-function [ U ] = pit( X, dists )
+function [ U ] = pit( X, PD )
 %PIT Performs probability integral transform on sample X.
 %   Performs PIT on each column vector of sample X given its probability
 %   distribution. Distribution should be passed as a cell array of ProbDist
 %   objects.
 
-assert(size(X, 2) == length(dists), 'Dimensions do not match.');
+assert(size(X, 2) == numel(PD), 'Dimensions do not match.');
 
 U = zeros(size(X));
-warning('off', 'all');
-for i=1:length(dists)
-    PD = fitdist(X(:,i), dists{i});
-    U(:,i) = PD.cdf(X(:,i));
+for i=1:numel(PD)
+    U(:,i) = PD{i}.cdf(X(:,i));
 end
-warning('on', 'all');
 
 % Values must be strictly between 0 and 1
 U(U == 0) = 1e-6;

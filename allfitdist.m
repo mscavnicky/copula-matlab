@@ -240,6 +240,7 @@ for indx=1:length(distname)
         D(num).Support=PD.Support;
         [~, pval] = kstest(data, PD);
         D(num).PValue=pval;
+        D(num).ProbDist = PD;
         
     catch err %#ok<NASGU>
         %Ignore distribution

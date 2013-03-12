@@ -9,7 +9,7 @@ dbg('fitcopulas', 2, 'Uniforming data.\n');
 if strcmp(method, 'CML')
     U = uniform(X);
 elseif strcmp(method, 'IFM');
-    U = pit(X, dists);
+    U = pit(X, {dists.ProbDist});
 else
     error('Method %s not recognized.', method);
 end
@@ -28,7 +28,7 @@ for i=1:numel(families)
     
     % Compose the rseulting fit object
     fits(i).Family = copulaparams.family;
-    fits(i).Params = copulaparams;
+    fits(i).Copula = copulaparams;
     fits(i).Method = method;
     fits(i).NLogL = ll;
     fits(i).AIC = aic;
