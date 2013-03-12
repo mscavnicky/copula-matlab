@@ -25,7 +25,7 @@ Y = data((Z >= 5 & Z <= 7), 12) - 4;
 for i=1:numel(classes)  
    margins = fitmargins(X(Y==i, :));
    cml = fitcopulas(X(Y==i, :), 'CML');
-   ifm = fitcopulas(X(Y==i, :), 'IFM', {margins.DistName});
+   ifm = fitcopulas(X(Y==i, :), 'IFM', margins);
    
    class = classes{i};
    filename = sprintf('%s/%s-%s.mat', folder, dataset, class);

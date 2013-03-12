@@ -15,7 +15,7 @@ Y = data(:, 5);
 for i=1:numel(classes) 
    margins = fitmargins(X(Y==i, :));
    cml = fitcopulas(X(Y==i, :), 'CML');
-   ifm = fitcopulas(X(Y==i, :), 'IFM', {margins.DistName});
+   ifm = fitcopulas(X(Y==i, :), 'IFM', margins);
    
    class = classes{i};
    filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
@@ -58,7 +58,8 @@ for i=1:numel(families)
     matrices{end+1} = struct('family', family, 'method', 'CML', 'confus', cmlCm);
     save(filename, 'matrices', '-append');
     
-    ifmCm = copula.crossval(family, 'IFM', X, Y, 10);
+    ifmCm = copula.crossval(family, 'IFM', X, Y, 10);    
+    copula.crossval(family, 'IFM', X, Y, 10);
     s = load(filename, 'matrices');
     matrices = s.matrices;
     matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', cmlCm);
