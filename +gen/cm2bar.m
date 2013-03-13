@@ -2,13 +2,12 @@ function cm2bar( folder, dataset )
 %CM2TABLE Convert confusion matrix to latex table.
 
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
-workspace = load(filename, 'matrices');
-matrices = cell2mat(workspace.matrices);
-misclassified = reshape([matrices.misclassified], 2, 11);
+load(filename, 'results');
+incorrect = reshape([results.Incorrect], 11, 2);
 
 % Start the invisible figure
 figure('Visible','off')
-handle = bar(misclassified);
+handle = bar(incorrect');
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set text for the ticks on XLabels

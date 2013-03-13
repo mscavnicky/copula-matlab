@@ -1,18 +1,17 @@
-function [ M ] = crossval( family, method, X, Y, k )
+function [ confusionMatrix ] = crossval( family, method, X, Y, k )
 %COPULA.CROSSVAL
 
 dbg('copula.crossval', 2, 'Cross validation for family %s.\n', family);
-
-% Reset random numbe generator to obtain same partition every time
+% Reset random numbe generator to obtain same partitions every run
 rng(42);
 
-% Find existing classes
+% Define classificication function
 C = unique(Y);
 classifyFun = @(X, Y, TX, TY) confusionmat(TY, copula.classify(family, method, TX, X, Y), 'order', C);
 
-% Run cross-validation
-M = crossval(classifyFun, X, Y, 'kfold', k, 'stratify', Y);
-M = reshape(sum(M), 3, 3);
+% Run stratified k-fold cross-validation
+confusionMatrix = crossval(classifyFun, X, Y, 'kfold', k, 'stratify', Y);
+confusionMatrix = reshape(sum(confusionMatrix), numel(C), numel(C));
 
 end
 
