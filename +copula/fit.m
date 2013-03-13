@@ -8,11 +8,15 @@ copulaparams.family = family;
 copulaparams.dim = d;
 
 switch family
+    case {'independent'}
+        copulaparams.numParams = 0; 
+    
     case {'gaussian'}
         rho = copulafit(family, U);
         copulaparams.rho = rho;
         
         copulaparams.numParams = d*(d-1) / 2;
+        
     case {'t'}
         if numel(varargin) > 0
             method = varargin{1};
@@ -24,11 +28,13 @@ switch family
         copulaparams.nu = nu;
         
         copulaparams.numParams = 1 + d*(d-1) / 2;
+        
     case {'clayton', 'gumbel', 'frank'}
         alpha = archim.fit(family, U);
         copulaparams.alpha = alpha;
         
         copulaparams.numParams = 1;
+        
     case {'claytonhac', 'gumbelhac', 'frankhac'}
         if numel(varargin) > 0
             method = varargin{1};
@@ -39,6 +45,7 @@ switch family
         copulaparams.tree = tree;
         
         copulaparams.numParams = d - 1;
+        
     case {'claytonhac*', 'gumbelhac*', 'frankhac*'}
         tree = hac.fit(family(1:end-4), U, 'okhrin*');
         copulaparams.tree = tree;

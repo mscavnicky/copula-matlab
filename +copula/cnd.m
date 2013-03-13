@@ -6,6 +6,10 @@ function [ Y ] = cnd( copulaparams, U, m )
 family = copulaparams.family;
 
 switch family
+    
+case 'independent'
+    % Conditioning upon independent variables
+    Y = U(:,m);
 case 'gaussian'
     %rho = copulaparams.rho;
     %sigma = rho(1:m-1, 1:m-1);

@@ -4,6 +4,8 @@ function [ Y ] = pdf( copulaparams, U )
 family = copulaparams.family;
 
 switch family
+case 'independent'
+    Y = ones(size(U, 1), 1);
 case 'gaussian' 
     Y = copulapdf(family, U, copulaparams.rho);
 case 't'
