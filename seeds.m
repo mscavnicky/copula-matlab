@@ -42,30 +42,9 @@ end
 
 %% Produce classification results
 
-%% Perform classificatin experiment
-
-families = {...
-    'gaussian' 't' 'clayton' 'gumbel' 'frank'...
-    'claytonhac' 'gumbelhac' 'frankhac'...
-    'claytonhac*' 'gumbelhac*' 'frankhac*'};
+results = classify(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
-matrices = {};
-save(filename, 'matrices');
-for i=1:numel(families)
-    family = families{i};
-    
-    cmlCm = copula.crossval(family, 'CML', X, Y, 10);    
-    s = load(filename, 'matrices');
-    matrices = s.matrices;
-    matrices{end+1} = struct('family', family, 'method', 'CML', 'confus', cmlCm);
-    save(filename, 'matrices', '-append');
-    
-    ifmCm = copula.crossval(family, 'IFM', X, Y, 10);
-    s = load(filename, 'matrices');
-    matrices = s.matrices;
-    matrices{end+1} = struct('family', family, 'method', 'IFM', 'confus', ifmCm);
-    save(filename, 'matrices', '-append');    
-end
+save(filename, 'results');
 
 %% Plot the classification
 
