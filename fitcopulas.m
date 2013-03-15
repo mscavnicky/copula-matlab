@@ -24,17 +24,18 @@ for i=1:numel(families)
     dbg('fitcopulas', 3, 'Fitting family %s.\n', family);
     copulaparams = copula.fit(family, U);
     dbg('fitcopulas', 3, 'Computing statistics.\n');    
-    [ll, aic, bic, ks, aks] = copula.fitstat(copulaparams, U);
+    [ll, aic, bic, ks, aks, snc] = copula.fitstat(copulaparams, U);
     
     % Compose the rseulting fit object
     fits(i).Family = copulaparams.family;
     fits(i).Copula = copulaparams;
     fits(i).Method = method;
-    fits(i).NLogL = ll;
+    fits(i).LL = ll;
     fits(i).AIC = aic;
     fits(i).BIC = bic;
     fits(i).KS = ks;
     fits(i).AKS = aks;
+    fits(i).SnC = snc;
 end
 
 end
