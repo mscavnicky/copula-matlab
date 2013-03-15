@@ -50,9 +50,6 @@ save(filename, 'results');
 
 gen.cm2bar(folder, dataset);
 
-gen.cm2table('../Results', dataset, 'CML', cmlCm);
-gen.cm2table('../Results', dataset, 'IFM', ifmCm);
-
 %% KNN classifier
 
 knn = ClassificationKNN.fit(X,Y);

@@ -56,10 +56,9 @@ results = classify(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 save(filename, 'results');
 
-%%
+%% Plot the classification
 
 gen.cm2bar(folder, dataset);
-
 
 %% Visualize dependency using HAC
 

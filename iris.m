@@ -50,10 +50,6 @@ save(filename, 'results');
 
 gen.cm2bar(folder, dataset);
 
-gen.cm2table('../Results', 'Iris', 'CML', cmlCm);
-gen.cm2table('../Results', 'Iris', 'IFM', ifmCm);
-
-
 %% Trees
 
 U = uniform(X);
