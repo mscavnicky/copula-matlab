@@ -1,11 +1,9 @@
-function fit2table( folder, dataset, class )
+function fit2table( folder, families, dataset, class )
     % Load the IFM anc CML fits
     filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
     data = load(filename, 'cml', 'ifm');
     cml = data.cml;
     ifm = data.ifm;
-
-    families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC', 'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*' };
 
     filename = sprintf('%s/%s-%s-Fits.tex', folder, dataset, class );
     fid = fopen(filename, 'w');

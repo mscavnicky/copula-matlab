@@ -1,4 +1,4 @@
-function fit2bars( folder, dataset, class, stat )
+function fit2bars( folder, families, dataset, class, stat )
 %FIT2BARS
 %
 %   References:
@@ -15,7 +15,7 @@ ifm = data.ifm;
 figure('Visible','off')
 % Bar figure with AIC data
 values = [cml.(stat); ifm.(stat)];
-handle = bar(values);
+handle = bar(values(:, 1:8));
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set text for the ticks on XLabels
@@ -27,23 +27,26 @@ set(gca, 'YColor', [0.1 0.1 0.1])
 grid on;
 set(gca,'XGrid', 'off');
 set(gca,'Layer','top');
-% Use more appealing colormap
-colormap(cool);
+
+% Use more appealing colormap and reverse bar
+if strcmp(stat, 'AIC')
+    colormap(summer);
+    set(gca, 'YDir', 'reverse');
+elseif strcmp(stat, 'SnC')
+    colormap(cool);
+end    
 % Turn off black borders around graph
 set(gca,'box','off')
 % Set bar edge color to none
 set(handle, 'EdgeColor', 'None');
 % Add unboxed legend
-families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank',...
-    'Clayton HAC', 'Gumbel HAC', 'Frank HAC',...
-    'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*'};
 legend(families, 'Location', 'eastoutside');
 legend('boxoff');
 
 % Print out the figure
 set(gcf, 'PaperUnits', 'centimeters');
-set(gcf, 'PaperSize', [14.5 5.0]);
-set(gcf, 'PaperPosition', [0 0 14.5 5.0]);
+set(gcf, 'PaperSize', [14.5 4.0]);
+set(gcf, 'PaperPosition', [0 0 14.5 4.0]);
 imagename = sprintf('%s/%s-%s-%s.pdf', folder, dataset, class, stat );
 print('-dpdf', '-r300', imagename);
 
