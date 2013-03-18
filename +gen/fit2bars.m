@@ -1,4 +1,4 @@
-function fit2bars( folder, dataset, class )
+function fit2bars( folder, dataset, class, stat )
 %FIT2BARS
 %
 %   References:
@@ -14,8 +14,8 @@ ifm = data.ifm;
 % Start the invisible figure
 figure('Visible','off')
 % Bar figure with AIC data
-aic = [cml.AIC; ifm.AIC];
-handle = bar(-aic);
+values = [cml.(stat); ifm.(stat)];
+handle = bar(values);
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set text for the ticks on XLabels
@@ -28,7 +28,7 @@ grid on;
 set(gca,'XGrid', 'off');
 set(gca,'Layer','top');
 % Use more appealing colormap
-colormap(summer);
+colormap(cool);
 % Turn off black borders around graph
 set(gca,'box','off')
 % Set bar edge color to none
@@ -44,16 +44,16 @@ legend('boxoff');
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperSize', [14.5 5.0]);
 set(gcf, 'PaperPosition', [0 0 14.5 5.0]);
-imagename = sprintf('%s/%s-%s-Bar.pdf', folder, dataset, class );
+imagename = sprintf('%s/%s-%s-%s.pdf', folder, dataset, class, stat );
 print('-dpdf', '-r300', imagename);
 
 % Also print the latex document for inserting the figure
-filename = sprintf('%s/%s-%s-Bar.tex', folder, dataset, class );
+filename = sprintf('%s/%s-%s-%s.tex', folder, dataset, class, stat );
 fid = fopen(filename, 'w');
 fprintf(fid, '\\begin{figure}\n');
 fprintf(fid, '\\centering\n');
 fprintf(fid, '\\includegraphics[scale=1.0]{%s}\n', imagename);
-fprintf(fid, '\\caption{Fit results (AIC) for the %s dataset for class %s.}\n', dataset, class);
+fprintf(fid, '\\caption{Fit results (%s) for the %s dataset for class %s.}\n', dataset, class, stat);
 fprintf(fid, '\\end{figure}\n');
 fclose(fid);
 
