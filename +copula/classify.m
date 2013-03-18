@@ -2,6 +2,7 @@ function [ TY ] = classify( family, method, TX, X, Y )
 %COPULA.CLASSIFY 
 
 n = size(Y, 1);
+d = size(X, 2);
 
 % Obtain list of classes
 K = unique(Y);
@@ -28,24 +29,23 @@ for i=1:numClasses
 end
 
 % Compute likelihood for test sample in each copula
-L = zeros(size(TX, 1), numClasses);
+L = zeros(size(TX, 1), d + 2, numClasses);
 for i=1:numClasses
     dbg('copulas.classify', 3, 'Computing likelihood for class %d.\n', i);
     if strcmp(method, 'CML')
-        copulaLikelihood = copula.pdf(C(i).Copula, empcdf(C(i).X, TX));
-        marginsLikelihood = prod(emppdf(C(i).X, TX), 2);
+        L(:,1,i) = copula.pdf(C(i).Copula, empcdf(C(i).X, TX));
+        L(:,2:d+1,i) = emppdf(C(i).X, TX);
     elseif strcmp(method, 'IFM')
-        copulaLikelihood = copula.pdf(C(i).Copula, pit(TX, {C(i).Margins.ProbDist}));
-        marginsLikelihood = prod(problike(TX, {C(i).Margins.ProbDist}), 2);
+        L(:,1,i) = copula.pdf(C(i).Copula, pit(TX, {C(i).Margins.ProbDist}));
+        L(:,2:d+1,i) = problike(TX, {C(i).Margins.ProbDist});
     else
         error('Unknown method %s', method);
     end
-    classProbability = C(i).P;
-    L(:, i) = copulaLikelihood .* marginsLikelihood * classProbability;
+    L(:,d+2,i) = C(i).P;
 end
 
 % Chooses classes with highest likelihood
-[~, m] = max(L, [], 2);
+[~, m] = max(prod(L, 2), [], 3);
 TY = K(m);
 
 end
