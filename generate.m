@@ -9,6 +9,14 @@ classes = {...,
     {'T1', 'T2', 'T3'}...
 };
 
+attributes = {...,
+    {'Sepal length', 'Sepal width', 'Petal length', 'Petal width'},...
+    {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove Length'},...
+    {'Citric Acid', 'Volatile Acidity', 'Residual Sugar', 'Free SO2', 'Total SO2', 'Density', 'Sulphates', 'Alcohol'},...
+    {'Pelvic incidence', 'Pelvic tilt', 'Lordosis angle', 'Sacral slope', 'Sacral lordosis', 'Spondyl. grade'},...
+    {'X', 'Y'}
+};
+
 families = {...
     'gaussian' 't' 'clayton' 'gumbel' 'frank'...
     'claytonhac' 'gumbelhac' 'frankhac'...
@@ -23,6 +31,14 @@ familyNames = {...
 %% Generate scores
 
 gen.scores2table( families, datasets, classes );
+
+%% Generate margins
+
+for i=1:numel(datasets)
+    dataset = datasets{i};
+    folder = sprintf('../Results/%s', dataset);
+    gen.margins2table(folder, dataset, attributes{i}, classes{i});
+end
 
 %% Generate bars
 

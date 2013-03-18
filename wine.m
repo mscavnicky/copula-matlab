@@ -15,10 +15,12 @@ folder = sprintf('../Results/%s', dataset);
 data = csvread('../Data/Wine/winequality-white.csv');
 
 
+% Filter out NaN causing lines
+data = data([1:3119,3121:4534], :);
 Z = data(:, 12);
+% Only choose interesting attributes
 X = data((Z >= 5 & Z <= 7), [2:4, 6:8, 10:11]);
 Y = data((Z >= 5 & Z <= 7), 12) - 4;
-
 
 %% Fit copulas to data
 
@@ -30,15 +32,6 @@ for i=1:numel(classes)
    class = classes{i};
    filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
    save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
-end
-
-%% Generate thesis materials
-
-gen.margins2table(folder, dataset, attributes, classes);
-
-for i=1:numel(classes)  
-    gen.fit2table(folder, dataset, classes{i});
-    gen.fit2bars(folder, dataset, classes{i});
 end
 
 %% Generate tree plots
@@ -55,10 +48,6 @@ end
 results = classify(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 save(filename, 'results');
-
-%% Plot the classification
-
-gen.cm2bar(folder, dataset);
 
 %% Visualize dependency using HAC
 

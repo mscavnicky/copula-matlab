@@ -25,14 +25,6 @@ for i=1:numel(classes)
    save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
 end
 
-%% Generate thesis materials
-
-gen.margins2table(folder, dataset, attributes, classes);
-
-for i=1:numel(classes)  
-    gen.fit2table(folder, dataset, classes{i});
-    gen.fit2bars(folder, dataset, classes{i});
-end
 
 %% Generate tree plots
 
@@ -48,7 +40,3 @@ end
 results = classify(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 save(filename, 'results');
-
-%% Plot the classification
-
-gen.cm2bar(folder, dataset);

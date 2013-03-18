@@ -22,15 +22,6 @@ for i=1:numel(classes)
    save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
 end
 
-%% Generate thesis materials
-
-gen.margins2table(folder, dataset, attributes, classes);
-
-for i=1:numel(classes)  
-    gen.fit2table(folder, dataset, classes{i});
-    gen.fit2bars(folder, dataset, classes{i});
-end
-
 %% Generate tree plots
 
 for i=1:numel(classes)
@@ -46,10 +37,6 @@ results = classify(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 save(filename, 'results');
 
-%% Plot the classification
-
-gen.cm2bar(folder, dataset);
-
 %% KNN classifier
 
 knn = ClassificationKNN.fit(X,Y);
@@ -57,16 +44,3 @@ resubLoss(knn);
 
 cvknn = crossval(knn);
 kloss = kfoldLoss(cvknn);
-
-%% Visualize dependency using HAC
-
-U = uniform(X);
-
-claytonTree = hac.fit('clayton', U, 'okhrin*');
-hac.plot('clayton', claytonTree, names);
-
-gumbelTree = hac.fit('gumbel', U, 'okhrin*');
-hac.plot('gumbel', gumbelTree, names);
-
-frankTree = hac.fit('frank', U, 'okhrin*');
-hac.plot('frank', frankTree, names);
