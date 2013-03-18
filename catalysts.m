@@ -15,7 +15,7 @@ Y2 = toclasses(data(:, 2), 3);
 for i=1:numel(classes) 
    margins = fitmargins(X(Y2<=i, :));
    cml = fitcopulas(X(Y2<=i, :), 'CML');
-   ifm = fitcopulas(X(Y2<=i, :), 'IFM', {margins.DistName});
+   ifm = fitcopulas(X(Y2<=i, :), 'IFM', margins);
    
    class = classes{i};
    filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
@@ -28,7 +28,6 @@ gen.margins2table(folder, dataset, attributes, classes);
 
 for i=1:numel(classes)  
     gen.fit2table(folder, dataset, classes{i});
-    gen.fit2bars(folder, dataset, classes{i});
 end
 
 

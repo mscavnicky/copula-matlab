@@ -1,7 +1,7 @@
 %% Load data
 
 dataset = 'Seeds';
-attributes = {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove'};
+attributes = {'Area', 'Perimeter', 'Compactness', 'Length', 'Width', 'Assymetry', 'Groove Length'};
 classes = {'Kama', 'Rosa', 'Canadian'};
 folder = sprintf('../Results/%s', dataset);
 

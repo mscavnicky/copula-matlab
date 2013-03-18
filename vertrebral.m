@@ -1,7 +1,7 @@
 %% Load the data
 
 dataset = 'Vertebral';
-attributes = {'Pelvic incidence', 'Pelvic tilt', 'Lumbar lordosis angle', 'Sacral slope', 'Sacral lordosis', 'Spondylolisthesis'};
+attributes = {'Pelvic incidence', 'Pelvic tilt', 'Lordosis angle', 'Sacral slope', 'Sacral lordosis', 'Spondyl. grade'};
 classes = {'Hernia', 'Spondylolisthesis', 'Normal'};
 folder = sprintf('../Results/%s', dataset);
 
