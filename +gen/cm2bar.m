@@ -3,13 +3,16 @@ function cm2bar( folder, dataset )
 
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 load(filename, 'results');
-incorrect = reshape([results.Incorrect], 11, 2);
+accuracy = [results.Correct] ./ ([results.Correct] + [results.Incorrect]);
+accuracy = reshape(accuracy, 12, 2) ;
 
 % Start the invisible figure
 figure('Visible','off')
-handle = bar(incorrect');
+handle = bar(accuracy');
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
+% Set gca
+set(gca, 'YLim', [min(min(accuracy)) - 0.06, max(max(accuracy))] + 0.02);
 % Set text for the ticks on XLabels
 set(gca, 'XTickLabel', {'CML', 'IFM'});
 % Set grid color to grey
@@ -26,7 +29,7 @@ set(gca,'box','off')
 % Set bar edge color to none
 set(handle, 'EdgeColor', 'None');
 % Add unboxed legend
-families = {'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank',...
+families = {'Independent', 'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank',...
     'Clayton HAC', 'Gumbel HAC', 'Frank HAC',...
     'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*'};
 legend(families, 'Location', 'eastoutside');
@@ -34,8 +37,8 @@ legend('boxoff');
 
 % Print out the figure
 set(gcf, 'PaperUnits', 'centimeters');
-set(gcf, 'PaperSize', [14.5 5.0]);
-set(gcf, 'PaperPosition', [0 0 14.5 5.0]);
+set(gcf, 'PaperSize', [14.5 5.5]);
+set(gcf, 'PaperPosition', [0 0 14.5 5.5]);
 imagename = sprintf('%s/%s-Confus-Bar.pdf', folder, dataset );
 print('-dpdf', '-r300', imagename);
 
