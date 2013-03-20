@@ -7,11 +7,11 @@ initTestSuite;
 function testArchimGenDiff
 % normal diff
     X = [0.1 0.2; 0.2 0.8; 1.0 0.4; 0.5 0.4];
-    assertElementsAlmostEqual(archim.gdiff('clayton', X, 1.2, 1), archim.ndiff('clayton', X, 1.2, 1))
-    assertElementsAlmostEqual(archim.gdiff('gumbel', X, 1.2, 1), archim.ndiff('gumbel', X, 1.2, 1))
-    assertElementsAlmostEqual(archim.gdiff('frank', X, 1.2, 1), archim.ndiff('frank', X, 1.2, 1))
+    assertElementsAlmostEqual(archim.gdiff('clayton', X, 1.2, 1), archim.sym.gdiff('clayton', X, 1.2, 1))
+    assertElementsAlmostEqual(archim.gdiff('gumbel', X, 1.2, 1), archim.sym.gdiff('gumbel', X, 1.2, 1))
+    assertElementsAlmostEqual(archim.gdiff('frank', X, 1.2, 1), archim.sym.gdiff('frank', X, 1.2, 1))
     
-function testArchimPdfAgainstMatlab
+function testArchimPdfAgainstMatlabImplementation
     X = [0.1 0.2; 0.3 0.8; 0.9 0.9; 0.5 0.5];
     assertVectorsAlmostEqual(archim.pdf('clayton', X, 1.0), copulapdf('clayton', X, 1.0));
     assertVectorsAlmostEqual(archim.pdf('frank', X, 1.5), copulapdf('frank', X, 1.5));
