@@ -46,11 +46,11 @@ d = size(U, 2);
 trees = generateBinaryTrees(1:d);
 for i=1:length(trees)
     tree = evaluateTree(family, U, trees{i});
-    ll = loglike(hacpdf(family, U, tree));    
-    dbg('hac.fit', 5, 'Evaluated %s: %f\n', dprint(tree), ll);
+    nll = -sum(log(hac.fpdf(family, U, tree)));    
+    dbg('hac.fit', 5, 'Evaluated %s: %f\n', dprint(tree), nll);
     
-    if ll < minLogLike
-       minLogLike = ll;
+    if nll < minLogLike
+       minLogLike = nll;
        minTree = tree;
     end
 end

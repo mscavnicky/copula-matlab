@@ -5,7 +5,7 @@ function [ alphahat ] = fit( family, U, lowerBound, upperBound )
 %   method which requires likelihood method to be continuouos.
 
 % Function giving likelihood of the sample for given alpha
-optimfun = @(alpha) loglike(archim.pdf( family, U, alpha ));
+optimfun = @(alpha) -sum(log((archim.pdf(family, U, alpha))));
 
 % Get bound for Archimedean copula family in this dimension
 if nargin < 3
