@@ -1,4 +1,4 @@
-function [ Y ] = gendiff( family, X, alpha, m )
+function [ Y ] = gdiff( family, X, alpha, m )
 %ARCHIM.GENDIFF Compute values of the m-th derivative of the generator of
 %the Archimedean copula family using numerical methods.
 %

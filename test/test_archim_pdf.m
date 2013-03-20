@@ -4,18 +4,12 @@
 function test_suite = test_archim_pdf
 initTestSuite;
 
-function testArchimNDiff
-    X = [0.1 0.2; 0.2 0.8; 1.0 0.4; 0.5 0.4];
-    assertElementsAlmostEqual(archim.ndiff('clayton', X, 1.2, 1), archim.diff('clayton', X, 1.2))
-    assertElementsAlmostEqual(archim.ndiff('frank', X, 1.2, 1), archim.diff('frank', X, 1.2))
-    assertElementsAlmostEqual(archim.ndiff('gumbel', X, 1.2, 1), archim.diff('gumbel', X, 1.2))
-    
 function testArchimGenDiff
 % normal diff
     X = [0.1 0.2; 0.2 0.8; 1.0 0.4; 0.5 0.4];
-    assertElementsAlmostEqual(archim.gendiff('clayton', X, 1.2, 1), archim.diff('clayton', X, 1.2))
-    assertElementsAlmostEqual(archim.gendiff('gumbel', X, 1.2, 1), archim.diff('gumbel', X, 1.2))
-    assertElementsAlmostEqual(archim.gendiff('frank', X, 1.2, 1), archim.diff('frank', X, 1.2))
+    assertElementsAlmostEqual(archim.gdiff('clayton', X, 1.2, 1), archim.ndiff('clayton', X, 1.2, 1))
+    assertElementsAlmostEqual(archim.gdiff('gumbel', X, 1.2, 1), archim.ndiff('gumbel', X, 1.2, 1))
+    assertElementsAlmostEqual(archim.gdiff('frank', X, 1.2, 1), archim.ndiff('frank', X, 1.2, 1))
     
 function testArchimPdfAgainstMatlab
     X = [0.1 0.2; 0.3 0.8; 0.9 0.9; 0.5 0.5];
