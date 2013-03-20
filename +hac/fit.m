@@ -28,7 +28,7 @@ otherwise
 end
 
 % Validate generated HAC
-valid = validateHac(tree);
+valid = hac.valid(tree);
 if ~valid
    error('hac:fit:invalid', 'HAC copula is not valid %s', dprint(tree));   
 end
@@ -262,32 +262,4 @@ function [ tree ] = buildHacStructure( rootCopula, nestedCopulas )
     end
     % Copy alpha into built HAC structure
     tree{end+1} = rootCopula{end};
-end
-
-function [ valid ] = validateHac( tree )
-%VALIDATEHAC Performs validation of the requirement HAC
-%   Verifies the assumption that the alpha of the parent copula has to
-%   be larger than the alpha of the child copula.
-
-valid = 1;
-% Dimensions of top-level copula in hac structure
-d = length(tree) - 1;
-% Alpha for this copula level
-alpha = tree{end};
-% Go over all nested copulas and check their alpha
-for i=1:d
-    % Perform recursion if element of structure is another copula
-    childTree = tree{i};
-    if iscell(childTree)
-        valid = valid & (alpha < childTree{end});
-        if ~valid
-            return;
-        end
-        valid = valid & validateHac(childTree);               
-        if ~valid
-            return;
-        end        
-    end        
-end
-
 end
