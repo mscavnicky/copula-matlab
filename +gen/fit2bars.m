@@ -15,7 +15,7 @@ ifm = data.ifm;
 figure('Visible','off')
 % Bar figure with AIC data
 values = [cml.(stat); ifm.(stat)];
-handle = bar(values(:, 1:8));
+handle = bar(values);
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set text for the ticks on XLabels

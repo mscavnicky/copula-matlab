@@ -16,8 +16,7 @@ end
 
 families = {...
     'gaussian' 't' 'clayton' 'gumbel' 'frank'...
-    'claytonhac' 'gumbelhac' 'frankhac'...
-    'claytonhac*' 'gumbelhac*' 'frankhac*'};
+    'claytonhac' 'gumbelhac' 'frankhac'};
 
 for i=1:numel(families)    
     family = families{i};

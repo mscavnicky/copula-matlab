@@ -4,9 +4,7 @@ function cm2bar( folder, dataset )
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 load(filename, 'results');
 accuracy = [results.Correct] ./ ([results.Correct] + [results.Incorrect]);
-accuracy = reshape(accuracy, 12, 2);
-
-accuracy = accuracy(1:9, :);
+accuracy = reshape(accuracy, 9, 2);
 
 % Start the invisible figure
 figure('Visible','off')
