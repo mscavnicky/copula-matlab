@@ -5,7 +5,8 @@ function [ ll, aic, bic, ks, aks, snc ] = fitstat( copulaparams, U )
 [n, d] = size(U);
 
 % Compute log likelihood
-ll = -loglike(copula.pdf(copulaparams, U));
+Y = copula.pdf(copulaparams, U);
+ll = sum(log(Y));
 k = copulaparams.numParams;
 
 % Compute aic
