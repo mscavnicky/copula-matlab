@@ -1,5 +1,5 @@
 function [ Y ] = pdf( copulaparams, U )
-%PDF Copula probability distribution function
+%COPULA.PDF Copula probability distribution function
 
 family = copulaparams.family;
 

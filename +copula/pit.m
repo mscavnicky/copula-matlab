@@ -1,6 +1,6 @@
 function [ T ] = pit( copulaparams, U )
-%COPULA.PIT Performs probability integral transformation under the null
-%hypothesis that the data are generated using given copula.
+%COPULA.PIT Performs Rosenblatt's probability integral transformation under
+%the null hypothesis that the data are generated using given copula.
 %
 %   Computation of conditional probability is currently performing
 %   duplicate work for each dimension. This is a minor performance

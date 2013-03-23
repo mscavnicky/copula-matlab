@@ -1,5 +1,5 @@
 function [ Y ] = cnd( copulaparams, U, m )
-% COPULACND Conditional cumulative distribution function for copulas.
+%COPULA.CND Conditional cumulative distribution function for copulas.
 %   Computes conditional CDF of d-dimensional copula, where m-th variable
 %   is conditined upon first m-1 variables.
 
