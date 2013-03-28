@@ -2,7 +2,7 @@ function [ dists ] = fitmargins( X )
 %FITMARGINS Given sample X fits some distribution to each margin.
 %   Returns list of distributions and kstest p-values.
 
-dbg('fitmargins', 2, 'Fitting margins.\n');
+dbg('fitmargins', 3, 'Fitting margins.\n');
 
 d = size(X, 2);
 
