@@ -20,17 +20,15 @@ switch method
 case 'full'
     tree = hac.fit.full( family, U );    
 case 'okhrin'
-    tree = hac.fit.okhrin( family, U, 'okhrin' );
-case 'okhrin*'
-    tree = hac.fit.okhrin( family, U, 'okhrin*' );
+    tree = hac.fit.okhrin( family, U );
 otherwise
-    error('hac:fit:method', 'Fitting method %s not recognized', method);
+    error('hac:fit:method', 'Fitting method %s not recognized.', method);
 end
 
 % Validate generated HAC
 valid = hac.valid(tree);
 if ~valid
-   error('hac:fit:invalid', 'HAC copula is not valid %s', dprint(tree));   
+   error('hac:fit:invalid', 'HAC copula is not valid %s.', dprint(tree));   
 end
 
 end
