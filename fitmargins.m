@@ -1,4 +1,4 @@
-function [ dists ] = fitmargins( X )
+function [ margins ] = fitmargins( X )
 %FITMARGINS Given sample X fits some distribution to each margin.
 %   Returns list of distributions and kstest p-values.
 
@@ -20,7 +20,7 @@ for i=1:d
             end          
             
             % Store distribution and its p-value
-            dists(i) = D(j);
+            margins(i) = D(j);
             break;
         catch e
             % Skip this distribution
