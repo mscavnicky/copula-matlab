@@ -6,6 +6,7 @@ d = size(X, 2);
 
 % Obtain list of classes
 K = unique(Y);
+assert(isequal(K, sort(K)), 'Classes do not have the right order.');
 numClasses = numel(K);
 
 % Fit a copula for each class depending on the fit method
@@ -44,9 +45,33 @@ for i=1:numClasses
     L(:,d+2,i) = C(i).P;
 end
 
-% Chooses classes with highest likelihood
-[~, m] = max(prod(L, 2), [], 3);
-TY = K(m);
+% Make a product of likelihoods and make a matrix out of it
+PL = prod(L, 2);
+PL = PL(:, :);
+
+% For each sample choose class with the highest likelihood
+
+TY = zeros(size(TX, 1), 1);
+for i=1:size(TX, 1)
+    l = PL(i, :);
+    maxLikelihood = max(l);
+    maxIndices = find(l == maxLikelihood);
+    % There is only one maximum likelihood
+    if numel(maxIndices) == 1
+        TY(i) = maxIndices;
+    else
+        p = [C.P];
+        maxPrior = max(p);
+        maxIndices = find(p == maxPrior);
+        % There is only one maximum prior probability
+        if numel(maxIndices) == 1
+            TY(i) = maxIndices;
+        else
+            % Choose random value
+            TY(i) = randi(numClasses);     
+        end   
+    end    
+end
 
 end
 
