@@ -45,12 +45,7 @@ switch family
         copulaparams.tree = tree;
         
         copulaparams.numParams = d - 1;
-        
-    case {'claytonhac*', 'gumbelhac*', 'frankhac*'}
-        tree = hac.fit(family(1:end-4), U, 'okhrin*');
-        copulaparams.tree = tree;
-        
-        copulaparams.numParams = d - 1;
+
     otherwise
         error('Copula family %s not recognized.', family);
 end

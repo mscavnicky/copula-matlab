@@ -62,11 +62,6 @@ case {'claytonhac', 'gumbelhac', 'frankhac'}
     family = family(1:end-3);
     Y = hac.fcnd(family, U, copulaparams.tree, m);
 
-case {'claytonhac*', 'gumbelhac*', 'frankhac*'}
-    [tree, U] = hac.preprocess(copulaparams.tree, U);
-    family = family(1:end-4);
-    Y = hac.fcnd(family, U, tree, m);
-     
 otherwise
     error('Copula family not supported.');    
 end
