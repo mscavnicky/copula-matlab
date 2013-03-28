@@ -11,16 +11,6 @@ case 'independent'
     % Conditioning upon independent variables
     Y = U(:,m);
 case 'gaussian'
-    %rho = copulaparams.rho;
-    %sigma = rho(1:m-1, 1:m-1);
-    %c = rho(m, 1:m-1);
-    %B = c * 1/sigma;
-    %X = norminv(U(:,1:m-1));
-    %y = norminv(U(:,m));
-    %omega = 1 - B * sigma * B';
-    %mu = X * B';
-    %Y = normcdf((y-mu) / sqrt(omega));
-   
     X = norminv(U(:, 1:m-1));
     y = norminv(U(:, m));
     
@@ -43,19 +33,6 @@ case 'gaussian'
     Y = N ./ D;
     
 case 't'
-    %rho = copulaparams.rho;
-    %df = copulaparams.nu;
-    %sigma = rho(1:m-1, 1:m-1);
-    %c = rho(m, 1:m-1);
-    %B = c * 1/sigma;
-    %X = tinv(U(:,1:m-1), df);
-    %y = tinv(U(:,m), df);
-    %omega = 1 - B * sigma * B';
-    %mu = X * B';
-    %SQ = X * (c' * c) * X';
-    %Z = diag(df + SQ) / (df + m-1);
-    %Y = tcdf((y-mu) ./ sqrt(omega * Z), df);
-    
     nu = copulaparams.nu;    
     X = tinv(U(:, 1:m-1), nu);
     y = tinv(U(:, m), nu);
