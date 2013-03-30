@@ -1,8 +1,6 @@
 function [ P ] = preprocess( family, X, method )
 %HAC.PREPROCESS
 
-family = family(1:end-4);
-
 % Fit margins and rotated margins
 if strcmp(method, 'CML')
     U = uniform(X);

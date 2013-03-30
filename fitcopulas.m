@@ -22,10 +22,10 @@ function [ fit ] = fitcopula( family, X, method )
     fit.Family = family;
     
     if ismember(family, {'claytonhac*', 'gumbelhac*', 'frankhac*'})
-        P = hac.preprocess( family, X, method );
+        P = hac.preprocess( family(1:end-4), X, method );
         X = X * P;
         family = family(1:end-1);
-    end    
+    end
     
     if strcmp(method, 'CML')
         U = uniform(X);

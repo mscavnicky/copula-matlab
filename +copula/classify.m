@@ -23,7 +23,7 @@ for i=1:numClasses
     % If model requires preprocessing do it for both train and test dataset
     family_i = family;
     if ismember(family, {'claytonhac*', 'gumbelhac*', 'frankhac*'})
-        P = hac.preprocess( family, C(i).X, method );
+        P = hac.preprocess( family(1:end-4), C(i).X, method );
         C(i).X = C(i).X * P;
         % Keep the preprocess test data
         C(i).TX = TX * P;
