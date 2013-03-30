@@ -12,10 +12,11 @@ Y = data(:, 5);
 
 %% Fit copulas to data
 
-for i=1:numel(classes) 
-   margins = fitmargins(X(Y==i, :));
-   cml = fitcopulas(X(Y==i, :), 'CML');
-   ifm = fitcopulas(X(Y==i, :), 'IFM', margins);
+for i=1:numel(classes)
+   X_i = X(Y==i, :);
+   margins = fitmargins(X_i);
+   cml = fitcopulas(X_i, 'CML');
+   ifm = fitcopulas(X_i, 'IFM');
    
    class = classes{i};
    filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
@@ -25,10 +26,7 @@ end
 %% Generate tree plots
 
 for i=1:numel(classes)
-   U = uniform(X(Y==i, :));
-   tree = hac.fit('frank', U, 'okhrin*');
-   filename = sprintf('%s/%s-%s-Tree.pdf', folder, dataset, classes{i});
-   hac.plot('frank', tree, attributes, filename);    
+   hactree('frank', X(Y==i, :), folder, dataset, classes{i}, attributes); 
 end
 
 %% Perform classificatin experiment
