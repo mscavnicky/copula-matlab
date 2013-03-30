@@ -15,6 +15,8 @@ ifm = data.ifm;
 figure('Visible','off')
 % Bar figure with AIC data
 values = [cml.(stat); ifm.(stat)];
+% Filter out only some of models
+values = values(:, 1:8);
 handle = bar(values);
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');

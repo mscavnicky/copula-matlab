@@ -4,7 +4,7 @@ function cm2bar( folder, dataset )
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 load(filename, 'results');
 accuracy = [results.Correct] ./ ([results.Correct] + [results.Incorrect]);
-accuracy = reshape(accuracy, 9, 2);
+accuracy = reshape(accuracy, 12, 2);
 
 % Start the invisible figure
 figure('Visible','off')
@@ -29,7 +29,7 @@ set(gca,'box','off')
 % Set bar edge color to none
 set(handle, 'EdgeColor', 'None');
 % Add unboxed legend
-families = {'Independent', 'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank','Clayton HAC', 'Gumbel HAC', 'Frank HAC'};
+families = {'Independent', 'Gaussian', 'Student-t', 'Clayton', 'Gumbel', 'Frank', 'Clayton HAC', 'Gumbel HAC', 'Frank HAC', 'Clayton HAC*', 'Gumbel HAC*', 'Frank HAC*'};
 legend(families, 'Location', 'eastoutside');
 legend('boxoff');
 

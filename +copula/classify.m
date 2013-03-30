@@ -16,6 +16,16 @@ for i=1:numClasses
     C(i).P = sum(Y == K(i)) / n;
     % Training data for class i
     C(i).X = X(Y == K(i), :);
+        
+    % If model requires preprocessing do it for both train and test dataset
+    family_i = family;
+    if ismember(family, {'claytonhac*', 'gumbelhac*', 'frankhac*'})
+        P = hac.preprocess( family, C(i).X, method );
+        C(i).X = C(i).X * P;
+        TX = TX * P;
+        family_i = family(1:end-1);
+    end
+    
     % Uniformed data for C(i)
     if strcmp(method, 'CML')  
         C(i).U = uniform(C(i).X);
@@ -26,7 +36,7 @@ for i=1:numClasses
         error('Unknown method %s', method);
     end        
     
-    C(i).Copula = copula.fit(family, C(i).U);
+    C(i).Copula = copula.fit(family_i, C(i).U);
 end
 
 % Compute likelihood for test sample in each copula
@@ -49,21 +59,16 @@ end
 PL = prod(L, 2);
 PL = PL(:, :);
 
-% For each sample choose class with the highest likelihood
-
+% For each sample choose class with the highest likelihood and if they are
+% same use highest copula likelihood, otherwise choose randomly
 TY = zeros(size(TX, 1), 1);
+
 for i=1:size(TX, 1)
-    l = PL(i, :);
-    maxLikelihood = max(l);
-    maxIndices = find(l == maxLikelihood);
-    % There is only one maximum likelihood
+    maxIndices = allmax(PL(i, :));
     if numel(maxIndices) == 1
         TY(i) = maxIndices;
     else
-        p = [C.P];
-        maxPrior = max(p);
-        maxIndices = find(p == maxPrior);
-        % There is only one maximum prior probability
+        maxIndices = allmax(L(i, 1));
         if numel(maxIndices) == 1
             TY(i) = maxIndices;
         else
@@ -73,5 +78,10 @@ for i=1:size(TX, 1)
     end    
 end
 
+end
+
+function [ xi ] = allmax( x )
+%ALLMAX Given a vector x provides indices of all maximum values.
+xi = find(x == max(x));
 end
 

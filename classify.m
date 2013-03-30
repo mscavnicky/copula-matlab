@@ -5,31 +5,32 @@ families = {...
     'independent',...
     'gaussian' 't' 'clayton' 'gumbel' 'frank'...
     'claytonhac' 'gumbelhac' 'frankhac'...
+    'claytonhac*' 'gumbelhac*' 'frankhac*'
 };
+
+%families = {'frankhac*'};
 
 numFamilies = numel(families);
 
 for i=1:numFamilies
     family = families{i};
-    confus = copula.crossval(family, 'CML', X, Y, 10);    
-    
-    results(i).Family = family;
-    results(i).Method = 'CML';
-    results(i).Confus = confus;
-    results(i).Correct = sum(confus(eye(size(confus)) == 1));
-    results(i).Incorrect = sum(confus(eye(size(confus)) == 0));    
+    results(i) = classifyUsing(family, 'CML', X, Y);
 end
 
 for i=1:numFamilies
     family = families{i};
-    confus = copula.crossval(family, 'IFM', X, Y, 10);    
-    
-    results(i+numFamilies).Family = family;
-    results(i+numFamilies).Method = 'IFM';
-    results(i+numFamilies).Confus = confus;
-    results(i+numFamilies).Correct = sum(confus(eye(size(confus)) == 1));
-    results(i+numFamilies).Incorrect = sum(confus(eye(size(confus)) == 0));    
+    results(i+numFamilies) = classifyUsing(family, 'IFM', X, Y);
 end
 
+end
+
+function [ result ] = classifyUsing( family, method, X, Y )
+    confus = copula.crossval(family, method, X, Y, 10);
+    
+    result.Family = family;
+    result.Method = method;
+    result.Confus = confus;
+    result.Correct = sum(confus(eye(size(confus)) == 1));
+    result.Incorrect = sum(confus(eye(size(confus)) == 0));
 end
 

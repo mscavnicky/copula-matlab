@@ -1,7 +1,7 @@
 function scores2table( families, datasets, classes )
 %SCORES2TABLE
 
-scores = zeros(11, 6);
+scores = zeros(8, 6);
 
 for i=1:numel(datasets)
     dataset = datasets{i};
@@ -11,8 +11,8 @@ for i=1:numel(datasets)
         class = datasetClasses{j};
         filename = sprintf('../Results/%s/%s-%s.mat', dataset, dataset, class);
         data = load(filename, 'cml', 'ifm');
-        cml = data.cml;
-        ifm = data.ifm;
+        cml = data.cml(1:8);
+        ifm = data.ifm(1:8);
       
         for k=1:numel(families)
             if cml(k).LL == max([cml.LL])
@@ -56,9 +56,6 @@ fprintf(fid, 'Frank & %d & %d & %d && %d & %d & %d \\\\\n', scores(5, :));
 fprintf(fid, 'Clayton HAC & %d & %d & %d && %d & %d & %d \\\\\n', scores(6, :));
 fprintf(fid, 'Gumbel HAC & %d & %d & %d && %d & %d & %d \\\\\n', scores(7, :));
 fprintf(fid, 'Frank HAC & %d & %d & %d && %d & %d & %d \\\\\n', scores(8, :));
-%fprintf(fid, 'Clayton HAC* & %d & %d & %d && %d & %d & %d \\\\\n', scores(9, :));
-%fprintf(fid, 'Gumbel HAC* & %d & %d & %d && %d & %d & %d \\\\\n', scores(10, :));
-%fprintf(fid, 'Frank HAC* & %d & %d & %d && %d & %d & %d \\\\\n', scores(11, :));
 fprintf(fid, '\\bottomrule\n');
 fprintf(fid, '\\end{tabular}\n');
 fprintf(fid, '\\caption{Scores for different copula families.}\n');
