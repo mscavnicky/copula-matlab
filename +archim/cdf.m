@@ -5,12 +5,6 @@ function [ Y ] = cdf( family, U, alpha )
 % Copula dimension is necessary for parameter validation
 d = size(U, 2);
 
-% For 2-dimensional case use existing MATLAB implementation
-if d == 2
-   Y = copulacdf(family, U, alpha);
-   return;
-end
-
 % Get bounds for family and dimension
 [ lowerBound, upperBound ] = archim.bounds(family, d);
 % Verify parameter against bounds
