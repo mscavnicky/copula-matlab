@@ -2,12 +2,14 @@ function modified2table( folder, dataset, classes )
     numClasses = numel(classes);
     
     % Read likelihoods from MAT files
-    ll = {};
+    ifm = {};
+    cml = {};
+    
     for i=1:numClasses
         filename = sprintf('%s/%s-%s.mat', folder, dataset, classes{i});
         data = load(filename, 'cml', 'ifm');
-        ll{i,1} = [data.cml(6:8).LL; data.cml(9:11).LL]';
-        ll{i,2} = [data.ifm(6:8).LL; data.ifm(9:11).LL]';
+        cml{i} = [data.cml(6:8).LL; data.cml(9:11).LL]';
+        ifm{i} = [data.ifm(6:8).LL; data.ifm(9:11).LL]';
     end
     
     % Open latex file for reading
@@ -37,7 +39,7 @@ function modified2table( folder, dataset, classes )
     
     fprintf(fid, '& & ');
     for i=1:numClasses
-        fprintf(fid, 'O & O*');
+        fprintf(fid, 'Okhrin & Okhrin*');
         if i ~= numClasses
             fprintf(fid, ' && ');
         end
@@ -51,8 +53,14 @@ function modified2table( folder, dataset, classes )
             fprintf(fid, 'CML');
         end
         fprintf(fid, '& %s & ', classes{c});
-        for i=1:3            
-            fprintf(fid, '%.1f & %.1f', ll{c, 1}(i,:));
+        for i=1:3
+            ll1 = cml{c}(i, 1);
+            ll2 = cml{c}(i, 2);
+            
+            s1 = sprintf('%.1f', ll1);
+            s2 = sprintf('%.1f', ll2);                             
+            
+            fprintf(fid, '%s & %s', bold(s1, ll1 > ll2), bold(s2, ll2 > ll1));
             if i ~= 3
                 fprintf(fid, ' && ');
             end
@@ -68,7 +76,13 @@ function modified2table( folder, dataset, classes )
         end
         fprintf(fid, '& %s & ', classes{c});
         for i=1:3            
-            fprintf(fid, '%.1f & %.1f', ll{c, 2}(i,:));
+            ll1 = ifm{c}(i, 1);
+            ll2 = ifm{c}(i, 2);
+            
+            s1 = sprintf('%.1f', ll1);
+            s2 = sprintf('%.1f', ll2);                             
+            
+            fprintf(fid, '%s & %s', bold(s1, ll1 > ll2), bold(s2, ll2 > ll1));
             if i ~= 3
                 fprintf(fid, ' && ');
             end
@@ -82,4 +96,10 @@ function modified2table( folder, dataset, classes )
     fprintf(fid, '\\vspace{0em}\n');
 
     fclose(fid);
+end
+
+function str = bold( str, flag )
+    if flag
+        str = strcat('\textbf{', str, '}');
+    end
 end
