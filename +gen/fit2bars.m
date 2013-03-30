@@ -58,7 +58,7 @@ fid = fopen(filename, 'w');
 fprintf(fid, '\\begin{figure}\n');
 fprintf(fid, '\\centering\n');
 fprintf(fid, '\\includegraphics[scale=1.0]{%s}\n', imagename);
-fprintf(fid, '\\caption{Fit results (%s) for the %s dataset for class %s.}\n', dataset, class, stat);
+fprintf(fid, '\\caption{Values of %s statistic for the %s class (%s dataset).}\n', stat, class, dataset);
 fprintf(fid, '\\end{figure}\n');
 fclose(fid);
 

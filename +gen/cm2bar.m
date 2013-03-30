@@ -46,7 +46,7 @@ fid = fopen(filename, 'w');
 fprintf(fid, '\\begin{figure}\n');
 fprintf(fid, '\\centering\n');
 fprintf(fid, '\\includegraphics[scale=1.0]{%s}\n', imagename);
-fprintf(fid, '\\caption{Number of misclassified elements for different copula families for %s dataset.}\n', dataset);
+fprintf(fid, '\\caption{Accuracy of classification for classifiers based on different copula families (%s dataset).}\n', dataset);
 fprintf(fid, '\\end{figure}\n');
 fclose(fid);
 

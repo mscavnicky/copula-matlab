@@ -29,7 +29,7 @@ function fit2table( folder, families, dataset, class )
     fprintf(fid, '\\bottomrule\n');
     fprintf(fid, '\\end{tabular}\n');    
     
-    fprintf(fid, '\\caption{Fitted of copulas fits of the %s dataset for class %s.}\n', dataset, class);
+    fprintf(fid, '\\caption{Measures of fit for different copula families for class %s (%s dataset).}\n', class, dataset);
     fprintf(fid, '\\end{table}\n');
     fclose(fid);
 end
