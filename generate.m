@@ -60,3 +60,11 @@ for i=1:numel(datasets)
     folder = sprintf('../Results/%s', dataset);
     gen.cm2bar(folder, dataset);
 end
+
+%% Generate comparison of modified okhrin's algorith
+
+for i=1:numel(datasets)
+    dataset = datasets{i};
+    folder = sprintf('../Results/%s', dataset);
+    gen.modified2table(folder, dataset, classes{i});
+end
