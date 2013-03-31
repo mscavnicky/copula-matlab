@@ -35,8 +35,8 @@ legend('boxoff');
 
 % Print out the figure
 set(gcf, 'PaperUnits', 'centimeters');
-set(gcf, 'PaperSize', [14.5 5.5]);
-set(gcf, 'PaperPosition', [0 0 14.5 5.5]);
+set(gcf, 'PaperSize', [15.0 5.5]);
+set(gcf, 'PaperPosition', [0 0 15.0 5.5]);
 imagename = sprintf('%s/%s-Confus-Bar.pdf', folder, dataset );
 print('-dpdf', '-r300', imagename);
 
