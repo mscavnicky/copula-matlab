@@ -53,7 +53,7 @@ set(gca, 'YTick', 1:12);
 set(gca, 'XTickLabel', families); 
 gen.rotateticklabel(gca, 90); 
 set(gca, 'YTickLabel', families);
-colormap([0.0 0.0 0.0; 0.25 0.25 0.25; 0.5 0.5 0.5; 0.75 0.75 0.75; 1.0 1.0 1.0]);
+colormap([1.0 1.0 1.0; 0.75 0.75 0.75; 0.5 0.5 0.5; 0.25 0.25 0.25; 0.0 0.0 0.0]);
 
 hcb = colorbar;
 set(hcb, 'YTick', [0,1,2,3,4]);
