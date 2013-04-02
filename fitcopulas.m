@@ -38,7 +38,7 @@ function [ fit ] = fitcopula( family, X, method )
     
     copulaparams = copula.fit(family, U);
     dbg('fitcopulas', 3, 'Computing statistics.\n');    
-    [ll, aic, bic, ks, aks, snc] = copula.fitstat(copulaparams, U);
+    [ll, aic, bic, ks, aks, snc] = copula.stats(copulaparams, U);
     
     % Compose the resulting fit object    
     fit.Copula = copulaparams;
