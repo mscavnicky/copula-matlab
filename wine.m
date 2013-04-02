@@ -37,7 +37,8 @@ end
 %% Generate tree plots
 
 for i=1:numel(classes)
-   hactree('frank', X(Y==i, :), folder, dataset, classes{i}, attributes); 
+    filename = sprintf('%s/%s-%s-Tree.pdf', folder, dataset, classes{i});
+    hactree('frank', X(Y==i, :), attributes, filename); 
 end
 
 %% Perform classificatin experiment
