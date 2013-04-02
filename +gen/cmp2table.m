@@ -70,3 +70,18 @@ set(gcf, 'PaperPosition', [0 0.0 12.0 10.0]);
 print('-dpdf', '-r300', imagename);
 
 end
+
+function [ M ] = cmp( X )
+%CMP
+
+[n, d] = size(X);
+M = zeros(n, n);
+
+for j=1:d
+    for i=1:n
+       M(i, :) = M(i, :) + (X(i,j) > X(:,j))';
+    end
+end
+
+end
+
