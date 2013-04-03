@@ -54,7 +54,7 @@ end
 
 function [ confusionMatrix ] = classifyAndTest(family, method, X, Y, TX, TY)
     K = unique(Y);    
-    TYhat = copula.classify(family, method, TX, X, Y);
+    TYhat = classify(family, method, TX, X, Y);
     confusionMatrix = confusionmat(TY, TYhat, 'order', K);
 end
 
