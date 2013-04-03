@@ -1,6 +1,5 @@
 function [ str ] = dprint( obj, d )
 %DPRINT Deep print on any nested object.
-%   Supports 2-dimensional cell-arrays and matrices.
 %   http://www.mathworks.com/help/matlab/data-type-identification.html
 
 %#ok<*AGROW>
