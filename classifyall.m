@@ -1,4 +1,4 @@
-function [ results ] = classify( X, Y )
+function [ results ] = classifyall( X, Y )
 %CLASSIFY Performs dataset classification using all copula families
 
 families = {...
