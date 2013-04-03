@@ -32,6 +32,6 @@ end
 
 %% Perform classificatin experiment
 
-results = classify(X, Y);
+results = classifyall(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 save(filename, 'results');
