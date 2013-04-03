@@ -1,8 +1,8 @@
-function [ TY ] = classify( family, method, TX, X, Y )
+function [ TY ] = copulacls( family, method, TX, X, Y )
 %COPULA.CLASSIFY 
 
 % Size and dimensions of the training dataset
-n = size(X);
+n = size(X, 1);
 % Size of the test dataset
 t = size(TX, 1);
 
@@ -19,16 +19,16 @@ for i=1:numClasses
 end
 
 % Fit a copula for each class depending on the fit method
-dbg('copulas.classify', 3, 'Fitting copulas for class.\n');
 L = cell(numClasses, 1);
 for i=1:numClasses
-    L{i} = likelihoodForClass(family, method, X(Y == i), TX);
+    dbg('copulacls', 3, 'Fitting copulas for class %d.\n', i);
+    L{i} = likelihoodForClass(family, method, X(Y == i, :), TX);
 end
 
 % Compute posterior probabilities for each class.
-PP = zeros(n, numClasses);
+PP = zeros(t, numClasses);
 for i=1:numClasses
-    PP(i) = prod(L{i}, 2) * p(i);
+    PP(:, i) = prod(L{i}, 2) * p(i);
 end
 
 % For each sample choose class with the highest likelihood and if they are
@@ -55,9 +55,6 @@ end
 function [ L ] = likelihoodForClass(family, method, X, TX)
 %EVALUATECLASS Evaluates likelihood of a single class
 
-% Fit a copula for each class depending on the fit method
-dbg('copulas.classify', 3, 'Fitting copulas for class.\n');
-      
 % Run preprocessing if required.
 if ismember(family, {'claytonhac*', 'gumbelhac*', 'frankhac*'})
     P = hac.preprocess( family(1:end-4), X, method );
@@ -81,10 +78,9 @@ end
 copulaparams = copula.fit(family, U);
 
 % Compute likelihood for estimated copula
-dbg('copulas.classify', 3, 'Computing likelihood for class %d.\n', i);
-
-[n, d] = size(X);
-L = zeros(n, d+1);
+d = size(X, 2);
+t = size(TX, 1);
+L = zeros(t, d+1);
 if strcmp(method, 'CML')
     L(:,1) = copula.pdf(copulaparams, empcdf(X, TX));
     L(:,2:d+1) = emppdf(X, TX);

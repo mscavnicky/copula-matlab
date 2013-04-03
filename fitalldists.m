@@ -50,11 +50,11 @@ for i=1:numel(distnames)
         % Ignore distributions that produce Inf or NaN values
         Y = PD.cdf(X);
         if isnan(Y) | isinf(Y) %#ok<OR2>
-            error('Distribution not numerically stable.');           
+            error('Distribution is not numerically stable.');           
         end        
         Y = PD.pdf(X);
         if isnan(Y) | isinf(Y) %#ok<OR2>
-            error('Distribution not numerically stable.');           
+            error('Distribution is not numerically stable.');           
         end 
         
         % Keep the fitted distribution
