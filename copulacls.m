@@ -1,5 +1,8 @@
 function [ TY ] = copulacls( family, method, TX, X, Y )
-%COPULA.CLASSIFY 
+%COPULACLS Classifier based on copula. Uses given copula family and
+%fitting method to model each class of input sample X. Uses MAP rule to
+%classify each sample from testing set TX. Returns vector TY of chosen
+%classes for each sample from TX.
 
 % Size and dimensions of the training dataset
 n = size(X, 1);
@@ -53,7 +56,8 @@ end
 
 
 function [ L ] = likelihoodForClass(family, method, X, TX)
-%EVALUATECLASS Evaluates likelihood of a single class
+%LIKELIHOODFORCLASS Models data of the single class using copula and
+%computes the likelihood of testing sample for this class.
 
 % Run preprocessing if required.
 if ismember(family, {'claytonhac*', 'gumbelhac*', 'frankhac*'})
@@ -92,6 +96,7 @@ else
 end
 
 end
+
 
 function [ xi ] = allmax( x )
 %ALLMAX Given a vector x provides indices of all maximum values.

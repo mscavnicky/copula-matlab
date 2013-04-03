@@ -1,5 +1,10 @@
 function [ Y ] = empcdf( F, X )
-%EMPCDF Empirical cdf function for input X given the empirical values F
+%EMPCDF Empirical cdf function for input X given the empirical values F.
+%Returned values are in the interval (0,1).
+%
+%   References:
+%       [1] Berg, D. Bakken, H. (2006) Copula Goodness-of-fit Tests: A
+%       Comparative Study
 
 n = size(F, 1);
 Y = zeros(size(X));

@@ -1,5 +1,6 @@
 function [ results ] = classifyall( X, Y )
-%CLASSIFYALL 
+%CROSSVALCOPULAS Given an input sample performs k-fold cross-validation for
+%12 copula familes and 2 fitting methods. Returns struct array of results.
 
 %#ok<*AGROW>
 
