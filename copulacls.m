@@ -87,7 +87,7 @@ t = size(TX, 1);
 L = zeros(t, d+1);
 if strcmp(method, 'CML')
     L(:,1) = copula.pdf(copulaparams, empcdf(X, TX));
-    L(:,2:d+1) = emppdf(X, TX);
+    L(:,2:d+1) = kde(X, TX);
 elseif strcmp(method, 'IFM')
     L(:,1) = copula.pdf(copulaparams, pit(TX, {margins.ProbDist}));
     L(:,2:d+1) = problike(TX, {margins.ProbDist});
