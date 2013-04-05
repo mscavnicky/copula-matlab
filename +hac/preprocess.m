@@ -3,13 +3,11 @@ function [ P ] = preprocess( family, X, method )
 
 % Fit both original margins and negated margins
 if strcmp(method, 'CML')
-    U = uniform(X);
-    V = uniform(-X);
+    U = pseudoObservations(X);
+    V = pseudoObservations(-X);
 elseif strcmp(method, 'IFM');
-    margins = fitmargins(X);
-    U = pit(X, {margins.ProbDist});
-    negated = fitmargins(-X);
-    V = pit(-X, {negated.ProbDist});   
+    U = probabilityTransform(X, fitMargins(X));
+    V = probabilityTransform(-X, fitMargins(-X));
 else
     error('Method %s not recognized.', method);
 end

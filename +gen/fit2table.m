@@ -1,9 +1,9 @@
 function fit2table( folder, families, dataset, class )
     % Load the IFM anc CML fits
     filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
-    data = load(filename, 'cml', 'ifm');
-    cml = data.cml(1:8);
-    ifm = data.ifm(1:8);
+    data = load(filename, 'cmlFits', 'ifmFits');
+    cml = data.cmlFits(1:8);
+    ifm = data.ifmFits(1:8);
 
     filename = sprintf('%s/%s-%s-Fits.tex', folder, dataset, class );
     fid = fopen(filename, 'w');

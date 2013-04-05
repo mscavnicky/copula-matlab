@@ -1,6 +1,6 @@
-function [ ll, aic, bic, ks, aks, snc ] = stats( copulaparams, U )
+function [ ll, aic, bic, aks, snc ] = stats( copulaparams, U )
 %COPULA.STATS Computes 6 different fit statistics given for a copula and
-%   uniformed data. Computes LL, AIC, BIC, KS, AKS and SnC statistics.
+%   uniformed data. Computes LL, AIC, BIC, AKS and SnC statistics.
 
 [n, d] = size(U);
 
@@ -18,10 +18,8 @@ bic = -2*ll + k*log(n);
 E = copula.pit( copulaparams, U );
 % Produce vector with chi-square distribution
 C = sum( norminv( E ) .^ 2, 2 );
-% Compute the KS statistics
-ks = sqrt(n) * max(abs(chi2cdf(C, d) - uniform(C)));
 % Compute the AKS statistics
-aks = sum(abs(chi2cdf(C, d) - uniform(C))) / sqrt(n);
+aks = sum(abs(chi2cdf(C, d) - pseudoObservations(C))) / sqrt(n);
 % Compute the SnC statistics
 snc = sum((copula.emp(E) - prod(E, 2)) .^ 2);
 

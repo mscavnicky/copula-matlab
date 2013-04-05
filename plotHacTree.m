@@ -5,7 +5,7 @@ P = hac.preprocess(family, X, 'CML');
 X = X * P;
 
 % Uniform the data and fit HAC copula using Okhrin's method
-U = uniform(X);
+U = pseudoObservations(X);
 tree = hac.fit(family, U, 'okhrin');
 
 % Append star to each rotated attributes

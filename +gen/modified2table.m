@@ -7,9 +7,9 @@ function modified2table( folder, dataset, classes )
     
     for i=1:numClasses
         filename = sprintf('%s/%s-%s.mat', folder, dataset, classes{i});
-        data = load(filename, 'cml', 'ifm');
-        cml{i} = [data.cml(6:8).LL; data.cml(9:11).LL]';
-        ifm{i} = [data.ifm(6:8).LL; data.ifm(9:11).LL]';
+        data = load(filename, 'cmlFits', 'ifmFits');
+        cml{i} = [data.cmlFits(6:8).LL; data.cmlFits(9:11).LL]';
+        ifm{i} = [data.ifmFits(6:8).LL; data.ifmFits(9:11).LL]';
     end
     
     % Open latex file for reading

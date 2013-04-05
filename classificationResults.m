@@ -1,4 +1,4 @@
-function [ results ] = classificationResults( X, Y )
+function [ results ] = classificationResults( X, Y, method )
 %CLASSIFICATIONRESULTS Given an input sample performs k-fold
 %cross-validation for 12 copula familes and 2 fitting methods. Returns
 %struct array of results.
@@ -12,18 +12,8 @@ families = {...
     'claytonhac*' 'gumbelhac*' 'frankhac*'
 };
 
-numFamilies = numel(families);
-
-% Perform cross-validaton of all families using CML
-for i=1:numFamilies
-    family = families{i};
-    results(i) = crossvalResults(family, 'CML', X, Y); 
-end
-
-% Perform cross-validaton of all families using IFM
-for i=1:numFamilies
-    family = families{i};
-    results(i+numFamilies) = crossvalResults(family, 'IFM', X, Y);
+for i=1:numel(families)
+    results(i) = crossvalResults(families{i}, method, X, Y); 
 end
 
 end
@@ -37,7 +27,7 @@ confus = copulaCrossValidation(family, method, X, Y, 10);
 
 result.Family = family;
 result.Method = method;
-result.Confus = confus;
+result.ConfusionMatrix = confus;
 result.Correct = sum(confus(eye(size(confus)) == 1));
 result.Incorrect = sum(confus(eye(size(confus)) == 0));
 end

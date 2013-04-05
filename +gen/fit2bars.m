@@ -7,9 +7,9 @@ function fit2bars( folder, families, dataset, class, stat )
 
 % Load the IFM anc CML fits
 filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
-data = load(filename, 'cml', 'ifm');
-cml = data.cml;
-ifm = data.ifm;
+data = load(filename, 'cmlFits', 'ifmFits');
+cml = data.cmlFits;
+ifm = data.ifmFits;
 
 % Start the invisible figure
 figure('Visible','off')

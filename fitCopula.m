@@ -22,7 +22,7 @@ function [ fit ] = fitCopula( family, X, method )
     % Fit copula to uniformed data
     copulaparams = copula.fit(family, U);
     dbg('fitcopulas', 3, 'Computing statistics.\n');    
-    [ll, aic, bic, ks, aks, snc] = copula.stats(copulaparams, U);
+    [ll, aic, bic, aks, snc] = copula.stats(copulaparams, U);
     
     % Compose the resulting fit object    
     fit.Copula = copulaparams;
@@ -30,7 +30,6 @@ function [ fit ] = fitCopula( family, X, method )
     fit.LL = ll;
     fit.AIC = aic;
     fit.BIC = bic;
-    fit.KS = ks;
     fit.AKS = aks;
     fit.SnC = snc;
 end

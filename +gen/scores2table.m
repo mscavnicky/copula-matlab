@@ -10,9 +10,9 @@ for i=1:numel(datasets)
     for j=1:numel(datasetClasses)
         class = datasetClasses{j};
         filename = sprintf('../Results/%s/%s-%s.mat', dataset, dataset, class);
-        data = load(filename, 'cml', 'ifm');
-        cml = data.cml(1:8);
-        ifm = data.ifm(1:8);
+        data = load(filename, 'cmlFits', 'ifmFits');
+        cml = data.cmlFits(1:8);
+        ifm = data.ifmFits(1:8);
       
         for k=1:numel(families)
             if cml(k).LL == max([cml.LL])

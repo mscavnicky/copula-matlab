@@ -2,13 +2,15 @@ function cm2bar( folder, dataset )
 %CM2TABLE Convert confusion matrix to latex table.
 
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
-load(filename, 'results');
-accuracy = [results.Correct] ./ ([results.Correct] + [results.Incorrect]);
-accuracy = reshape(accuracy, 12, 2);
+load(filename, 'cmlResults', 'ifmResults');
+
+cmlAccuracy = [cmlResults.Correct] ./ ([cmlResults.Correct] + [cmlResults.Incorrect]);
+ifmAccuracy = [ifmResults.Correct] ./ ([ifmResults.Correct] + [ifmResults.Incorrect]);
+accuracy = [cmlAccuracy; ifmAccuracy];
 
 % Start the invisible figure
 figure('Visible','off')
-handle = bar(accuracy');
+handle = bar(accuracy);
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set gca

@@ -1,16 +1,17 @@
 function cmp2table( datasets, families )
 %CMP2TABLE
 
-correct = zeros(24, numel(datasets));
+cmlCorrect = zeros(12, numel(datasets));
+ifmCorrect = zeros(12, numel(datasets));
 for i=1:numel(datasets)
-    dataset = datasets{i};  
-    filename = sprintf('../Results/%s/%s-Confus.mat', dataset, dataset);
-    data = load(filename, 'results');       
-    correct(:, i) = [data.results.Correct]';
+    filename = sprintf('../Results/%s/%s-Confus.mat', datasets{i}, datasets{i});
+    data = load(filename, 'cmlResults', 'ifmResults');       
+    cmlCorrect(:, i) = [data.cmlResults.Correct]';
+    ifmCorrect(:, i) = [data.ifmResults.Correct]';
 end
 
-cmpimage(families, cmp(correct(1:12, :)), '../Results/CMLComp.pdf');
-cmpimage(families, cmp(correct(13:24, :)), '../Results/IFMComp.pdf');
+cmpimage(families, cmp(cmlCorrect), '../Results/CMLComp.pdf');
+cmpimage(families, cmp(ifmCorrect), '../Results/IFMComp.pdf');
 
 % fid = fopen('../Results/ClassificationComparison.tex', 'w');
 % fprintf(fid, '\\begin{table}\n');

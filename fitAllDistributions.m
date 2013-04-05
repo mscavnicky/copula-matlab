@@ -63,8 +63,8 @@ for i=1:numel(distnames)
         k=numel(PD.Params); %Number of parameters
         [~, p] = kstest(X, PD);
         
-        dists(num).DistName=PD.DistName; %#ok<*AGROW>
-        dists(num).NLogL=PD.NLogL;
+        dists(num).Distribution=PD.DistName; %#ok<*AGROW>
+        dists(num).NLL=PD.NLogL;
         dists(num).BIC=-2*(-PD.NLogL)+k*log(n);        
         dists(num).PValue=p;
         dists(num).ProbDist = PD;

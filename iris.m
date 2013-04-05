@@ -14,12 +14,13 @@ Y = data(:, 5);
 
 for i=1:numel(classes)
    X_i = X(Y==i, :);
-   [~, margins] = fitmargins(X_i);
-   cml = comparisonResults(X_i, 'CML');
-   ifm = comparisonResults(X_i, 'IFM');
+   [~, margins] = fitMargins(X_i);
+   cmlFits = comparisonResults(X_i, 'CML');
+   ifmFits = comparisonResults(X_i, 'IFM');
    
-   filename = sprintf('%s/%s-%s.mat', folder, dataset, classes{i});
-   save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
+   class = classes{i};
+   filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
+   save(filename, 'dataset', 'class', 'attributes', 'margins', 'cmlFits', 'ifmFits');
 end
 
 %% Generate tree plots
@@ -31,6 +32,7 @@ end
 
 %% Perform classification experiment
 
-results = classificationResults(X, Y);
+cmlResults = classificationResults(X, Y, 'CML');
+ifmResults = classificationResults(X, Y, 'IFM');
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
-save(filename, 'results');
+save(filename, 'cmlResults', 'ifmResults');

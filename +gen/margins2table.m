@@ -1,4 +1,4 @@
-function alldists2table( folder, dataset, attributes, classes )
+function margins2table( folder, dataset, attributes, classes )
     numClasses = numel(classes);
     
     % Read margins from MAT files
@@ -54,7 +54,7 @@ function alldists2table( folder, dataset, attributes, classes )
         fprintf(fid, '%s & ', attributes{attr});    
         for i=1:numClasses
             m = margins{i}(attr);
-            fprintf(fid, '%s & %.3f', prettyDistName(m.DistName), m.PValue);
+            fprintf(fid, '%s & %.3f', prettyDistName(m.Distribution), m.PValue);
             if i ~= numClasses
                 fprintf(fid, ' && ');
             end
