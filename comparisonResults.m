@@ -1,6 +1,6 @@
-function [ fits ] = fitcopulas( X, method )
-%FITCOPULAS Fits all possible copulas functions to sample U and returns
-%results of all fits. Method can be either CML or IFM.
+function [ fits ] = comparisonResults( X, method )
+%COMPARISONRESULTS Fits all possible copulas functions to sample U and
+%returns results of all fits. Method can be either CML or IFM.
 
 dbg('fitcopulas', 1, 'Fiting copulas using %s method.\n', method);
 dbg('fitcopulas', 2, 'Uniforming data.\n');

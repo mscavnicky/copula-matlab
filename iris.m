@@ -14,12 +14,11 @@ Y = data(:, 5);
 
 for i=1:numel(classes)
    X_i = X(Y==i, :);
-   margins = fitmargins(X_i);
-   cml = fitcopulas(X_i, 'CML');
-   ifm = fitcopulas(X_i, 'IFM');
+   [~, margins] = fitmargins(X_i);
+   cml = comparisonResults(X_i, 'CML');
+   ifm = comparisonResults(X_i, 'IFM');
    
-   class = classes{i};
-   filename = sprintf('%s/%s-%s.mat', folder, dataset, class);
+   filename = sprintf('%s/%s-%s.mat', folder, dataset, classes{i});
    save(filename, 'dataset', 'class', 'attributes', 'margins', 'cml', 'ifm');
 end
 
@@ -27,11 +26,11 @@ end
 
 for i=1:numel(classes)
     filename = sprintf('%s/%s-%s-Tree.pdf', folder, dataset, classes{i});
-    hactree('frank', X(Y==i, :), attributes, filename); 
+    plotHacTree('frank', X(Y==i, :), attributes, filename); 
 end
 
-%% Perform classificatin experiment
+%% Perform classification experiment
 
-results = classifyall(X, Y);
+results = classificationResults(X, Y);
 filename = sprintf('%s/%s-Confus.mat', folder, dataset);
 save(filename, 'results');

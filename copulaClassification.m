@@ -1,6 +1,6 @@
-function [ TY ] = copulacls( family, method, TX, X, Y )
-%COPULACLS Classifier based on copula. Uses given copula family and
-%fitting method to model each class of input sample X. Uses MAP rule to
+function [ TY ] = copulaClassification( family, method, TX, X, Y )
+%COPULACLASSIFICATION Classifier based on copula. Uses given copula family
+%and fitting method to model each class of input sample X. Uses MAP rule to
 %classify each sample from testing set TX. Returns vector TY of chosen
 %classes for each sample from TX.
 

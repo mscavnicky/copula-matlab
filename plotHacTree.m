@@ -1,4 +1,4 @@
-function hactree( family, X, attributes, filename )
+function plotHacTree( family, X, attributes, filename )
 
 % Preprocess the data by rotating some attributes
 P = hac.preprocess(family, X, 'CML');
