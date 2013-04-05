@@ -1,5 +1,5 @@
-function [ Y ] = problike( X, PD )
-%PROBLIKE Produces likelihood of the sample given distributions of its
+function [ Y ] = density( X, PD )
+%DENSITY Produces density of the sample given distributions of its
 %margins.
 
 assert(size(X, 2) == numel(PD), 'Dimensions do not match.');

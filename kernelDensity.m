@@ -1,5 +1,5 @@
-function [ Y ] = kde( F, X )
-%EMPPDF Implementation of the Kernel density smoothing.
+function [ Y ] = kernelDensity( F, X )
+%KERNELDENSITY Implementation of the Kernel density smoothing.
 %   Evalutes kernel density of the sample F in the points X. When matrices
 %   are provided esimated kernel density for each vector separately.
 

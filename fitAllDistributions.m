@@ -1,9 +1,10 @@
-function [ dist,  dists ] = fitalldists(X)
-%FITALLDISTS Fit all valid parametric probability distributions to data.
-%   [dist dists] = FITALLDISTS(X) fits all valid parametric probability
-%   distributions to the data in vector X, and returns a struct dists of
-%   fitted distributions and parameters and distribution with highest BIC
-%   value in the dist variable.
+function [ dist,  dists ] = fitAllDistributions(X)
+%FITALLDISTRIBUTIONS Fit all valid parametric probability distributions to
+%data.
+%   [dist dists] = FITALLDISTRIBUTIONS(X) fits all valid parametric
+%   probability distributions to the data in vector X, and returns a struct
+%   dists of fitted distributions and parameters and distribution with
+%   highest BIC value in the dist variable.
 %
 %   List of distributions it will try to fit
 %     Continuous (default)

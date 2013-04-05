@@ -1,5 +1,5 @@
-function [ U ] = uniform( X )
-%UNIFORM Uniforms input sample to pseudo-observations.
+function [ U ] = pseudoObservations( X )
+%PSEUDOOBSERVATIONS Uniforms input sample to pseudo-observations.
 %   Based on empirical CDF function described in [1]. We use n+1 for
 %   division to keep empirical CDF lower than 1. 
 %

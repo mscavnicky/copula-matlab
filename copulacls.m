@@ -70,10 +70,10 @@ end
     
 % Uniform data 
 if strcmp(method, 'CML')  
-    U = uniform(X);
+    U = pseudoObservations(X);
 elseif strcmp(method, 'IFM')
-    margins = fitmargins(X);
-    U = pit(X, {margins.ProbDist});
+    margins = fitMargins(X);
+    U = probabilityTransform(X, margins);
 else
     error('Unknown method %s', method);
 end        
@@ -86,11 +86,11 @@ d = size(X, 2);
 t = size(TX, 1);
 L = zeros(t, d+1);
 if strcmp(method, 'CML')
-    L(:,1) = copula.pdf(copulaparams, empcdf(X, TX));
-    L(:,2:d+1) = kde(X, TX);
+    L(:,1) = copula.pdf(copulaparams, empiricalCdf(X, TX));
+    L(:,2:d+1) = kernelDensity(X, TX);
 elseif strcmp(method, 'IFM')
-    L(:,1) = copula.pdf(copulaparams, pit(TX, {margins.ProbDist}));
-    L(:,2:d+1) = problike(TX, {margins.ProbDist});
+    L(:,1) = copula.pdf(copulaparams, probabilityTransform(TX, margins));
+    L(:,2:d+1) = density(TX, margins);
 else
     error('Unknown method %s', method);
 end

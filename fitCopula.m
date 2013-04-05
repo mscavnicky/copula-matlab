@@ -1,4 +1,4 @@
-function [ fit ] = fitcopula( family, X, method )
+function [ fit ] = fitCopula( family, X, method )
 %FITCOPULA Fit single copula family to X using selected method.
     dbg('fitcopulas', 3, 'Fitting family %s.\n', family);
     fit.Family = family;
@@ -12,10 +12,9 @@ function [ fit ] = fitcopula( family, X, method )
     
     % Obtain uniformed sample
     if strcmp(method, 'CML')
-        U = uniform(X);
+        U = pseudoObservations(X);
     elseif strcmp(method, 'IFM');
-        margins = fitmargins(X);
-        U = pit(X, {margins.ProbDist});
+        U = probabilityTransform(X, fitMargins(X));
     else
         error('Method %s not recognized.', method);
     end

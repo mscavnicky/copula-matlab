@@ -1,5 +1,5 @@
-function [ U ] = pit( X, PD )
-%PIT Performs probability integral transform on sample X.
+function [ U ] = probabilityTransform( X, PD )
+%PROBABILITYTRANSFORM Performs probability integral transform on sample X.
 %   Performs PIT on each column vector of sample X given its probability
 %   distribution. Distribution should be passed as a cell array of ProbDist
 %   objects. Transformed values are within interval (0,1).

@@ -11,7 +11,7 @@ families = {...
     'claytonhac*' 'gumbelhac*' 'frankhac*'};
 
 for i=1:numel(families)
-    fits(i) = fitcopula( families{i}, X, method ); %#ok<AGROW>
+    fits(i) = fitCopula( families{i}, X, method ); %#ok<AGROW>
 end
 
 end
