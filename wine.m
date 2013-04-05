@@ -16,7 +16,8 @@ data = csvread('../Data/Wine/winequality-white.csv');
 
 
 % Filter out NaN causing lines
-data = data([1:2405,2407:3119,3121:4534], :);
+%data = data([1:2405,2407:3119,3121:4534], :);
+data = data([1:3119,3121:3710,3712:4534], :);
 Z = data(:, 12);
 % Only choose interesting attributes
 X = data((Z >= 5 & Z <= 7), [2:4, 6:8, 10:11]);
