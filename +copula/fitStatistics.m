@@ -15,13 +15,13 @@ aic = -2*ll + (2*n*k)/(n-k-1);
 bic = -2*ll + k*log(n);
 
 % Compute KS measure
-E = copula.pit( copulaparams, U );
+E = copula.rosenblattTransform( copulaparams, U );
 % Produce vector with chi-square distribution
 C = sum( norminv( E ) .^ 2, 2 );
 % Compute the AKS statistics
 aks = sum(abs(chi2cdf(C, d) - pseudoObservations(C))) / sqrt(n);
 % Compute the SnC statistics
-snc = sum((copula.emp(E) - prod(E, 2)) .^ 2);
+snc = sum((copula.empirical(E) - prod(E, 2)) .^ 2);
 
 end
 

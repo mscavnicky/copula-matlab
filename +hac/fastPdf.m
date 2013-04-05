@@ -1,4 +1,4 @@
-function [ Y ] = fpdf( family, U, tree, cacheLevel )
+function [ Y ] = fastPdf( family, U, tree, cacheLevel )
 %HAC.PDF Probability distribution function of family of HAC.
 %   Derives and evalutes expression of density function for given
 %   HAC. Using fast evaluation based on deriving only the high-level

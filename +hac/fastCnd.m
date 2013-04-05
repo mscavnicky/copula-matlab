@@ -1,4 +1,4 @@
-function [ Y ] = fcnd( family, U, tree, m )
+function [ Y ] = fastCnd( family, U, tree, m )
 %HAC.FCND Fast implementation of conditional HAC function.
 %   Computes conditional CDF of d-dimensional copula, where m-th variable
 %   is conditined upon first m-1 variables.

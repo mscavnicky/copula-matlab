@@ -57,7 +57,7 @@ end
 % Print to file if argument specified
 % Size is set according to dimensions
 
-d = hac.dim(tree);
+d = hac.dimension(tree);
 
 if nargin > 3
     set(gcf, 'PaperUnits', 'centimeters');

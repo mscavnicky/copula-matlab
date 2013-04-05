@@ -1,3 +1,4 @@
+
 %% Copula densities
 
 % Independence copula
@@ -22,7 +23,7 @@ gen.copulaimg(@(U) copulapdf('clayton', U, 0.7), '../Images/clayton-pdf.pdf', 30
 gen.copulaimg(@(U) copulapdf('gumbel', U, 1.3), '../Images/gumbel-pdf.pdf', 20, 0.05, 0.95);
 
 % Frank copula
-gen.copulaimg(@(U) copulapdf('frank', U, -2), '../Images/frank-pdf.pdf', 20, 0.05, 0.95);
+gen.copulaimg(@(U) copulapdf('frank', U, 2.0), '../Images/frank-pdf.pdf', 20, 0.05, 0.95);
 
 %% Positive and negative dependency scatter
 

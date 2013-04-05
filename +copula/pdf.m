@@ -13,7 +13,7 @@ case 't'
 case {'clayton', 'gumbel', 'frank'}
     Y = archim.pdf(family, U, copulaparams.alpha);
 case {'claytonhac', 'gumbelhac', 'frankhac'}
-    Y = hac.fpdf(family(1:end-3), U, copulaparams.tree);
+    Y = hac.fastPdf(family(1:end-3), U, copulaparams.tree);
 otherwise
     error('Copula family not recognized.');    
 end

@@ -1,5 +1,5 @@
-function [ C ] = emp( U )
-%EMP Empirical copula for d-dimensional data. 
+function [ C ] = empirical( U )
+%EMPIRICAL Empirical copula for d-dimensional data. 
 %   Works with uniform variates. Method uses (n+1) as the denominator to
 %   avoid having ranks of 1.0. However in [2] n is used as the denominator.
 %

@@ -1,4 +1,4 @@
-function [ T ] = pit( copulaparams, U )
+function [ T ] = rosenblattTransform( copulaparams, U )
 %COPULA.PIT Performs Rosenblatt's probability integral transformation under
 %the null hypothesis that the data are generated using given copula.
 %
@@ -19,4 +19,3 @@ for i=2:d
 end
 
 end
-

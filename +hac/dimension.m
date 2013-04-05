@@ -1,5 +1,5 @@
-function [ d ] = dim( tree )
-%HAC.DIM Recursively computes dimension of the HAC copula.
+function [ d ] = dimension( tree )
+%HAC.DIMENSION Recursively computes dimension of the HAC copula.
 
 d = 0;
 for i=1:length(tree)-1
