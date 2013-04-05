@@ -15,7 +15,3 @@ assert(alpha ~= 0, 'Copula parameter cannot be zero.');
 Y = archim.gen(family, sum(archim.inv(family, U, alpha), 2), alpha);
 
 end
-
-
-
-

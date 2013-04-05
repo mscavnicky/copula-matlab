@@ -64,19 +64,19 @@ function testFlatHacClaytonIn3D
     
 function testFlatFastHacClaytonIn2D
     U = csvread('data/data2d.csv');
-    X = hac.fcnd('clayton', U, {1 2 1.4557}, 2);
+    X = hac.fastCnd('clayton', U, {1 2 1.4557}, 2);
     Y = csvread('data/test_copulacnd_clayton2d.csv');
     assertVectorsAlmostEqual(X, Y);
     
 function testClaytonHacIn3D
     U = csvread('data/data3d.csv');
     X = hac.cnd('clayton', U, {1 { 2 3 2.2 } 0.9912}, 3);
-    Y = hac.fcnd('clayton', U, {1 { 2 3 2.2 } 0.9912}, 3);
+    Y = hac.fastCnd('clayton', U, {1 { 2 3 2.2 } 0.9912}, 3);
     assertVectorsAlmostEqual(X, Y);
     
 function testClaytonHacIn4D
     U = csvread('data/data7d.csv');
     X = hac.cnd('clayton', U(:, 1:4), {{1 2 2.2} { 3 4 1.2 } 0.9912}, 3);
-    Y = hac.fcnd('clayton', U(:, 1:4), {{1 2 2.2} { 3 4 1.2 } 0.9912}, 3);
+    Y = hac.fastCnd('clayton', U(:, 1:4), {{1 2 2.2} { 3 4 1.2 } 0.9912}, 3);
     assertVectorsAlmostEqual(X, Y);
     
