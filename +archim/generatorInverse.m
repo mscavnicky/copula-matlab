@@ -1,5 +1,5 @@
-function [ Y ] = inv( family, X, p )
-%ARCHIM.INV Inverse of archimedean copula generator.
+function [ Y ] = generatorInverse( family, X, p )
+%ARCHIM.GENERATORINVERSE Inverse of archimedean copula generator.
 %   Please note that no parameter checking is done on this level.
 %
 %   Reference:

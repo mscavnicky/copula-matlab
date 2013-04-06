@@ -1,4 +1,4 @@
-function [ Y ] = gdiff( family, X, alpha, m )
+function [ Y ] = generatorDerivative( family, X, alpha, m )
 %ARCHIM.GENDIFF Compute values of the m-th derivative of the generator of
 %the Archimedean copula family using numerical methods.
 %
@@ -24,7 +24,7 @@ case 'gumbel'
         P = P + a(i, 1) * X.^(i / alpha);
     end    
     
-    Y = archim.gen('gumbel', X, alpha) ./ (X.^m) .* P;  
+    Y = archim.generator('gumbel', X, alpha) ./ (X.^m) .* P;  
 case 'frank'
     Y = (1/alpha) * npolylog(-m+1, (1-exp(-alpha)) * exp(-X));
 end

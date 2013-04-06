@@ -13,7 +13,7 @@ if regexp(factor, 'D') > 0
     % Evaluate copula expression
     [V, cdfCache] = hac.fastPdf.evaluateCdf(expr, family, U, params, cdfCache);    
     % Finally evaluate the derivative
-    Y = archim.cdfdiff(family, V, params(id), diffvars);
+    Y = archim.cdfDerivative(family, V, params(id), diffvars);
     
 elseif regexp(factor, 'diff') > 0
     % Match interesting part expression
@@ -27,7 +27,7 @@ elseif regexp(factor, 'diff') > 0
     % Get indexes of diffvars
     diffvars = find(ismember(vars, diffvars));    
     % Finally evaluate the diff function
-    Y = archim.cdfdiff(family, U(:, vars), params(id), diffvars); %#ok<FNDSB>
+    Y = archim.cdfDerivative(family, U(:, vars), params(id), diffvars); %#ok<FNDSB>
     
 else
     % The term is just a constant.

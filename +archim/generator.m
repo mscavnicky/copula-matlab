@@ -1,5 +1,5 @@
-function [ Y ] = gen( family, X, p )
-%ARCHIM.GEN Archimedean copula function generator.
+function [ Y ] = generator( family, X, p )
+%ARCHIM.GENERATOR Archimedean copula function generator.
 %   Please not that no parameter checking is done in this function.
 %
 %   Reference:

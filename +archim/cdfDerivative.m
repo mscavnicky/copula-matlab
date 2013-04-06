@@ -1,4 +1,4 @@
-function [ Y ] = cdfdiff( family, U, alpha, diffvars )
+function [ Y ] = cdfDerivative( family, U, alpha, diffvars )
 %ARCHIM.CDFDIFF Computes derivative of d-dimensionsal Archimedean cdf with
 %respect to all provided variables.
 %   Uses symbolic version of cdfdiff to compure derivatives. Caches
@@ -20,7 +20,7 @@ if isKey(cache, id)
     fhandle = cache(id);
 else
     % Construct symbolic version of cdf diff
-    f = archim.sym.cdfdiff( family, d, diffvars );
+    f = archim.sym.cdfDerivative( family, d, diffvars );
     % We are taking the assumption that alpha parameter is the first one
     args = symvar(f);
     % Convert symbolic version into matlabFunction

@@ -9,11 +9,11 @@ function [ f ] = cdf( family, symbols, alpha )
 f = sym(0);
 for i=1:length(symbols)
     s = symbols{i};
-    f = f + archim.sym.inv(family, s, alpha);
+    f = f + archim.sym.generatorInverse(family, s, alpha);
 end
 
 % Appply generator over the sum
-f = archim.sym.gen(family, f, alpha);
+f = archim.sym.generator(family, f, alpha);
 
 end
 

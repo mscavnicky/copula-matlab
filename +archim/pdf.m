@@ -25,13 +25,14 @@ assert(alpha > lowerBound && alpha < upperBound, 'Copula parameter out of range.
 assert(alpha ~= 0, 'Copula parameter cannot be zero.');
 
 % Evaluate PDF
-N = archim.gdiff( family, sum(archim.inv( family, U, alpha ), 2), alpha, d );
-D = prod( gdiff1( family, archim.inv( family, U, alpha ), alpha ), 2 );
+I = archim.generatorInverse( family, U, alpha );
+N = archim.generatorDerivative( family, sum(I, 2), alpha, d );
+D = prod( generatorFirstDerivative( family, I, alpha ), 2 );
 Y = N ./ D;
 
 end
 
-function [ Y ] = gdiff1( family, X, p )
+function [ Y ] = generatorFirstDerivative( family, X, p )
 %ARCHIM.DIFF First derivative of the archimedean copula generator.
 %   For analytical derivation see:
 %       Clayton http://www.wolframalpha.com/input/?i=%281%2Bx%29%5E%28-1%2Fp%29

@@ -1,4 +1,4 @@
-function [ f ] = cdfdiff( family, d, diffvars )
+function [ f ] = cdfDerivative( family, d, diffvars )
 %ARCHIM.SYM.CDFDIFF Derives d-dimensionsal cdf by all provided vars.
 %   Returns symbolic expression. Vars is an array of numbers where number
 %   represents symbol.

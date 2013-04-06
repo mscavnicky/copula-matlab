@@ -1,4 +1,4 @@
-function [ Y ] = gdiff( family, X, alpha, m )
+function [ Y ] = generatorDerivative( family, X, alpha, m )
 %ARCHIM.GENDIFF Computes values of the m-th derivative of the generator of
 %the Archimedean copula family using symbolic toolbox.
 %   Symbolic derivations are cached to speed up computations.
@@ -18,7 +18,7 @@ else
     % Declare symbols
     syms x p
     % Acquire symbolic version of generator
-    f = archim.sym.gen(family, x, p);
+    f = archim.sym.generator(family, x, p);
     % Analytically compute n-th derivation
     fn = diff(f, m, x);
     % Simplify equation for performance reasons

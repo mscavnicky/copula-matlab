@@ -12,6 +12,7 @@ assert(alpha > lowerBound && alpha < upperBound, 'Copula parameter out of range.
 assert(alpha ~= 0, 'Copula parameter cannot be zero.');
 
 % Compute CDF according to definition
-Y = archim.gen(family, sum(archim.inv(family, U, alpha), 2), alpha);
+I = archim.generatorInverse(family, U, alpha);
+Y = archim.generator(family, sum(I, 2), alpha);
 
 end
