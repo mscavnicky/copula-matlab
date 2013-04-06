@@ -1,26 +1,18 @@
-function [ Y ] = fastPdf( family, U, tree, cacheLevel )
-%HAC.PDF Probability distribution function of family of HAC.
+function [ Y ] = fastPdf( family, U, tree )
+%HAC.FASTPDF Probability distribution function of family of HAC.
 %   Derives and evalutes expression of density function for given
 %   HAC. Using fast evaluation based on deriving only the high-level
 %   derivation.
 
-%#ok<*AGROW>
+% Compose high level expression of HAC
+[hacExpression, params] = hac.fpdf.hacExpression(tree);
 
-d = size(U, 2);
-
-if nargin < 4
-   cacheLevel = min(d-1, 7); 
-end
-
-% Compose high level symbolic functions
-[expr, params] = hac.fpdf.expr(tree);
-
-% Differentiate expression symbolically
+% Differentiate high level expression symbolically
 dbg('hac.fpdf', 4, 'Differentiating expression.\n')
-dexpr = hac.fpdf.diffexpr(expr);
+differentiatedExpr = hac.fpdf.differentiateExpression(hacExpression);
 
-% Evaluate differentiated expression
+% Evaluate differentiated expression using its parameters
 dbg('hac.fpdf', 4, 'Evaluating expression.\n')
-Y = hac.fpdf.evalinfix( family, U, dexpr, params, cacheLevel );
+Y = hac.fpdf.evaluateDerivative( family, U, differentiatedExpr, params );
 
 end

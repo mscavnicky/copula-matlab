@@ -6,11 +6,11 @@ function [ Y ] = fastCnd( family, U, tree, m )
 % Nominator tree is pruned to m dimensions
 nTree = hac.prune( tree, m );
 % Copula expression string is produced
-[nExpr, nParams] = hac.fpdf.expr(nTree);
+[nExpr, nParams] = hac.fpdf.hacExpression(nTree);
 % Copula expression string is differentiated in m-1 variables
-nDiffExpr = hac.fpdf.diffexpr(nExpr, m-1);
+nDiffExpr = hac.fpdf.differentiateExpression(nExpr, m-1);
 % Evaluate differentiated expression
-N = hac.fpdf.evalinfix( family, U, nDiffExpr, nParams, m-1 );
+N = hac.fpdf.evaluateDerivative( family, U, nDiffExpr, nParams );
 
 % In 2 dimensions denominator tree reduces to single variable that is
 % derived to 1, therefore we only need to return nominator.
@@ -22,11 +22,11 @@ end
 % Denominator tree is pruned to m-1 dimensions
 dTree = hac.prune( tree, m-1 );
 % Copula expression string is produced
-[dExpr, dParams] = hac.fpdf.expr(dTree);
+[dExpr, dParams] = hac.fpdf.hacExpression(dTree);
 % Copula expression string is differentiated in m-1 variables
-dDiffExpr = hac.fpdf.diffexpr(dExpr, m-1);
+dDiffExpr = hac.fpdf.differentiateExpression(dExpr, m-1);
 % Evaluate differentiated expression
-D = hac.fpdf.evalinfix( family, U, dDiffExpr, dParams, m-1 );
+D = hac.fpdf.evaluateDerivative( family, U, dDiffExpr, dParams );
 
 Y = N ./ D;
 end

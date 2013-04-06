@@ -1,4 +1,4 @@
-function [ diffExpr ] = diffexpr( expr, m )
+function [ diffExpr ] = differentiateExpression( expr, m )
 %HAC.FPDF.DIFFEXPR Differentiate copula expression string.
 %   Given a copula expression string differentiates with respect to the
 %   first m arguments using Symbolic Toolbox and returns string of the
@@ -15,7 +15,7 @@ vars = symvar(symExpr);
 if nargin < 2
     m = numel(vars);
 end
-% Differentiate in the first m arguments
+% Differentiate in the first m variables
 for i=1:m
     symExpr = diff(symExpr, vars(i));
 end

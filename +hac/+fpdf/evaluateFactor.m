@@ -1,33 +1,23 @@
-function [ Y, cdfcache, diffcache ] = evalterm( family, term, U, params, cdfcache, diffcache, cacheLevel )
-%EVALTERM Evaluate term in derivation expression.
-%   There are 3 types of terms: D, diff and constant.
+function [ Y, cdfCache ] = evaluateFactor( family, factor, U, params, cdfCache )
+%HAC.FPDF.EVALUATEFACTOR Evaluate factor of the differentiated expression.
+%   There are 3 types of factors: D, diff and constant.
 
-if isKey(diffcache, term)
-    Y = diffcache(term);
-    return;
-end
-
-if regexp(term, 'D') > 0   
+if regexp(factor, 'D') > 0   
     % Match interesting part expression
-    tokens = regexp(term, '^D\(\[(?<diffvars>[0-9, ]+)\], (?<id>C[0-9]+)\)\((?<vars>[0-9Cu, ()]+)\)$', 'names');
+    tokens = regexp(factor, '^D\(\[(?<diffvars>[0-9, ]+)\], (?<id>C[0-9]+)\)\((?<vars>[0-9Cu, ()]+)\)$', 'names');
     % Extract id, vars and diffvars
     id = tokens.id;
     diffvars = str2vars(tokens.diffvars);    
     expr = tokens.vars;
     
     % Evaluate copula expression
-    [V, cdfcache] = hac.fpdf.evalcdf(expr, family, U, params, cdfcache);    
+    [V, cdfCache] = hac.fpdf.evaluateCdf(expr, family, U, params, cdfCache);    
     % Finally evaluate the derivative
     Y = archim.cdfdiff(family, V, params(id), diffvars);
     
-    % Store simple derivation in diffcache
-    if numel(diffvars) <= cacheLevel
-        diffcache(term) = Y;
-    end
-    
-elseif regexp(term, 'diff') > 0
+elseif regexp(factor, 'diff') > 0
     % Match interesting part expression
-    tokens = regexp(term, '^diff\((?<id>C[0-9]+)\((?<vars>[0-9u,() ]+)\), (?<diffvars>[0-9u,() ]+)\)$', 'names');
+    tokens = regexp(factor, '^diff\((?<id>C[0-9]+)\((?<vars>[0-9u,() ]+)\), (?<diffvars>[0-9u,() ]+)\)$', 'names');
     
     % Extract id, vars and diffvars
     id = tokens.id;
@@ -38,12 +28,11 @@ elseif regexp(term, 'diff') > 0
     diffvars = find(ismember(vars, diffvars));    
     % Finally evaluate the diff function
     Y = archim.cdfdiff(family, U(:, vars), params(id), diffvars); %#ok<FNDSB>
-    % Store it in the diff cache
-    diffcache(term) = Y;
     
 else
+    % The term is just a constant.
     n = size(U, 1);
-    Y = repmat(sscanf(term, '%d'), n, 1);
+    Y = repmat(sscanf(factor, '%d'), n, 1);
 end
 
 end
