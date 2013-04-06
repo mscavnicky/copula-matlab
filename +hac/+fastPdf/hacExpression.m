@@ -21,7 +21,7 @@ time = time + 1;
 for i=1:numel(tree) - 1
     node = tree{i};
     if iscell(node)
-        [subExpr, subParams, time] = hac.fpdf.hacExpression( node, time );
+        [subExpr, subParams, time] = hac.fastPdf.hacExpression( node, time );
         % Append expression of the child copula
         tokens{end+1} = subExpr;
         % Merge two maps with parameters

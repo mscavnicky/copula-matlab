@@ -37,7 +37,7 @@ for i = 1:numel(summands);
             F = factorCache(factor);
         else        
             % Evaluate factor of the expression
-            [F, cdfCache] = hac.fpdf.evaluateFactor(family, factor, U, params, cdfCache);
+            [F, cdfCache] = hac.fastPdf.evaluateFactor(family, factor, U, params, cdfCache);
             % Store evaluated factor in the cache
             factorCache(factor) = F;
         end

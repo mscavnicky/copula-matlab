@@ -11,7 +11,7 @@ if regexp(factor, 'D') > 0
     expr = tokens.vars;
     
     % Evaluate copula expression
-    [V, cdfCache] = hac.fpdf.evaluateCdf(expr, family, U, params, cdfCache);    
+    [V, cdfCache] = hac.fastPdf.evaluateCdf(expr, family, U, params, cdfCache);    
     % Finally evaluate the derivative
     Y = archim.cdfdiff(family, V, params(id), diffvars);
     

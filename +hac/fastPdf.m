@@ -5,14 +5,14 @@ function [ Y ] = fastPdf( family, U, tree )
 %   derivation.
 
 % Compose high level expression of HAC
-[hacExpression, params] = hac.fpdf.hacExpression(tree);
+[hacExpression, params] = hac.fastPdf.hacExpression(tree);
 
 % Differentiate high level expression symbolically
 dbg('hac.fpdf', 4, 'Differentiating expression.\n')
-differentiatedExpr = hac.fpdf.differentiateExpression(hacExpression);
+differentiatedExpr = hac.fastPdf.differentiateExpression(hacExpression);
 
 % Evaluate differentiated expression using its parameters
 dbg('hac.fpdf', 4, 'Evaluating expression.\n')
-Y = hac.fpdf.evaluateDerivative( family, U, differentiatedExpr, params );
+Y = hac.fastPdf.evaluateDerivative( family, U, differentiatedExpr, params );
 
 end
