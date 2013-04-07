@@ -5,7 +5,7 @@ attributes = {'Sepal length', 'Sepal width', 'Petal length', 'Petal width'};
 classes = {'Setosa', 'Versicolor', 'Virginica'};
 folder = sprintf('../Results/%s', dataset);
 
-data = dlmread('../Data/Iris/iris.data', ',');
+data = dlmread('../Data/Iris/iris.txt', ',');
 
 X = data(:, 1:4);
 Y = data(:, 5);

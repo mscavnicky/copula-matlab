@@ -1,7 +1,6 @@
 %% Names
 
-%datasets = {'Iris', 'Seeds', 'Wine', 'Vertebral'};
-datasets = {'Iris'};
+datasets = {'Iris', 'Seeds', 'Wine', 'Vertebral'};
 classes = {...,
     {'Setosa', 'Versicolor', 'Virginica'},...
     {'Kama', 'Rosa', 'Canadian'},...
