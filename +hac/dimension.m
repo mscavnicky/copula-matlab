@@ -4,7 +4,7 @@ function [ d ] = dimension( tree )
 d = 0;
 for i=1:length(tree)-1
     if iscell(tree{i})
-        d = d + hac.dim(tree{i});
+        d = d + hac.dimension(tree{i});
     else
         d = d+1;
     end

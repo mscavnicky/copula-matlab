@@ -42,7 +42,7 @@ for i=1:t
     if numel(maxIndices) == 1
         TY(i) = maxIndices;
     else
-        maxIndices = allmax(L(i, 1));
+        maxIndices = allmax(cellfun(@(x) x(i,1), L));
         if numel(maxIndices) == 1
             TY(i) = maxIndices;
         else
