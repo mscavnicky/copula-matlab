@@ -5,9 +5,6 @@ function [ confusionMatrix ] = copulaCrossValidation( family, method, X, Y, k )
 
 dbg('copula.crossval', 2, 'Cross validation for family %s.\n', family);
 
-% Reset random number generator to obtain same partitions every run
-rng(42);
-
 % Run stratified k-fold cross-validation
 fun = @(X, Y, TX, TY) classifyfun(family, method, X, Y, TX, TY);
 results = crossval(fun, X, Y, 'kfold', k, 'stratify', Y);

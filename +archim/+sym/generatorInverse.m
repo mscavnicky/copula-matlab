@@ -1,6 +1,6 @@
-function [ f ] = inv( family, x, p )
-%ARCHIM.SYM.INV Symbolic represenatation of inverse of archimedean copula 
-%generator.
+function [ f ] = generatorInverse( family, x, p )
+%ARCHIM.SYM.GENERATORINVERSE Symbolic represenatation of inverse of
+%Archimedean copula generator.
 
 switch family
     case 'clayton'

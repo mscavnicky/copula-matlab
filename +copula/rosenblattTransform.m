@@ -1,10 +1,7 @@
 function [ T ] = rosenblattTransform( copulaparams, U )
-%COPULA.PIT Performs Rosenblatt's probability integral transformation under
-%the null hypothesis that the data are generated using given copula.
-%
-%   Computation of conditional probability is currently performing
-%   duplicate work for each dimension. This is a minor performance
-%   bottleneck that can be fixed in the future.
+%COPULA.ROSENBLATTTRANSFORM Performs Rosenblatt's probability integral
+%transformation under the null hypothesis that the data are generated using
+%the given copula.
 %
 %   References:
 %       [1] Breymann, Dependence Structures for Multivariate High-Frequency

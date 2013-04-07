@@ -1,4 +1,4 @@
-function [ f ] = gen( family, x, p )
+function [ f ] = generator( family, x, p )
 %ARCHIM.SYM.GEN Symbolic expression of Archimedean copula generator.
 %   Provides symbolic expression of Archimdean copula generator using
 %   symbols x and p.

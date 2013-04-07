@@ -1,6 +1,6 @@
 function [ Y ] = generator( family, X, p )
 %ARCHIM.GENERATOR Archimedean copula function generator.
-%   Please not that no parameter checking is done in this function.
+%   Please note that no parameter checking is done in this function.
 %
 %   Reference:
 %       Nelsen. R, (2006) Introduction to Copulas, Second Edition, page 116

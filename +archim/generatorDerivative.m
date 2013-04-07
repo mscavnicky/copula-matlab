@@ -1,6 +1,6 @@
 function [ Y ] = generatorDerivative( family, X, alpha, m )
-%ARCHIM.GENDIFF Compute values of the m-th derivative of the generator of
-%the Archimedean copula family using numerical methods.
+%ARCHIM.GENERATORDERIVATIVE Compute values of the m-th derivative of the
+%generator of the Archimedean copula family using numerical methods.
 %
 %   References:
 %       [1] Hofert (2011) - Likelihood Inference for Archimedean Copulas
@@ -35,7 +35,7 @@ end
 
 function [ s ] = stirling1( m, n )
 %STIRLING1 Returns stirling number of the first kind.
-%   To avoid recomputing numbers, caches numbers up to dimension 32.
+%   Caches numbers up to 32 dimensions.
 
 persistent cache;
 if isempty(cache)
@@ -56,7 +56,7 @@ end
 
 function [ s ] = stirling2(m, n)
 %STIRLING2 Computes stirling number of the seconds kind.
-%   Uses cache up to 32 dimensions.
+%   Caches numbers up to 32 dimensions.
 
 persistent cache;
 if isempty(cache)

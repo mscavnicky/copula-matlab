@@ -1,5 +1,5 @@
 function [ Y ] = cdf( copulaparams, U )
-%COPULA.CDF Copula cumulative distribution function
+%COPULA.CDF Cumulative distribution function of different copula families.
 
 family = copulaparams.family;
 

@@ -1,5 +1,5 @@
 function [ copulaparams ] = fit( family, U, varargin )
-%COPULA.FIT Estimates copula parameters for given copula family.
+%COPULA.FIT Estimates copula parameters for a given copula family.
 %   Returns struct of copula parameters.
 
 d = size(U, 2);

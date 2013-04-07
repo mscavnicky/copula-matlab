@@ -1,6 +1,10 @@
 #include "mex.h"
 #include "matrix.h"
 
+/*
+ * Empirical copula for d-dimensional data. 
+ */
+
 void emp(double* x, double* y, mwSize n, mwSize d)
 {
     int i, j, k;

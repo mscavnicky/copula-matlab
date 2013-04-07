@@ -1,7 +1,7 @@
 function [ Y ] = fastCnd( family, U, tree, m )
-%HAC.FCND Fast implementation of conditional HAC function.
+%HAC.FASTCND Fast implementation of conditional HAC function.
 %   Computes conditional CDF of d-dimensional copula, where m-th variable
-%   is conditined upon first m-1 variables.
+%   is conditined upon the first m-1 variables.
 
 % Nominator tree is pruned to m dimensions
 nTree = hac.prune( tree, m );

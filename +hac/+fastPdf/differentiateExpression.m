@@ -1,7 +1,7 @@
 function [ diffExpr ] = differentiateExpression( expr, m )
-%HAC.FPDF.DIFFEXPR Differentiate copula expression string.
-%   Given a copula expression string differentiates with respect to the
-%   first m arguments using Symbolic Toolbox and returns string of the
+%HAC.FASTPDF.DIFFERENTIATEEXPRESSIOn Differentiate copula expression string.
+%   Given a copula expression string differentiate it with respect to the
+%   first m variables using Symbolic Toolbox and returns string of the
 %   differentiated expression.
 %
 %   When second argument is not provided, expression is differentiated with

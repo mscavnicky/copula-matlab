@@ -3,6 +3,7 @@ function plot( family, tree, names, imagename )
 %   Generates a figure of HAC where each leaf represents an attribute and
 %   each inner node represents an Archimedean copula. Parameter of the
 %   copula is displayed as Kendall's tau.
+%   If imagename parameter is specified plot is saved as pdf.
 %
 %   References:
 %       [1] http://stackoverflow.com/questions/5065051/add-node-numbers-get-node-locations-from-matlabs-treeplot
@@ -24,18 +25,11 @@ set(gca, 'Visible', 'off');
 
 % Write the labels
 [x, y] = treelayout(nodes);
-% Use column names if they are available
-if nargin > 2
-   for i=1:count
-      if ~ischar(labels{i})
-          u = labels{i};
-          if u > 0
-            labels{i} = sprintf('%s', names{u});
-          else
-            labels{i} = sprintf('%s*', names{abs(u)});
-          end
-      end
-   end
+% Replace labels with names
+for i=1:count
+  if ~ischar(labels{i})
+      labels{i} = names{labels{i}};        
+  end
 end
 
 % Plot node labels

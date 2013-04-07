@@ -1,6 +1,7 @@
 function [ Y, cdfCache ] = evaluateCdf( expr, family, U, params, cdfCache )
-%HAC.FPDF.EVALCDF Evaluate copula cdf expression
+%HAC.FASTPDF.EVALUATECDF Evaluate copula cdf expression in string form.
 %   Example C1(C2(u1, u3), u4) which is an expression in a prefix notation.
+%   Expression is evaluated on stack and all results are cached.
 
 %#ok<*AGROW>
 

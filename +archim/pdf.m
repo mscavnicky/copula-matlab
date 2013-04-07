@@ -1,7 +1,7 @@
 function [ Y ] = pdf( family, U, alpha )
-%ARCHIM.PDF Probability density function for multivariate archimedean
+%ARCHIM.PDF Probability density function for multivariate Archimedean
 %copula.
-%   PDF is computed as described in [1]. Extremal values where at least one
+%   PDF is computed as described in [1]. Extreme values where at least one
 %   margin is set to 1 are also computed according to the equation. MATLAB
 %   in this case returns 0, R returns NaN.
 %
@@ -33,8 +33,9 @@ Y = N ./ D;
 end
 
 function [ Y ] = generatorFirstDerivative( family, X, p )
-%ARCHIM.DIFF First derivative of the archimedean copula generator.
-%   For analytical derivation see:
+%ARCHIM.GENERATORFIRSTDERIVATIVE First derivative of the archimedean copula
+%generator.
+%   For analytical derivations see:
 %       Clayton http://www.wolframalpha.com/input/?i=%281%2Bx%29%5E%28-1%2Fp%29
 %       Gumbel http://www.wolframalpha.com/input/?i=exp%28-x%5E%281%2Fp%29%29
 %       Frank http://www.wolframalpha.com/input/?i=%28-1%2Fp%29*log%281+-+%281+-+exp%28-p%29%29*exp%28-x%29%29

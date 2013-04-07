@@ -1,7 +1,7 @@
 function [ Y ] = generatorDerivative( family, X, alpha, m )
-%ARCHIM.GENDIFF Computes values of the m-th derivative of the generator of
-%the Archimedean copula family using symbolic toolbox.
-%   Symbolic derivations are cached to speed up computations.
+%ARCHIM.GENERATORDERIVATIVE Computes values of the m-th derivative of the
+%generator of the Archimedean copula family using Symbolic toolbox.
+%Symbolic derivations are cached to speed up computations.
 
 % Initialized cache for functions repsenting generator derivatives
 persistent derivatives;
@@ -10,10 +10,10 @@ if isempty(derivatives)
 end
 
 % The key of the derivative function computed
-key = sprintf('%s%d', family, m);
+cacheKey = sprintf('%s%d', family, m);
 
-if isKey(derivatives, key)
-    nthDerivative = derivatives(key);
+if isKey(derivatives, cacheKey)
+    nthDerivative = derivatives(cacheKey);
 else
     % Declare symbols
     syms x p
@@ -26,7 +26,7 @@ else
     % Convert derivation to Matlab function
     nthDerivative = matlabFunction(fn, 'vars', [x p]);
     % Store it in the cache
-    derivatives(key) = nthDerivative;    
+    derivatives(cacheKey) = nthDerivative;    
 end    
 
 % Compute function values

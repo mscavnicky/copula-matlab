@@ -1,8 +1,8 @@
 function [ TY ] = copulaClassification( family, method, TX, X, Y )
 %COPULACLASSIFICATION Classifier based on copula. Uses given copula family
-%and fitting method to model each class of input sample X. Uses MAP rule to
-%classify each sample from testing set TX. Returns vector TY of chosen
-%classes for each sample from TX.
+%and fitting method to model each class of the input sample X. Uses MAP
+%rule to classify each sample from testing set TX. Returns vector TY of
+%chosen classes for each sample from TX.
 
 % Size and dimensions of the training dataset
 n = size(X, 1);
@@ -16,9 +16,9 @@ numClasses = numel(K);
 assert(isequal(K, sort(K)), 'Classes do not have the right order.');
 
 % Compute prior probabilities for each class
-p = zeros(numClasses, 1);
+prior = zeros(numClasses, 1);
 for i=1:numClasses
-    p(i) = sum(Y == K(i)) / n;
+    prior(i) = sum(Y == K(i)) / n;
 end
 
 % Fit a copula for each class depending on the fit method
@@ -29,16 +29,16 @@ for i=1:numClasses
 end
 
 % Compute posterior probabilities for each class.
-PP = zeros(t, numClasses);
+posterior = zeros(t, numClasses);
 for i=1:numClasses
-    PP(:, i) = prod(L{i}, 2) * p(i);
+    posterior(:, i) = prod(L{i}, 2) * prior(i);
 end
 
 % For each sample choose class with the highest likelihood and if they are
 % same use highest copula likelihood, otherwise choose randomly.
 TY = zeros(t, 1);
 for i=1:t
-    maxIndices = allmax(PP(i, :));
+    maxIndices = allmax(posterior(i, :));
     if numel(maxIndices) == 1
         TY(i) = maxIndices;
     else

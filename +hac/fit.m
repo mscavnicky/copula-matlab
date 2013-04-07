@@ -1,7 +1,7 @@
 function [ tree ] = fit( family, U, method )
-%HAC.FIT Fits sample to Hierachical Archimedean Copula. Return tree.
-%   Uses method by Okhrin to select HAC structure. HAC structure and alphas
-%   are all encoded in resulting parameters.
+%HAC.FIT Fits sample to Hierachical Archimedean Copula. 
+%   Returns HAC structure in the form of the tree containing parameters.
+%   Supports 2 methods: okhrin and full.
 %
 %   References:
 %       [1] Okhrin. O, Ristig. A, Hierarchical Archimedean Copulae: The HAC

@@ -1,5 +1,5 @@
 function [ expr, params, time ] = hacExpression( tree, time )
-%HAC.FPDF.HACEXPRESSION Recursively generates string expression of HAC.
+%HAC.FASTPDF.HACEXPRESSION Recursively generates string expression of HAC.
 %   Function assigns id to each nested copula in DFS order. Returns string
 %   expression as well as list of alphas from the copula.
 

@@ -1,5 +1,5 @@
 function [ Y ] = evaluateDerivative( family, U, expr, params )
-%HAC.FPDF.EVALUATEDERIVATIVE Evaluate the derivative of symbolic hac
+%HAC.FASTPDF.EVALUATEDERIVATIVE Evaluate the derivative of symbolic HAC
 %expression in infix form.
 %   Function caches intermediate results of the computation.
 

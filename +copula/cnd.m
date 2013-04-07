@@ -1,7 +1,7 @@
 function [ Y ] = cnd( copulaparams, U, m )
-%COPULA.CND Conditional probability distribution function for copulas.
+%COPULA.CND Conditional distribution function of different copula families.
 %   Computes conditional CDF of d-dimensional copula, where m-th variable
-%   is conditined upon first m-1 variables.
+%   is conditined upon the first m-1 variables.
 
 family = copulaparams.family;
 
@@ -11,18 +11,14 @@ case 'independent'
     % Conditioning upon independent variables
     Y = U(:,m);
 case 'gaussian'
-    Y = gaussianCnd( copulaparams, U, m );
-    
+    Y = gaussianCnd( copulaparams, U, m );    
 case 't'
-    Y = studentCnd( copulaparams, U, m );
-    
+    Y = studentCnd( copulaparams, U, m );    
 case {'frank', 'gumbel', 'clayton'}
-    Y = archim.cnd(family, U, copulaparams.alpha, m);
-    
+    Y = archim.cnd(family, U, copulaparams.alpha, m);    
 case {'claytonhac', 'gumbelhac', 'frankhac'}
     family = family(1:end-3);
     Y = hac.fastCnd(family, U, copulaparams.tree, m);
-
 otherwise
     error('Copula family not supported.');    
 end
@@ -30,6 +26,11 @@ end
 end
 
 function [ Y ] = gaussianCnd( copulaparams, U, m )
+%GAUSSIANCND Computation of Gaussian conditional distribution function.
+%
+%   References:
+%       [1] Wang (2012) - Numerical approximations and goodness-of-fit of
+%       copulas
 
 X = norminv(U(:, 1:m-1));
 y = norminv(U(:, m));
@@ -55,6 +56,11 @@ Y = N ./ D;
 end
 
 function [ Y ] = studentCnd( copulaparams, U, m )
+%STUDENTCND Computation of Student-t conditional distribution function.
+%
+%   References:
+%       [1] Wang (2012) - Numerical approximations and goodness-of-fit of
+%       copulas
 
 nu = copulaparams.nu;    
 X = tinv(U(:, 1:m-1), nu);

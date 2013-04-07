@@ -23,6 +23,9 @@ function [ result ] = crossvalResults( family, method, X, Y )
 %sample, peforms cross-validation of the input data using classifier based
 %on copulas and returns a struct of results of the classification.
 
+% Reset random number generator to obtain same partitions every run
+rng(42);
+
 confus = copulaCrossValidation(family, method, X, Y, 10);
 
 result.Family = family;

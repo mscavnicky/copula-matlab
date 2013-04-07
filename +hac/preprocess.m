@@ -1,5 +1,8 @@
 function [ P ] = preprocess( family, X, method )
-%HAC.PREPROCESS
+%HAC.PREPROCESS Preprocess function based on modified Okhrin's algorithm.
+%   Given an input sample and a fitting method runs modified Okhrin's
+%   algorithm and returns a diagonal matrix which can be used to preprocess
+%   the input sample.
 
 % Fit both original margins and negated margins
 if strcmp(method, 'CML')

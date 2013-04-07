@@ -1,8 +1,7 @@
 function [ Y ] = cnd( family, U, alpha, m )
-% ARCHIM.CND Conditional cumulative distribution function for Archimedean
-% copulas.
+% ARCHIM.CND Conditional distribution function for Archimedean copulas.
 %   Computes conditional CDF of d-dimensional copula, where m-th variable
-%   is conditined upon first m-1 variables.
+%   is conditined upon the first m-1 variables.
 
 X1 = sum(archim.generatorInverse(family, U(:,1:m), alpha), 2);
 N = archim.generatorDerivative(family, X1, alpha, m-1);

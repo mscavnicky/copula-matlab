@@ -17,7 +17,7 @@ for i=1:d
     end    
 end
 % Retrieve alpha from hac structure and convert it to decimal symbol
-% Conversion to decimal symbol is necessary otherwise expression will end
+% Conversion to decimal symbol is necessary otherwise derivation will end
 % up with humongous fractions. Decimal representation also seems faster
 % than floating-point representation.
 alpha = sym(tree{end}, 'd');

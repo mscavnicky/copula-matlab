@@ -1,4 +1,7 @@
 function plotHacTree( family, X, attributes, filename )
+%PLOTHACTREE Visualize data using modified Okhrins's algorithm. 
+%   Data are preprocessed at first and the HAC structure is estimated. If
+%   filename parameter is provided the results is saved as pdf.
 
 % Preprocess the data by rotating some attributes
 P = hac.preprocess(family, X, 'CML');

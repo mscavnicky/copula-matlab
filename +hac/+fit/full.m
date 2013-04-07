@@ -1,6 +1,7 @@
 function [ tree ] = full( family, U )
-%HAC.FIT.FULL Finds the best hierarchical archimedean copula that fits U.
-%   Function is almost unusable for dimensions larger than 5.
+%HAC.FIT.FULL Finds the best hierarchical Archimedean copula that fits U.
+%   Chooses the best copula according to likelihood. Function is unusable
+%   for dimensions larger than 5.
 
 minLogLike = Inf;
 minTree = {};
@@ -24,7 +25,7 @@ end
 
 function [ tree ] = evaluateTree( family, U, tree )
 %EVALUATETREE Given proposed tree structure. Return HAC structure or empty
-%cell array if HAC cannot be built using specified tree.
+%cell array if HAC cannot be built using the specified tree.
 
 % Preallocate accumulator of vectors for this level
 n = size(U, 1);
@@ -56,7 +57,8 @@ end
 
 
 function [ trees ] = generateBinaryTrees( vars )
-%GENERATETREES Generate all possible binary trees of d-dimensional copulas
+%GENERATEBINARYREES Generate all possible binary trees of d-dimensional
+%copulas
 
 % Return tree node when dimension is 1
 d = length(vars);
@@ -86,8 +88,7 @@ end
 
 function [ partitions ] = splitVars( vars )
 %SPLITVARS Divides variables into 2 groups. Where first group is larger or
-%equal in size to second group.
-%   Parameter vars is a vector
+%equal in size to second group. Parameter vars is a vector
 
 partitions = {};
 

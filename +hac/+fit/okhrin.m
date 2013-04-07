@@ -1,8 +1,6 @@
 function [ tree ] = okhrin( family, U )
 %HAC.FIT.OKHRIN Find HAC copula using Okhrin's greedy method [1].
-%   Uses only bivariate copula and does not perform joins as Okhrin
-%   suggests. To obtain valid HAC parameter space is shortened for outer
-%   copulas.
+%   Uses grouping based on choosing bivariate copula with highest alpha.
 
 % Map for storing nested copulas
 copulas = containers.Map('KeyType', 'uint32', 'ValueType', 'any');
