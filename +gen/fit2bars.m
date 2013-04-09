@@ -17,7 +17,12 @@ figure('Visible','off')
 values = [cml.(stat); ifm.(stat)];
 % Filter out only some of models
 values = values(:, 1:8);
+% Plot the values
 handle = bar(values);
+
+% Set the y-label
+ylabel(stat, 'FontName', 'NewCenturySchlbk');
+
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set text for the ticks on XLabels

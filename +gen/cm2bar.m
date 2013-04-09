@@ -11,6 +11,7 @@ accuracy = [cmlAccuracy; ifmAccuracy];
 % Start the invisible figure
 figure('Visible','off')
 handle = bar(accuracy);
+ylabel('Accuracy', 'FontName', 'NewCenturySchlbk');
 % Use other font
 set(gca, 'FontName', 'NewCenturySchlbk');
 % Set gca
