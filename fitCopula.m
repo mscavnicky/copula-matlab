@@ -11,13 +11,19 @@ if ismember(family, {'claytonhac*', 'gumbelhac*', 'frankhac*'})
     P = hac.preprocess( family(1:end-4), X, method );
     X = X * P;
     family = family(1:end-1);
+    fit.PreprocessMatrix = P;
+else
+    fit.PreprocessMatrix = [];    
 end
 
 % Obtain uniformed sample
 if strcmp(method, 'CML')
     U = pseudoObservations(X);
+    fit.Margins = {};
 elseif strcmp(method, 'IFM');
-    U = probabilityTransform(X, fitMargins(X));
+    margins = fitMargins(X);
+    U = probabilityTransform(X, margins);
+    fit.Margins = margins;
 else
     error('Method %s not recognized.', method);
 end
