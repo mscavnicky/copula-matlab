@@ -5,7 +5,7 @@
 
 %% Load the data of the Iris dataset
 
-data = dlmread('../Data/Iris/iris.txt', ',');
+data = dlmread('./data/iris/iris.txt', ',');
 attributes = {'Sepal length', 'Sepal width', 'Petal length', 'Petal width'};
 
 X = data(:, 1:4);
